@@ -1,0 +1,1436 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+
+    font-family: "Poppins", sans-serif;
+
+    color: #8f243d;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            #fffafa 0%,
+            #fff1f1 35%,
+            #ffe4e6 70%,
+            #ffd4d9 100%
+        );
+}
+
+
+/* ==============================
+   BACKGROUND
+============================== */
+
+.background-glow {
+    position: fixed;
+
+    width: 650px;
+    height: 650px;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background: rgba(255, 130, 150, 0.15);
+
+    filter: blur(90px);
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    background-image:
+        radial-gradient(
+            rgba(180, 40, 70, 0.08) 1px,
+            transparent 1px
+        );
+
+    background-size: 30px 30px;
+
+    pointer-events: none;
+}
+
+
+/* ==============================
+   BIRTHDAY ROPE
+============================== */
+
+.birthday-rope {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 95px;
+
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-around;
+
+    padding-top: 8px;
+
+    z-index: 20;
+
+    pointer-events: none;
+}
+
+.rope-line {
+    position: absolute;
+
+    top: 13px;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background: #b92c48;
+
+    opacity: 0.35;
+}
+
+.birthday-rope span {
+    position: relative;
+
+    font-size: 34px;
+
+    animation: decorationSwing 3s ease-in-out infinite;
+}
+
+.birthday-rope span:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.birthday-rope span:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.birthday-rope span:nth-child(5) {
+    animation-delay: 0.9s;
+}
+
+.birthday-rope span:nth-child(6) {
+    animation-delay: 1.2s;
+}
+
+.birthday-rope span:nth-child(7) {
+    animation-delay: 1.5s;
+}
+
+@keyframes decorationSwing {
+
+    0%,
+    100% {
+        transform: rotate(-4deg);
+    }
+
+    50% {
+        transform: rotate(4deg);
+    }
+}
+
+
+/* ==============================
+   CONFETTI BACKGROUND
+============================== */
+
+.confetti-background {
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 1;
+}
+
+.confetti-background span {
+    position: absolute;
+
+    font-size: 18px;
+
+    opacity: 0.35;
+
+    animation: floatingConfetti 8s linear infinite;
+}
+
+.confetti-background span:nth-child(1) {
+    left: 8%;
+    top: 30%;
+}
+
+.confetti-background span:nth-child(2) {
+    left: 20%;
+    top: 75%;
+    animation-delay: 2s;
+}
+
+.confetti-background span:nth-child(3) {
+    left: 35%;
+    top: 20%;
+    animation-delay: 1s;
+}
+
+.confetti-background span:nth-child(4) {
+    left: 55%;
+    top: 80%;
+    animation-delay: 3s;
+}
+
+.confetti-background span:nth-child(5) {
+    left: 72%;
+    top: 25%;
+    animation-delay: 1.5s;
+}
+
+.confetti-background span:nth-child(6) {
+    left: 88%;
+    top: 65%;
+    animation-delay: 4s;
+}
+
+.confetti-background span:nth-child(7) {
+    left: 60%;
+    top: 45%;
+    animation-delay: 2.5s;
+}
+
+.confetti-background span:nth-child(8) {
+    left: 93%;
+    top: 18%;
+    animation-delay: 5s;
+}
+
+@keyframes floatingConfetti {
+
+    0% {
+        transform: translateY(0) rotate(0);
+    }
+
+    50% {
+        transform: translateY(-25px) rotate(90deg);
+    }
+
+    100% {
+        transform: translateY(0) rotate(180deg);
+    }
+}
+
+
+/* ==============================
+   PROGRESS
+============================== */
+
+.party-progress {
+    position: fixed;
+
+    top: 105px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    padding: 7px 16px;
+
+    background: rgba(255, 255, 255, 0.7);
+
+    border: 1px solid rgba(180, 40, 70, 0.12);
+
+    border-radius: 999px;
+
+    backdrop-filter: blur(8px);
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    color: #a52b46;
+
+    z-index: 25;
+}
+
+
+/* ==============================
+   MUSIC
+============================== */
+
+.music-button {
+    position: fixed;
+
+    right: 20px;
+    bottom: 20px;
+
+    width: 45px;
+    height: 45px;
+
+    border: 1px solid rgba(170, 40, 70, 0.2);
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.7);
+
+    color: #a52b46;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    z-index: 50;
+
+    box-shadow: 0 10px 25px rgba(120, 20, 40, 0.12);
+
+    transition: 0.3s ease;
+}
+
+.music-button:hover {
+    transform: scale(1.08);
+}
+
+
+/* ==============================
+   PARTY SECTIONS
+============================== */
+
+.party-section {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    padding: 120px 25px 70px;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: scale(0.97) translateY(20px);
+
+    transition:
+        opacity 0.7s ease,
+        visibility 0.7s ease,
+        transform 0.7s ease;
+
+    z-index: 5;
+}
+
+.party-section.active {
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: scale(1) translateY(0);
+}
+
+
+/* ==============================
+   WELCOME
+============================== */
+
+.welcome-content {
+    text-align: center;
+
+    width: min(90%, 800px);
+}
+
+.birthday-crown {
+    font-size: 55px;
+
+    margin-bottom: 5px;
+
+    animation: crownFloat 2s ease-in-out infinite;
+}
+
+@keyframes crownFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.small-title {
+    font-size: 10px;
+
+    letter-spacing: 4px;
+
+    font-weight: 700;
+
+    color: #ad4a60;
+
+    margin-bottom: 15px;
+}
+
+.welcome-content h1 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(60px, 10vw, 110px);
+
+    line-height: 0.8;
+
+    color: #a32342;
+
+    text-shadow: 0 10px 30px rgba(130, 30, 50, 0.12);
+}
+
+.welcome-content h2 {
+    font-family: "Great Vibes", cursive;
+
+    font-size: clamp(50px, 7vw, 75px);
+
+    color: #c73656;
+
+    margin: 12px 0 15px;
+}
+
+.welcome-text {
+    font-family: "Great Vibes", cursive;
+
+    font-size: 30px;
+
+    color: #a64a5e;
+
+    margin-bottom: 30px;
+}
+
+
+/* ==============================
+   HEADINGS
+============================== */
+
+.section-heading {
+    text-align: center;
+
+    margin-bottom: 20px;
+
+    max-width: 650px;
+}
+
+.section-heading > span {
+    font-size: 42px;
+}
+
+.section-heading h2 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(38px, 6vw, 62px);
+
+    color: #9f2542;
+
+    margin: 5px 0;
+}
+
+.section-heading p {
+    color: #a74d62;
+
+    font-size: 13px;
+}
+
+
+/* ==============================
+   BUTTONS
+============================== */
+
+.party-button,
+.small-button {
+    border: none;
+
+    cursor: pointer;
+
+    font-family: "Poppins", sans-serif;
+
+    font-weight: 700;
+
+    border-radius: 999px;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.party-button {
+    padding: 15px 28px;
+
+    background: #a92a48;
+
+    color: white;
+
+    box-shadow:
+        0 12px 25px rgba(130, 20, 45, 0.22);
+}
+
+.party-button:hover {
+    transform: translateY(-4px) scale(1.03);
+
+    box-shadow:
+        0 17px 32px rgba(130, 20, 45, 0.28);
+}
+
+.small-button {
+    padding: 10px 18px;
+
+    background: #ffe8eb;
+
+    color: #9d2944;
+}
+
+
+/* ==============================
+   BALLOONS
+============================== */
+
+.interactive-area {
+    position: relative;
+
+    width: min(900px, 95vw);
+
+    height: 390px;
+
+    margin-top: 5px;
+}
+
+.balloon {
+    position: absolute;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 75px;
+
+    cursor: pointer;
+
+    filter:
+        drop-shadow(
+            0 15px 12px rgba(120, 30, 50, 0.18)
+        );
+
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
+}
+
+.balloon:hover {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.balloon:nth-child(1) {
+    left: 8%;
+    top: 10%;
+}
+
+.balloon:nth-child(2) {
+    left: 28%;
+    top: 0;
+}
+
+.balloon:nth-child(3) {
+    left: 48%;
+    top: 12%;
+}
+
+.balloon:nth-child(4) {
+    left: 70%;
+    top: 3%;
+}
+
+.balloon:nth-child(5) {
+    left: 15%;
+    top: 55%;
+}
+
+.balloon:nth-child(6) {
+    left: 38%;
+    top: 62%;
+}
+
+.balloon:nth-child(7) {
+    left: 60%;
+    top: 53%;
+}
+
+.balloon:nth-child(8) {
+    left: 82%;
+    top: 58%;
+}
+
+.balloon.popped {
+    animation: balloonPop 0.35s ease forwards;
+}
+
+@keyframes balloonPop {
+
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+
+/* ==============================
+   MESSAGE BOX
+============================== */
+
+.message-box {
+    position: fixed;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%) scale(0.85);
+
+    width: min(90%, 470px);
+
+    padding: 30px 25px;
+
+    text-align: center;
+
+    background: rgba(255, 252, 250, 0.98);
+
+    border-radius: 25px;
+
+    box-shadow:
+        0 30px 70px rgba(100, 20, 40, 0.25);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.4s ease;
+
+    z-index: 100;
+}
+
+.message-box.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.message-icon {
+    font-size: 40px;
+
+    margin-bottom: 10px;
+}
+
+.message-box p {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 25px;
+
+    line-height: 1.25;
+
+    color: #9d2943;
+
+    margin-bottom: 20px;
+}
+
+
+/* ==============================
+   COMPLETION
+============================== */
+
+.completion-message {
+    position: fixed;
+
+    left: 50%;
+    bottom: 35px;
+
+    transform: translateX(-50%) translateY(20px);
+
+    width: min(90%, 500px);
+
+    padding: 18px 20px;
+
+    background: rgba(255, 250, 250, 0.95);
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    box-shadow: 0 15px 40px rgba(100, 20, 40, 0.15);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.5s ease;
+
+    z-index: 60;
+}
+
+.completion-message.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateX(-50%) translateY(0);
+}
+
+.completion-message h3 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 28px;
+
+    color: #a32745;
+
+    margin-bottom: 5px;
+}
+
+.completion-message p {
+    font-size: 13px;
+
+    color: #a64a5e;
+
+    margin-bottom: 12px;
+}
+
+
+/* ==============================
+   POPPERS
+============================== */
+
+.popper-area {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 35px;
+
+    flex-wrap: wrap;
+
+    width: min(900px, 90vw);
+
+    margin: 25px auto;
+}
+
+.popper {
+    border: none;
+
+    background: transparent;
+
+    font-size: 70px;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.popper:hover {
+    transform: translateY(-10px) rotate(8deg) scale(1.1);
+}
+
+.popper.exploded {
+    animation: popperExplode 0.45s ease;
+}
+
+@keyframes popperExplode {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5) rotate(15deg);
+    }
+
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+
+/* ==============================
+   CAMERA
+============================== */
+
+.camera {
+    position: relative;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    margin-top: 20px;
+
+    transition: 0.3s ease;
+}
+
+.camera:hover {
+    transform: scale(1.05) rotate(-2deg);
+}
+
+.camera-body {
+    position: relative;
+
+    width: 270px;
+    height: 180px;
+
+    border-radius: 25px;
+
+    background: #9f2945;
+
+    box-shadow:
+        0 25px 40px rgba(90, 20, 40, 0.25);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.camera-top {
+    position: absolute;
+
+    top: -25px;
+
+    left: 35px;
+
+    background: #9f2945;
+
+    color: white;
+
+    padding: 8px 18px;
+
+    border-radius: 12px 12px 0 0;
+
+    z-index: 2;
+}
+
+.camera-lens {
+    width: 95px;
+    height: 95px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #ffffff 0 12%,
+            #e5a3ae 13% 28%,
+            #761a34 29% 55%,
+            #3d1020 56%
+        );
+
+    border: 8px solid #f5cdd3;
+}
+
+.camera-button {
+    position: absolute;
+
+    top: 18px;
+    right: 25px;
+
+    color: white;
+
+    font-size: 20px;
+}
+
+.camera-countdown {
+    position: fixed;
+
+    left: 50%;
+    top: 45%;
+
+    transform: translate(-50%, -50%);
+
+    font-size: 90px;
+
+    font-weight: 700;
+
+    color: #a32342;
+
+    opacity: 0;
+
+    z-index: 150;
+
+    pointer-events: none;
+}
+
+.camera-countdown.show {
+    animation: countdownPop 0.8s ease;
+}
+
+@keyframes countdownPop {
+
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.camera-flash {
+    position: fixed;
+
+    inset: 0;
+
+    background: white;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    z-index: 200;
+}
+
+.camera-flash.flash {
+    animation: cameraFlash 0.5s ease;
+}
+
+@keyframes cameraFlash {
+
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+/* ==============================
+   NOTES
+============================== */
+
+.notes-area {
+    width: min(800px, 90vw);
+
+    height: 350px;
+
+    position: relative;
+}
+
+.note {
+    position: absolute;
+
+    border: none;
+
+    background: #fff;
+
+    width: 95px;
+    height: 70px;
+
+    border-radius: 10px;
+
+    font-size: 35px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 15px 30px rgba(100, 20, 40, 0.14);
+
+    transition: 0.3s ease;
+}
+
+.note:hover {
+    transform: translateY(-8px) rotate(2deg);
+}
+
+.note:nth-child(1) {
+    left: 5%;
+    top: 10%;
+}
+
+.note:nth-child(2) {
+    left: 28%;
+    top: 2%;
+}
+
+.note:nth-child(3) {
+    left: 58%;
+    top: 12%;
+}
+
+.note:nth-child(4) {
+    left: 80%;
+    top: 30%;
+}
+
+.note:nth-child(5) {
+    left: 18%;
+    top: 62%;
+}
+
+.note:nth-child(6) {
+    left: 55%;
+    top: 68%;
+}
+
+.note.opened {
+    transform: scale(0.85) rotate(5deg);
+
+    opacity: 0.45;
+}
+
+
+/* ==============================
+   ROSES
+============================== */
+
+.rose-bouquet {
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    position: absolute;
+
+    right: 8%;
+    bottom: 8%;
+
+    font-size: 70px;
+
+    width: 150px;
+    height: 150px;
+
+    transition:
+        transform 0.9s cubic-bezier(.2, .8, .2, 1);
+}
+
+.rose-bouquet span {
+    position: absolute;
+}
+
+.rose-bouquet span:nth-child(1) {
+    left: 45px;
+    top: 5px;
+}
+
+.rose-bouquet span:nth-child(2) {
+    left: 15px;
+    top: 35px;
+}
+
+.rose-bouquet span:nth-child(3) {
+    left: 75px;
+    top: 35px;
+}
+
+.rose-bouquet span:nth-child(4) {
+    left: 30px;
+    top: 65px;
+}
+
+.rose-bouquet span:nth-child(5) {
+    left: 60px;
+    top: 65px;
+}
+
+.rose-bouquet span:nth-child(6) {
+    left: 45px;
+    top: 95px;
+}
+
+.rose-bouquet.center {
+    right: 50%;
+
+    bottom: 50%;
+
+    transform:
+        translate(50%, 50%)
+        scale(1.35);
+
+    filter:
+        drop-shadow(
+            0 0 30px rgba(220, 45, 80, 0.5)
+        );
+}
+
+
+/* ==============================
+   WINE
+============================== */
+
+.wine-bottle {
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    position: relative;
+
+    width: 180px;
+    height: 330px;
+
+    margin-top: 15px;
+
+    transition: transform 0.25s ease;
+}
+
+.wine-bottle:hover {
+    transform: scale(1.04);
+}
+
+.bottle-neck {
+    position: absolute;
+
+    width: 48px;
+    height: 75px;
+
+    left: 66px;
+    top: 0;
+
+    background: #541628;
+
+    border-radius: 8px 8px 3px 3px;
+
+    z-index: 1;
+}
+
+.bottle {
+    position: absolute;
+
+    width: 145px;
+    height: 250px;
+
+    left: 17px;
+    bottom: 0;
+
+    border-radius: 45px 45px 25px 25px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4c1224,
+            #7b1d38,
+            #4a1123
+        );
+
+    box-shadow:
+        0 25px 50px rgba(80, 15, 35, 0.3);
+}
+
+.wine-level {
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 85%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4b0e22,
+            #871d3c,
+            #4a0d20
+        );
+
+    transition:
+        height 0.8s ease;
+}
+
+.bottle-shine {
+    position: absolute;
+
+    left: 22px;
+    top: 20px;
+
+    width: 13px;
+    height: 170px;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.bottle-label {
+    position: absolute;
+
+    left: 22px;
+    right: 22px;
+
+    top: 95px;
+
+    padding: 15px 5px;
+
+    background: #fff3ed;
+
+    color: #9a2943;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+.bottle-label small {
+    display: block;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 7px;
+
+    letter-spacing: 2px;
+
+    margin-top: 4px;
+}
+
+.wine-message {
+    font-family: "Great Vibes", cursive;
+
+    font-size: 27px;
+
+    color: #a32846;
+
+    min-height: 40px;
+
+    margin-top: 10px;
+
+    text-align: center;
+}
+
+.wine-final {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background: rgba(255, 239, 241, 0.96);
+
+    opacity: 0;
+    visibility: hidden;
+
+    z-index: 300;
+
+    transition: 0.5s ease;
+}
+
+.wine-final.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.wine-final h2 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 60px;
+
+    color: #9d2040;
+
+    margin-bottom: 15px;
+}
+
+.wine-final p {
+    max-width: 500px;
+
+    font-size: 16px;
+
+    color: #9c4b5e;
+
+    line-height: 1.6;
+}
+
+.wine-final .hold-on {
+    font-family: "Great Vibes", cursive;
+
+    font-size: 35px;
+
+    margin-top: 20px;
+}
+
+.countdown {
+    margin-top: 20px;
+
+    font-size: 70px;
+
+    font-weight: 700;
+
+    color: #a32846;
+}
+
+
+/* ==============================
+   TRANSITION
+============================== */
+
+body.dizzy #party-page {
+    animation: dizzyTransition 2.5s ease forwards;
+}
+
+@keyframes dizzyTransition {
+
+    0% {
+        transform: rotate(0) scale(1);
+    }
+
+    35% {
+        transform: rotate(5deg) scale(1.03);
+    }
+
+    65% {
+        transform: rotate(-8deg) scale(1.08);
+    }
+
+    100% {
+        transform: rotate(360deg) scale(0);
+        opacity: 0;
+    }
+}
+
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 650px) {
+
+    .birthday-rope {
+        height: 75px;
+    }
+
+    .birthday-rope span {
+        font-size: 25px;
+    }
+
+    .party-progress {
+        top: 82px;
+    }
+
+    .party-section {
+        padding-top: 105px;
+        padding-bottom: 55px;
+    }
+
+    .welcome-content h1 {
+        font-size: 62px;
+    }
+
+    .welcome-content h2 {
+        font-size: 50px;
+    }
+
+    .welcome-text {
+        font-size: 25px;
+    }
+
+    .interactive-area {
+        height: 360px;
+    }
+
+    .balloon {
+        font-size: 55px;
+    }
+
+    .popper-area {
+        gap: 18px;
+    }
+
+    .popper {
+        font-size: 55px;
+    }
+
+    .camera-body {
+        width: 220px;
+        height: 145px;
+    }
+
+    .camera-lens {
+        width: 75px;
+        height: 75px;
+    }
+
+    .notes-area {
+        height: 330px;
+    }
+
+    .note {
+        width: 75px;
+        height: 60px;
+        font-size: 28px;
+    }
+
+    .rose-bouquet {
+        right: 3%;
+        bottom: 5%;
+        transform: scale(0.8);
+    }
+
+    .rose-bouquet.center {
+        right: 50%;
+        bottom: 50%;
+
+        transform:
+            translate(50%, 50%)
+            scale(1.05);
+    }
+
+    .wine-final h2 {
+        font-size: 45px;
+    }
+
+    .wine-final p {
+        padding: 0 25px;
+    }
+}
