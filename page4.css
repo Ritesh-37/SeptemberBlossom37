@@ -1,6 +1,6 @@
-/* =========================================
-   PAGE 4 - MIDNIGHT STORY
-   ========================================= */
+/* =====================================================
+   PAGE 4 — MIDNIGHT
+   ===================================================== */
 
 * {
     margin: 0;
@@ -11,20 +11,19 @@
 html,
 body {
     width: 100%;
-    min-height: 100%;
+    height: 100%;
     overflow: hidden;
 }
 
 body {
-    font-family: Georgia, "Times New Roman", serif;
-    background: #080b18;
+    background: #070914;
     color: #ffffff;
+    font-family: Georgia, "Times New Roman", serif;
 }
 
-
-/* =========================================
-   MAIN
-   ========================================= */
+button {
+    font-family: inherit;
+}
 
 #page4 {
     width: 100%;
@@ -34,22 +33,20 @@ body {
 }
 
 
-/* =========================================
+/* =====================================================
    SCENES
-   ========================================= */
+   ===================================================== */
 
 .scene {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
 
     opacity: 0;
     visibility: hidden;
 
     transition:
-        opacity 1.2s ease,
-        visibility 1.2s ease;
+        opacity 1s ease,
+        visibility 1s ease;
 }
 
 .scene.active {
@@ -58,171 +55,212 @@ body {
 }
 
 
-/* =========================================
-   PARTY ENDING
-   ========================================= */
+/* =====================================================
+   PARTICLES
+   ===================================================== */
 
-#partyEnding {
+#particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+}
+
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.65);
+
+    animation: floatParticle linear infinite;
+}
+
+
+/* =====================================================
+   PARTY SCENE
+   ===================================================== */
+
+#partyScene {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     background:
         radial-gradient(
             circle at center,
-            rgba(170, 38, 80, 0.25),
+            rgba(177, 42, 88, 0.25),
             transparent 55%
         ),
         linear-gradient(
             135deg,
-            #260b20,
-            #130918,
-            #080b18
+            #2a0a21,
+            #160a1b,
+            #080a17
         );
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    transition:
-        opacity 2s ease,
-        visibility 2s ease;
 }
 
+.fading-party-glow {
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    max-width: 600px;
+    max-height: 600px;
 
-/* =========================================
-   PARTY POPUP
-   ========================================= */
+    background: rgba(206, 70, 122, 0.08);
 
-.popup-container {
-    width: min(90%, 520px);
-    text-align: center;
+    border-radius: 50%;
+
+    filter: blur(80px);
+}
+
+.tap-story {
     position: relative;
     z-index: 10;
+
+    width: min(90%, 560px);
+
+    text-align: center;
 }
 
-.story-popup {
-    padding: 28px 30px;
+.story-card {
+    padding: 30px 25px;
 
-    border-radius: 24px;
+    border-radius: 25px;
 
-    background: rgba(255, 255, 255, 0.09);
+    background: rgba(255,255,255,0.07);
 
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255,255,255,0.15);
 
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 
     box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.35),
-        0 0 40px rgba(255, 80, 150, 0.08);
+        0 30px 80px rgba(0,0,0,0.4);
 
-    animation: popupAppear 0.8s ease;
+    animation: storyAppear .7s ease;
 }
 
-.story-popup p {
-    font-size: clamp(20px, 4vw, 29px);
+.story-card p {
+    font-size: clamp(21px, 4.5vw, 30px);
     line-height: 1.5;
-    color: #fff5fa;
+    color: #fff4f8;
+}
+
+.tap-hint {
+    margin-top: 28px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+    letter-spacing: 3px;
+
+    color: rgba(255,255,255,0.38);
+
+    animation: hintPulse 2s ease-in-out infinite;
 }
 
 
-/* =========================================
+/* =====================================================
    BALLOONS
-   ========================================= */
+   ===================================================== */
 
-.floating-balloon {
+.balloon {
     position: absolute;
 
-    width: 70px;
-    height: 90px;
+    width: 60px;
+    height: 78px;
 
-    border-radius: 50% 50% 45% 45%;
+    border-radius: 50%;
 
-    opacity: 0.65;
+    opacity: .45;
 
-    animation:
-        balloonFloat 7s ease-in-out infinite;
+    animation: balloonRise 9s linear infinite;
 }
 
-.floating-balloon::after {
+.balloon::after {
     content: "";
+
     position: absolute;
 
     width: 1px;
     height: 100px;
 
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255,255,255,.25);
 
-    top: 85px;
+    top: 75px;
     left: 50%;
 }
 
-.balloon-one {
-    left: 10%;
-    bottom: -120px;
-    background: #c74273;
+.balloon1 {
+    background: #b9386c;
+    left: 12%;
+    bottom: -100px;
 }
 
-.balloon-two {
-    right: 12%;
-    bottom: -160px;
-    background: #8f4c8d;
+.balloon2 {
+    background: #76528f;
+    right: 14%;
+    bottom: -130px;
     animation-delay: 2s;
 }
 
-.balloon-three {
-    left: 45%;
-    bottom: -180px;
-    background: #c88b55;
+.balloon3 {
+    background: #b47753;
+    left: 48%;
+    bottom: -160px;
     animation-delay: 4s;
 }
 
 
-/* =========================================
+/* =====================================================
    SPARKLES
-   ========================================= */
+   ===================================================== */
 
 .party-sparkles span {
     position: absolute;
-    color: rgba(255, 255, 255, 0.7);
 
-    animation:
-        sparkleMove 5s linear infinite;
+    color: rgba(255,255,255,.7);
+
+    animation: sparkle 3s ease-in-out infinite;
 }
 
 .party-sparkles span:nth-child(1) {
-    top: 15%;
+    top: 20%;
     left: 20%;
 }
 
 .party-sparkles span:nth-child(2) {
     top: 25%;
-    right: 15%;
-    animation-delay: 1s;
+    right: 20%;
+    animation-delay: .8s;
 }
 
 .party-sparkles span:nth-child(3) {
-    bottom: 25%;
-    left: 15%;
-    animation-delay: 2s;
+    bottom: 20%;
+    left: 17%;
+    animation-delay: 1.5s;
 }
 
 .party-sparkles span:nth-child(4) {
-    bottom: 15%;
-    right: 25%;
-    animation-delay: 3s;
+    bottom: 25%;
+    right: 15%;
+    animation-delay: 2s;
 }
 
 .party-sparkles span:nth-child(5) {
-    top: 12%;
+    top: 15%;
     left: 60%;
-    animation-delay: 4s;
+    animation-delay: 2.5s;
 }
 
 
-/* =========================================
-   BLACK SCREEN
-   ========================================= */
+/* =====================================================
+   BLACK SCENE
+   ===================================================== */
 
 #blackScene {
-    background: #000000;
+    background: #000;
 
     display: flex;
     align-items: center;
@@ -233,370 +271,306 @@ body {
 
 .black-story {
     width: min(90%, 700px);
-    padding: 30px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
-.time-label {
+.story-time {
     font-family: Arial, sans-serif;
 
-    font-size: 13px;
-    letter-spacing: 4px;
+    font-size: 11px;
 
-    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 5px;
+
+    color: rgba(255,255,255,.35);
 
     margin-bottom: 35px;
 }
 
-#blackText {
+#blackStoryText {
     min-height: 100px;
 
-    font-size: clamp(20px, 4vw, 28px);
+    font-size: clamp(20px,4vw,29px);
+
     line-height: 1.8;
 
-    color: rgba(255, 255, 255, 0.9);
-
-    max-width: 650px;
-}
-
-.continue-button {
-    margin-top: 30px;
-
-    border: 1px solid rgba(255, 255, 255, 0.25);
-
-    background: rgba(255, 255, 255, 0.08);
-
-    color: white;
-
-    padding: 13px 25px;
-
-    border-radius: 50px;
-
-    font-size: 15px;
-
-    cursor: pointer;
-
-    transition: all 0.3s ease;
-}
-
-.continue-button:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
-}
-
-#blackContinue {
-    opacity: 0;
-    pointer-events: none;
+    color: rgba(255,255,255,.9);
 }
 
 
-/* =========================================
-   BEDROOM
-   ========================================= */
+/* =====================================================
+   BEDROOM INTRO
+   ===================================================== */
 
-#bedroomScene {
+#bedroomIntro {
     background:
         radial-gradient(
-            circle at 70% 20%,
-            rgba(93, 109, 160, 0.2),
+            circle at 75% 20%,
+            rgba(98,116,170,.18),
             transparent 35%
         ),
         linear-gradient(
             180deg,
-            #080b18 0%,
-            #0c1021 50%,
-            #111326 100%
+            #080b18,
+            #101429,
+            #15182b
         );
 
-    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
-
-/* =========================================
-   MOON
-   ========================================= */
 
 .moon {
     position: absolute;
 
-    top: 7%;
-    right: 9%;
-
-    width: 75px;
-    height: 75px;
+    width: 80px;
+    height: 80px;
 
     border-radius: 50%;
 
     background: #fff9df;
 
+    top: 8%;
+    right: 9%;
+
     box-shadow:
-        0 0 25px rgba(255, 249, 223, 0.5),
-        0 0 70px rgba(255, 249, 223, 0.15);
+        0 0 30px rgba(255,249,223,.45),
+        0 0 100px rgba(255,249,223,.12);
 }
 
-
-/* =========================================
-   WINDOW
-   ========================================= */
-
-.window {
+.bedroom-window {
     position: absolute;
+
+    width: 190px;
+    height: 240px;
 
     top: 8%;
     left: 8%;
 
-    width: 180px;
-    height: 220px;
-
-    border: 8px solid rgba(255, 255, 255, 0.07);
+    border: 7px solid rgba(255,255,255,.07);
 
     background:
         linear-gradient(
             180deg,
-            #070b19,
-            #121936
+            #050816,
+            #101836
         );
-
-    box-shadow:
-        inset 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
-.window-frame::before,
-.window-frame::after {
-    content: "";
-
+.window-cross {
     position: absolute;
-
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255,255,255,.07);
 }
 
-.window-frame::before {
+.window-cross.vertical {
     width: 3px;
     height: 100%;
-
     left: 50%;
 }
 
-.window-frame::after {
-    height: 3px;
+.window-cross.horizontal {
     width: 100%;
-
+    height: 3px;
     top: 50%;
 }
 
-.window-stars span {
+.bedroom-window span {
     position: absolute;
 
     font-size: 9px;
 
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255,255,255,.8);
 
-    animation: starTwinkle 3s ease-in-out infinite;
+    animation: twinkle 3s infinite;
 }
 
-.window-stars span:nth-child(1) {
+.bedroom-window span:nth-child(3) {
     top: 20%;
     left: 20%;
 }
 
-.window-stars span:nth-child(2) {
-    top: 30%;
+.bedroom-window span:nth-child(4) {
+    top: 35%;
     right: 20%;
-    animation-delay: 1s;
 }
 
-.window-stars span:nth-child(3) {
+.bedroom-window span:nth-child(5) {
     bottom: 25%;
-    left: 28%;
-    animation-delay: 1.5s;
+    left: 25%;
 }
 
-.window-stars span:nth-child(4) {
-    bottom: 18%;
-    right: 30%;
-    animation-delay: 2s;
+.bedroom-window span:nth-child(6) {
+    bottom: 15%;
+    right: 25%;
 }
 
-.window-stars span:nth-child(5) {
+.bedroom-window span:nth-child(7) {
     top: 15%;
-    left: 60%;
-    animation-delay: 0.5s;
+    left: 65%;
 }
 
-.window-stars span:nth-child(6) {
-    bottom: 40%;
-    left: 15%;
-    animation-delay: 2.5s;
-}
-
-
-/* =========================================
-   BEDROOM CONTENT
-   ========================================= */
-
-.bedroom-content {
-    width: min(94%, 650px);
-
-    margin: 0 auto;
-
-    padding-top: 7vh;
-    padding-bottom: 80px;
+.bedroom-intro-content {
+    text-align: center;
 
     position: relative;
     z-index: 5;
 }
 
-.midnight-clock {
-    text-align: center;
-
+.midnight-time {
     font-family: Arial, sans-serif;
 
-    font-size: 12px;
-    letter-spacing: 4px;
+    font-size: 11px;
 
-    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 5px;
 
-    margin-bottom: 18px;
+    color: rgba(255,255,255,.45);
+
+    margin-bottom: 20px;
 }
 
-.clock-dot {
-    display: inline-block;
+.bedroom-intro-content h1 {
+    font-size: clamp(42px,9vw,70px);
 
-    width: 6px;
-    height: 6px;
+    font-weight: normal;
 
-    border-radius: 50%;
-
-    background: #e88ba8;
-
-    margin-right: 8px;
-
-    box-shadow: 0 0 10px #e88ba8;
-}
-
-.wake-message {
-    text-align: center;
-
-    font-size: 15px;
-
-    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 3px;
 
     margin-bottom: 15px;
 }
 
-.bedroom-title {
+.bedroom-intro-content p {
+    color: rgba(255,255,255,.6);
+
+    line-height: 1.8;
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   CHAT SCENE
+   ===================================================== */
+
+#chatScene {
+    background:
+        radial-gradient(
+            circle at 70% 10%,
+            rgba(80,100,160,.18),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            #080b18,
+            #11152a
+        );
+
+    overflow-y: auto;
+}
+
+.chat-page {
+    width: min(94%, 650px);
+
+    margin: auto;
+
+    padding:
+        7vh
+        0
+        60px;
+}
+
+.chat-clock {
     text-align: center;
 
-    margin-bottom: 30px;
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+    letter-spacing: 4px;
+
+    color: rgba(255,255,255,.4);
+
+    margin-bottom: 10px;
 }
 
-.bedroom-title h1 {
-    font-size: clamp(35px, 8vw, 55px);
+.chat-status {
+    text-align: center;
 
-    font-weight: normal;
-
-    letter-spacing: 2px;
-
-    margin-bottom: 8px;
-}
-
-.bedroom-title p {
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(255,255,255,.55);
 
     font-size: 14px;
+
+    margin-bottom: 20px;
 }
 
-
-/* =========================================
-   CHAT
-   ========================================= */
-
-.chat-wrapper {
-    width: 100%;
-
+.chat-box {
     border-radius: 25px;
 
-    background: rgba(11, 14, 29, 0.78);
+    background: rgba(9,12,27,.8);
 
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    border:
+        1px solid rgba(255,255,255,.09);
 
     box-shadow:
-        0 25px 80px rgba(0, 0, 0, 0.45),
-        0 0 50px rgba(105, 120, 180, 0.05);
+        0 30px 90px rgba(0,0,0,.45);
 
     overflow: hidden;
 
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(18px);
 }
 
-
-/* =========================================
-   CHAT HEADER
-   ========================================= */
-
 .chat-header {
-    height: 70px;
+    height: 68px;
 
     display: flex;
     align-items: center;
 
     padding: 12px 18px;
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    border-bottom:
+        1px solid rgba(255,255,255,.07);
 }
 
-.profile-circle {
+.profile-picture {
     width: 43px;
     height: 43px;
-
-    border-radius: 50%;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: rgba(210, 78, 118, 0.15);
+    border-radius: 50%;
+
+    background: rgba(205,71,116,.15);
 
     margin-right: 12px;
 }
 
-.profile-info {
-    display: flex;
-    flex-direction: column;
+.chat-header strong {
+    display: block;
 
-    gap: 3px;
-}
-
-.profile-info strong {
     font-family: Arial, sans-serif;
 
     font-size: 14px;
 }
 
-.profile-info span {
+.chat-header small {
+    display: block;
+
     font-family: Arial, sans-serif;
 
     font-size: 10px;
 
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(255,255,255,.4);
+
+    margin-top: 3px;
 }
 
 .header-moon {
     margin-left: auto;
 }
 
-
-/* =========================================
-   CHAT MESSAGES
-   ========================================= */
-
-.chat-messages {
-    min-height: 370px;
-    max-height: 48vh;
+.messages {
+    min-height: 410px;
+    max-height: 55vh;
 
     overflow-y: auto;
 
@@ -623,15 +597,17 @@ body {
 
     line-height: 1.45;
 
-    animation: messageAppear 0.45s ease;
+    animation: messageIn .4s ease;
 }
 
 .message.tisha {
     align-self: flex-start;
 
-    background: rgba(190, 66, 111, 0.16);
+    background:
+        rgba(195,67,112,.17);
 
-    border: 1px solid rgba(224, 107, 145, 0.12);
+    border:
+        1px solid rgba(225,110,150,.12);
 
     border-bottom-left-radius: 5px;
 }
@@ -639,11 +615,29 @@ body {
 .message.ritesh {
     align-self: flex-end;
 
-    background: rgba(255, 255, 255, 0.09);
+    background:
+        rgba(255,255,255,.08);
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border:
+        1px solid rgba(255,255,255,.08);
 
     border-bottom-right-radius: 5px;
+}
+
+.message.system {
+    align-self: center;
+
+    max-width: 90%;
+
+    background: transparent;
+
+    color: rgba(255,255,255,.45);
+
+    font-size: 12px;
+
+    font-style: italic;
+
+    text-align: center;
 }
 
 .message-name {
@@ -653,214 +647,764 @@ body {
 
     letter-spacing: 1px;
 
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255,255,255,.4);
 
     margin-bottom: 4px;
 
     text-transform: uppercase;
 }
 
-
-/* =========================================
-   TYPING INDICATOR
-   ========================================= */
-
-.typing-indicator {
+.typing {
     display: none;
 
-    align-items: center;
+    padding:
+        0
+        20px
+        15px;
 
     gap: 4px;
-
-    margin: 0 18px 12px;
 }
 
-.typing-indicator.active {
+.typing.active {
     display: flex;
 }
 
-.typing-indicator span {
+.typing span {
     width: 6px;
     height: 6px;
 
     border-radius: 50%;
 
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255,255,255,.5);
 
     animation: typing 1.2s infinite;
 }
 
-.typing-indicator span:nth-child(2) {
-    animation-delay: 0.15s;
+.typing span:nth-child(2) {
+    animation-delay: .15s;
 }
 
-.typing-indicator span:nth-child(3) {
-    animation-delay: 0.3s;
-}
-
-
-/* =========================================
-   CHAT BUTTON
-   ========================================= */
-
-.chat-bottom {
-    padding: 10px 18px 18px;
-
-    display: flex;
-    justify-content: center;
-}
-
-.run-button {
-    border: none;
-
-    padding: 13px 26px;
-
-    border-radius: 50px;
-
-    background: rgba(211, 77, 119, 0.18);
-
-    border: 1px solid rgba(224, 107, 145, 0.25);
-
-    color: white;
-
-    font-family: Arial, sans-serif;
-
-    font-size: 12px;
-
-    letter-spacing: 1px;
-
-    cursor: pointer;
-
-    transition: all 0.3s ease;
-
-    opacity: 0;
-    pointer-events: none;
-}
-
-.run-button.show {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.run-button:hover {
-    transform: translateY(-2px);
-
-    background: rgba(211, 77, 119, 0.3);
-
-    box-shadow:
-        0 8px 25px rgba(211, 77, 119, 0.15);
+.typing span:nth-child(3) {
+    animation-delay: .3s;
 }
 
 
-/* =========================================
-   FINAL ENDING
-   ========================================= */
+/* =====================================================
+   KISS SCENE
+   ===================================================== */
 
-#endingScene {
+#kissScene {
     background:
         radial-gradient(
             circle at center,
-            rgba(192, 65, 110, 0.12),
-            transparent 50%
+            rgba(180,67,111,.18),
+            transparent 45%
         ),
-        #080b18;
+        linear-gradient(
+            180deg,
+            #080a17,
+            #141528,
+            #0a0c18
+        );
 
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+}
+
+.kiss-content {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.scene-caption {
+    position: absolute;
+
+    top: 13%;
+
+    width: 90%;
 
     text-align: center;
+
+    font-size: clamp(17px,4vw,25px);
+
+    color: #fff3f7;
+
+    opacity: 0;
+
+    animation: captionIn 1s ease forwards;
 }
 
-.ending-content {
-    width: min(90%, 500px);
+.couple {
+    width: 250px;
+    height: 250px;
+
+    position: relative;
+
+    margin-top: 40px;
 }
 
-.heart-pulse {
-    font-size: 55px;
+.character {
+    position: absolute;
+
+    bottom: 35px;
+
+    width: 85px;
+    height: 150px;
+
+    transition:
+        transform 1.2s
+        cubic-bezier(.2,.8,.2,1);
+}
+
+.character .head {
+    position: absolute;
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+
+    top: 0;
+
+    background: #d69b7b;
+}
+
+.character .body {
+    position: absolute;
+
+    width: 70px;
+    height: 90px;
+
+    border-radius: 35px 35px 10px 10px;
+
+    top: 55px;
+
+    background: #2d314d;
+}
+
+.character .hair {
+    position: absolute;
+
+    width: 60px;
+    height: 30px;
+
+    top: -3px;
+    left: -3px;
+
+    border-radius:
+        50% 50% 30% 30%;
+
+    background: #171522;
+
+    z-index: 2;
+}
+
+.boy {
+    left: 5px;
+
+    transform: translateX(-70px);
+}
+
+.girl {
+    right: 5px;
+
+    transform: translateX(70px);
+}
+
+.boy .head {
+    right: 0;
+}
+
+.boy .body {
+    right: 0;
+}
+
+.girl .head {
+    left: 0;
+}
+
+.girl .body {
+    left: 0;
+}
+
+.kiss-scene-active .boy {
+    transform:
+        translateX(18px)
+        rotate(-3deg);
+}
+
+.kiss-scene-active .girl {
+    transform:
+        translateX(-18px)
+        rotate(3deg);
+}
+
+.kiss-mark {
+    position: absolute;
+
+    font-size: 38px;
+
+    opacity: 0;
+
+    transform: scale(.2);
+
+    z-index: 20;
+}
+
+.kiss-scene-active .kiss-mark {
+    animation:
+        kissAppear
+        .8s
+        ease
+        1.2s
+        forwards;
+}
+
+.tease-text {
+    position: absolute;
+
+    bottom: 17%;
+
+    font-size: 15px;
+
+    color: rgba(255,255,255,.7);
+
+    opacity: 0;
+}
+
+.tease-visible .tease-text {
+    animation:
+        captionIn
+        .8s
+        ease
+        forwards;
+}
+
+.reaction-text {
+    position: absolute;
+
+    bottom: 11%;
+
+    font-size: 17px;
+
+    color: #ffd8e4;
+
+    opacity: 0;
+}
+
+.reaction-visible .reaction-text {
+    animation:
+        captionIn
+        .7s
+        ease
+        forwards;
+}
+
+
+/* =====================================================
+   CUDDLE SCENE
+   ===================================================== */
+
+#cuddleScene {
+    background:
+        radial-gradient(
+            circle at 70% 15%,
+            rgba(97,112,160,.18),
+            transparent 40%
+        ),
+        linear-gradient(
+            180deg,
+            #080a17,
+            #12152a
+        );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cuddle-content {
+    width: min(95%, 650px);
+
+    text-align: center;
+
+    position: relative;
+    z-index: 5;
+}
+
+.cuddle-title {
+    font-size: clamp(17px,4vw,24px);
+
+    color: #fff3f7;
+
+    margin-bottom: 35px;
+}
+
+.cuddle-bed {
+    width: min(90vw, 450px);
+    height: 220px;
+
+    margin: auto;
+
+    position: relative;
+
+    border-radius:
+        100px
+        100px
+        20px
+        20px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #6b5364,
+            #302c43
+        );
+
+    box-shadow:
+        0 30px 60px rgba(0,0,0,.4);
+}
+
+.cuddle-pillow {
+    position: absolute;
+
+    width: 150px;
+    height: 65px;
+
+    top: 25px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    border-radius: 40px;
+
+    background: #8b7887;
+
+    opacity: .75;
+}
+
+.cuddle-person {
+    position: absolute;
+
+    width: 160px;
+    height: 150px;
+
+    bottom: 30px;
+}
+
+.person-back {
+    left: 25px;
+}
+
+.person-front {
+    right: 25px;
+}
+
+.cuddle-head {
+    position: absolute;
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 50%;
+
+    background: #d69b7b;
+
+    top: 15px;
+}
+
+.person-back .cuddle-head {
+    left: 25px;
+}
+
+.person-front .cuddle-head {
+    right: 25px;
+}
+
+.cuddle-body {
+    position: absolute;
+
+    width: 105px;
+    height: 85px;
+
+    border-radius: 50px 50px 15px 15px;
+
+    top: 55px;
+
+    background: #31364f;
+}
+
+.person-back .cuddle-body {
+    left: 0;
+}
+
+.person-front .cuddle-body {
+    right: 0;
+
+    background: #694558;
+}
+
+.arm {
+    position: absolute;
+
+    width: 120px;
+    height: 20px;
+
+    border-radius: 20px;
+
+    background: #d69b7b;
+
+    top: 65px;
+    left: 50px;
+
+    transform:
+        rotate(10deg);
+
+    transform-origin: left center;
+}
+
+.cuddle-bed {
+    animation:
+        gentleCuddle
+        4s
+        ease-in-out
+        infinite;
+}
+
+.cuddle-choices {
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 30px;
+}
+
+.cuddle-choices button {
+    border: 1px solid rgba(255,255,255,.13);
+
+    background:
+        rgba(255,255,255,.06);
+
+    color: white;
+
+    padding:
+        11px
+        15px;
+
+    border-radius: 50px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    transition:
+        transform .25s,
+        background .25s;
+}
+
+.cuddle-choices button:hover {
+    transform: translateY(-2px);
+
+    background:
+        rgba(255,255,255,.11);
+}
+
+#cuddleResponse {
+    min-height: 25px;
+
+    margin-top: 20px;
+
+    color: rgba(255,255,255,.65);
+
+    font-size: 14px;
+}
+
+.continue-love {
+    display: none;
+
+    margin: 20px auto 0;
+
+    padding: 12px 25px;
+
+    border-radius: 50px;
+
+    border:
+        1px solid rgba(255,255,255,.18);
+
+    background:
+        rgba(190,66,112,.18);
+
+    color: white;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   PHONE EASTER EGG
+   ===================================================== */
+
+#hiddenPhone {
+    position: fixed;
+
+    bottom: 15px;
+    right: 15px;
+
+    width: 35px;
+    height: 35px;
+
+    border: none;
+
+    background: transparent;
+
+    opacity: .05;
+
+    cursor: pointer;
+
+    z-index: 100;
+}
+
+.overlay-popup {
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0,0,0,.7);
+
+    z-index: 200;
+
+    backdrop-filter: blur(8px);
+}
+
+.overlay-popup.show {
+    display: flex;
+}
+
+.phone-card {
+    width: min(88%, 350px);
+
+    padding: 35px 25px;
+
+    border-radius: 25px;
+
+    text-align: center;
+
+    background:
+        #111426;
+
+    border:
+        1px solid rgba(255,255,255,.12);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.6);
+
+    position: relative;
+}
+
+.phone-card h3 {
+    margin: 10px 0;
+
+    font-family: Arial, sans-serif;
+}
+
+.phone-card p {
+    color: rgba(255,255,255,.6);
+
+    line-height: 1.6;
+}
+
+.phone-icon {
+    font-size: 35px;
+}
+
+#closePhone {
+    position: absolute;
+
+    right: 15px;
+    top: 10px;
+
+    border: none;
+
+    background: none;
+
+    color: white;
+
+    font-size: 25px;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   FINAL LOVE QUESTION
+   ===================================================== */
+
+#loveQuestionScene {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(184,69,111,.12),
+            transparent 50%
+        ),
+        #080a17;
+}
+
+.love-question {
+    width: min(90%, 600px);
+}
+
+.final-moon {
+    font-size: 40px;
 
     margin-bottom: 25px;
 
-    animation: heartBeat 1.5s ease-in-out infinite;
+    animation:
+        gentleFloat
+        4s
+        ease-in-out
+        infinite;
 }
 
-.ending-content p {
-    font-size: 18px;
+.love-question p {
+    color: rgba(255,255,255,.5);
 
-    color: rgba(255, 255, 255, 0.65);
-
-    margin-bottom: 15px;
+    font-size: 14px;
 }
 
-.ending-content h2 {
-    font-size: clamp(25px, 6vw, 40px);
+.love-question h1 {
+    margin:
+        18px
+        0
+        10px;
+
+    font-size: 38px;
+
+    font-weight: normal;
+}
+
+.love-question span {
+    color: rgba(255,255,255,.55);
+}
+
+.love-question h2 {
+    margin-top: 30px;
+
+    font-size: clamp(28px,7vw,45px);
 
     font-weight: normal;
 
-    color: #fff5fa;
+    color: #fff1f6;
+}
 
-    margin-bottom: 10px;
+#nextPage {
+    margin-top: 35px;
+
+    padding: 13px 27px;
+
+    border-radius: 50px;
+
+    border:
+        1px solid rgba(255,255,255,.17);
+
+    background:
+        rgba(190,66,112,.18);
+
+    color: white;
+
+    cursor: pointer;
+
+    transition:
+        transform .25s;
+}
+
+#nextPage:hover {
+    transform: translateY(-2px);
 }
 
 
-/* =========================================
+/* =====================================================
    ANIMATIONS
-   ========================================= */
+   ===================================================== */
 
-@keyframes popupAppear {
-
+@keyframes storyAppear {
     from {
         opacity: 0;
-        transform: translateY(20px) scale(0.96);
+        transform:
+            translateY(20px)
+            scale(.97);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform:
+            translateY(0)
+            scale(1);
     }
 }
 
-
-@keyframes balloonFloat {
-
-    0% {
-        transform: translateY(0) rotate(-3deg);
+@keyframes hintPulse {
+    0%,100% {
+        opacity: .35;
     }
 
     50% {
-        transform: translateY(-120vh) rotate(5deg);
-    }
-
-    100% {
-        transform: translateY(-240vh) rotate(-4deg);
+        opacity: .8;
     }
 }
 
+@keyframes balloonRise {
+    from {
+        transform:
+            translateY(0)
+            rotate(-4deg);
+    }
 
-@keyframes sparkleMove {
+    to {
+        transform:
+            translateY(-130vh)
+            rotate(5deg);
+    }
+}
 
-    0% {
-        opacity: 0;
-        transform: scale(0.5);
+@keyframes sparkle {
+    0%,100% {
+        opacity: .15;
+        transform: scale(.6);
     }
 
     50% {
         opacity: 1;
         transform: scale(1.2);
     }
-
-    100% {
-        opacity: 0;
-        transform: scale(0.5);
-    }
 }
 
-
-@keyframes starTwinkle {
-
-    0%,
-    100% {
-        opacity: 0.25;
+@keyframes twinkle {
+    0%,100% {
+        opacity: .2;
     }
 
     50% {
@@ -868,28 +1412,46 @@ body {
     }
 }
 
+@keyframes floatParticle {
+    from {
+        transform:
+            translateY(100vh);
+        opacity: 0;
+    }
 
-@keyframes messageAppear {
+    20% {
+        opacity: .7;
+    }
 
+    80% {
+        opacity: .7;
+    }
+
+    to {
+        transform:
+            translateY(-20vh);
+        opacity: 0;
+    }
+}
+
+@keyframes messageIn {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform:
+            translateY(10px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform:
+            translateY(0);
     }
 }
 
-
 @keyframes typing {
-
-    0%,
-    60%,
-    100% {
+    0%,60%,100% {
         transform: translateY(0);
-        opacity: 0.4;
+        opacity: .4;
     }
 
     30% {
@@ -898,87 +1460,133 @@ body {
     }
 }
 
+@keyframes captionIn {
+    from {
+        opacity: 0;
+        transform:
+            translateY(12px);
+    }
 
-@keyframes heartBeat {
+    to {
+        opacity: 1;
+        transform:
+            translateY(0);
+    }
+}
 
-    0%,
+@keyframes kissAppear {
+    0% {
+        opacity: 0;
+        transform:
+            translate(-50%, -50%)
+            scale(.2);
+    }
+
+    40% {
+        opacity: 1;
+        transform:
+            translate(-50%, -50%)
+            scale(1.15);
+    }
+
     100% {
-        transform: scale(1);
+        opacity: 0;
+        transform:
+            translate(-50%, -50%)
+            scale(.9);
+    }
+}
+
+@keyframes gentleCuddle {
+    0%,100% {
+        transform:
+            translateY(0)
+            rotate(0);
     }
 
     50% {
-        transform: scale(1.15);
+        transform:
+            translateY(-3px)
+            rotate(.4deg);
+    }
+}
+
+@keyframes gentleFloat {
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
     }
 }
 
 
-/* =========================================
+/* =====================================================
    MOBILE
-   ========================================= */
+   ===================================================== */
 
 @media (max-width: 600px) {
 
-    .floating-balloon {
-        width: 50px;
-        height: 68px;
+    .balloon {
+        width: 45px;
+        height: 62px;
     }
 
-    .story-popup {
-        padding: 22px 18px;
-    }
+    .bedroom-window {
+        width: 125px;
+        height: 165px;
 
-    .story-popup p {
-        font-size: 20px;
-    }
-
-    .window {
-        width: 120px;
-        height: 160px;
-
-        left: 5%;
-        top: 5%;
+        left: 4%;
+        top: 6%;
     }
 
     .moon {
-        width: 55px;
-        height: 55px;
+        width: 58px;
+        height: 58px;
 
         right: 7%;
         top: 7%;
     }
 
-    .bedroom-content {
-        width: 94%;
-
-        padding-top: 25vh;
+    .chat-page {
+        padding-top: 5vh;
     }
 
-    .bedroom-title h1 {
-        font-size: 38px;
-    }
-
-    .chat-messages {
-        min-height: 350px;
+    .messages {
+        min-height: 400px;
+        max-height: 58vh;
     }
 
     .message {
         max-width: 84%;
         font-size: 13px;
     }
-}
 
-
-@media (max-height: 650px) {
-
-    .bedroom-content {
-        padding-top: 8vh;
+    .couple {
+        transform: scale(.85);
     }
 
-    .chat-messages {
-        min-height: 300px;
+    .cuddle-bed {
+        width: 92vw;
+        height: 190px;
     }
 
-    .window {
-        opacity: 0.5;
+    .cuddle-person {
+        transform: scale(.82);
+    }
+
+    .person-back {
+        left: 0;
+    }
+
+    .person-front {
+        right: 0;
+    }
+
+    .cuddle-choices {
+        padding:
+            0
+            10px;
     }
 }
