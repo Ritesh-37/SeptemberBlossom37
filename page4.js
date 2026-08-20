@@ -1,65 +1,36 @@
-/* =========================================================
-   PAGE 4 - OPTIMIZED JAVASCRIPT
-========================================================= */
-
 "use strict";
 
 /* =========================================================
-   ELEMENTS
+   PAGE 4 — OUR LITTLE STORY
+   FINAL MATCHED JAVASCRIPT
 ========================================================= */
 
-const scenes = {
-    intro: document.getElementById("introScene"),
-    tease: document.getElementById("teaseScene"),
-    ready: document.getElementById("readyScene"),
-    wonderIntro: document.getElementById("wonderIntro"),
-    quiz: document.getElementById("quizScene"),
-    taj: document.getElementById("tajScene"),
-    find: document.getElementById("findScene"),
-    dinnerIntro: document.getElementById("dinnerIntro"),
-    dinner: document.getElementById("dinnerScene"),
-    curtain: document.getElementById("curtainScene"),
-    memory: document.getElementById("memoryTransition")
-};
+
+/* =========================================================
+   AUDIO
+========================================================= */
 
 const bgMusic = document.getElementById("bgMusic");
 const clickSound = document.getElementById("clickSound");
 const whooshSound = document.getElementById("whooshSound");
 const sparkleSound = document.getElementById("sparkleSound");
-
 const musicButton = document.getElementById("musicButton");
 
 
-/* =========================================================
-   SAFE AUDIO
-========================================================= */
-
-function playAudio(audio, volume = 1) {
+function playSound(audio, volume = 0.6) {
 
     if (!audio) return;
 
-    try {
-        audio.pause();
-        audio.currentTime = 0;
-        audio.volume = volume;
+    audio.volume = volume;
+    audio.currentTime = 0;
 
-        const promise = audio.play();
+    const promise = audio.play();
 
-        if (promise) {
-            promise.catch(() => {});
-        }
-
-    } catch (error) {
-        console.log("Audio unavailable.");
+    if (promise !== undefined) {
+        promise.catch(() => {});
     }
 }
 
-
-/* =========================================================
-   MUSIC
-========================================================= */
-
-let musicPlaying = false;
 
 function startMusic() {
 
@@ -69,125 +40,109 @@ function startMusic() {
 
     const promise = bgMusic.play();
 
-    if (promise) {
+    if (promise !== undefined) {
+        promise.catch(() => {});
+    }
 
-        promise
-            .then(() => {
-
-                musicPlaying = true;
-
-                musicButton.classList.add("playing");
-
-            })
-            .catch(() => {});
-
+    if (musicButton) {
+        musicButton.classList.add("playing");
     }
 }
 
 
-musicButton.addEventListener("click", function () {
-
-    if (bgMusic.paused) {
-
-        startMusic();
-
-    } else {
-
-        bgMusic.pause();
-
-        musicPlaying = false;
-
-        musicButton.classList.remove("playing");
-
-    }
-
-});
-
-
 /* =========================================================
-   RELIABLE SCENE SWITCH
+   MUSIC BUTTON
 ========================================================= */
 
-function showScene(scene) {
+if (musicButton) {
 
-    if (!scene) return;
+    musicButton.addEventListener("click", function () {
 
-    Object.values(scenes).forEach(function (currentScene) {
+        if (bgMusic.paused) {
 
-        if (!currentScene) return;
+            startMusic();
 
-        currentScene.classList.add("hidden");
-        currentScene.classList.remove("active");
+        } else {
+
+            bgMusic.pause();
+
+            musicButton.classList.remove("playing");
+
+        }
 
     });
 
-    scene.classList.remove("hidden");
-    scene.classList.add("active");
-
 }
 
 
 /* =========================================================
-   SMALL PARTICLES
+   SCENES
 ========================================================= */
 
-function createParticle() {
+const scenes = document.querySelectorAll(".scene");
 
-    const container =
-        document.getElementById("particles");
 
-    if (!container) return;
+function showScene(id) {
 
-    const particle =
-        document.createElement("div");
+    scenes.forEach(function (scene) {
 
-    particle.className = "particle";
+        scene.classList.remove("active");
+        scene.classList.add("hidden");
 
-    particle.style.left =
-        Math.random() * 100 + "%";
+    });
 
-    particle.style.bottom =
-        "-10px";
 
-    particle.style.animationDuration =
-        (5 + Math.random() * 5) + "s";
+    const target = document.getElementById(id);
 
-    container.appendChild(particle);
+    if (!target) {
 
-    setTimeout(function () {
+        console.error("Scene not found:", id);
+        return;
 
-        particle.remove();
+    }
 
-    }, 10000);
+
+    target.classList.remove("hidden");
+    target.classList.add("active");
 
 }
 
-setInterval(createParticle, 700);
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+showScene("introScene");
 
 
 /* =========================================================
-   1. WAKE UP
+   WAKE UP
 ========================================================= */
 
 const wakeButton =
     document.getElementById("wakeButton");
 
 
-wakeButton.addEventListener("click", function () {
+if (wakeButton) {
 
-    console.log("Wake button clicked.");
+    wakeButton.addEventListener("click", function () {
 
-    startMusic();
+        /* Start music AFTER user interaction */
+        startMusic();
 
-    playAudio(clickSound, 0.7);
+        /* Click sound */
+        playSound(clickSound, 0.75);
 
-    showScene(scenes.tease);
+        /* Move to first teasing popup */
+        showScene("teaseScene");
 
-});
+    });
+
+}
 
 
 /* =========================================================
-   2. TEASING POPUPS
+   TEASING POPUPS
 ========================================================= */
 
 const teaseTitle =
@@ -228,167 +183,159 @@ const teaseMessages = [
 let teaseIndex = 0;
 
 
-teaseNext.addEventListener("click", function () {
+if (teaseNext) {
 
-    playAudio(clickSound, 0.7);
+    teaseNext.addEventListener("click", function () {
 
-    teaseIndex++;
+        playSound(clickSound, 0.65);
 
-    if (teaseIndex < teaseMessages.length) {
+        teaseIndex++;
 
-        teaseTitle.textContent =
-            teaseMessages[teaseIndex].title;
 
-        teaseText.textContent =
-            teaseMessages[teaseIndex].text;
+        if (teaseIndex < teaseMessages.length) {
 
-        /*
-           Restart popup animation.
-        */
+            teaseTitle.textContent =
+                teaseMessages[teaseIndex].title;
 
-        const popup =
-            document.getElementById("teasePopup");
+            teaseText.textContent =
+                teaseMessages[teaseIndex].text;
 
-        popup.style.animation = "none";
+            /*
+             * Restart popup animation
+             */
+            const popup =
+                document.getElementById("teasePopup");
 
-        void popup.offsetWidth;
+            if (popup) {
 
-        popup.style.animation =
-            "popupIn 0.8s cubic-bezier(.2,.8,.2,1)";
+                popup.style.animation = "none";
 
-    } else {
+                void popup.offsetWidth;
 
-        showScene(scenes.ready);
+                popup.style.animation =
+                    "popupIn 0.8s cubic-bezier(.2,.8,.2,1)";
 
-    }
+            }
 
-});
+        } else {
+
+            showScene("readyScene");
+
+        }
+
+    });
+
+}
 
 
 /* =========================================================
-   3. READY
+   READY
 ========================================================= */
 
 const readyButton =
     document.getElementById("readyButton");
 
 
-readyButton.addEventListener("click", function () {
+if (readyButton) {
 
-    playAudio(whooshSound, 0.6);
+    readyButton.addEventListener("click", function () {
 
-    showScene(scenes.wonderIntro);
+        playSound(clickSound, 0.6);
 
-    const content =
-        document.querySelector(".wonder-intro-content");
+        playSound(whooshSound, 0.65);
 
-    content.classList.remove("show");
+        showScene("wonderIntro");
 
-    void content.offsetWidth;
 
-    content.classList.add("show");
+        const wonderContent =
+            document.querySelector(".wonder-intro-content");
 
-    /*
-       Short cinematic pause.
-       Not an unnecessary long JS delay.
-    */
 
-    setTimeout(function () {
+        if (wonderContent) {
 
-        startQuiz();
+            wonderContent.classList.remove("show");
 
-    }, 3800);
+            void wonderContent.offsetWidth;
 
-});
+            wonderContent.classList.add("show");
+
+        }
+
+
+        /*
+         * Give the "7 memories / 7 wonders"
+         * sequence time to play.
+         */
+        setTimeout(function () {
+
+            startQuiz();
+
+        }, 5000);
+
+    });
+
+}
 
 
 /* =========================================================
-   4. QUIZ DATA
+   QUIZ DATA
 ========================================================= */
 
 const questions = [
 
     {
-        wonder: "Great Wall",
         icon: "✦",
         question:
             "Who is more likely to remember a tiny detail from a conversation?",
-        answers: [
-            "Ritesh",
-            "Tisha"
-        ],
+        answers: ["Ritesh", "Tisha"],
         correct: "Tisha"
     },
 
     {
-        wonder: "Petra",
         icon: "◆",
         question:
-            "Who was more likely to start talking first?",
-        answers: [
-            "Ritesh",
-            "Tisha"
-        ],
+            "Who is more likely to plan a surprise and struggle to keep it secret?",
+        answers: ["Ritesh", "Tisha"],
         correct: "Ritesh"
     },
 
     {
-        wonder: "Colosseum",
         icon: "◇",
         question:
-            "Who is more dramatic when something doesn't go their way?",
-        answers: [
-            "Ritesh",
-            "Tisha"
-        ],
+            "Who is more likely to fall asleep first?",
+        answers: ["Ritesh", "Tisha"],
         correct: "Tisha"
     },
 
     {
-        wonder: "Machu Picchu",
         icon: "✧",
         question:
             "Who is more likely to say 'I'm fine' when they clearly aren't?",
-        answers: [
-            "Ritesh",
-            "Tisha"
-        ],
+        answers: ["Ritesh", "Tisha"],
         correct: "Tisha"
     },
 
     {
-        wonder: "Christ the Redeemer",
         icon: "✦",
         question:
-            "Who would plan a surprise and then struggle to keep it secret?",
-        answers: [
-            "Ritesh",
-            "Tisha"
-        ],
+            "Who is more likely to turn a simple moment into an adventure?",
+        answers: ["Ritesh", "Tisha"],
         correct: "Ritesh"
     },
 
     {
-        wonder: "Chichén Itzá",
         icon: "◆",
         question:
-            "Who would fall asleep first during a movie?",
-        answers: [
-            "Ritesh",
-            "Tisha"
-        ],
+            "Who is more likely to remember a special place?",
+        answers: ["Ritesh", "Tisha"],
         correct: "Tisha"
     },
 
     {
-        wonder: "Taj Mahal",
         icon: "♥",
         question:
-            "Who has the more special place in the other's heart?",
-        answers: [
-            "Ritesh",
-            "Tisha"
-        ],
+            "Who has a very special place in the other's heart?",
+        answers: ["Ritesh", "Tisha"],
         correct: "Tisha"
     }
 
@@ -396,19 +343,17 @@ const questions = [
 
 
 let currentQuestion = 0;
-let score = 0;
 
 
 /* =========================================================
-   5. START QUIZ
+   START QUIZ
 ========================================================= */
 
 function startQuiz() {
 
     currentQuestion = 0;
-    score = 0;
 
-    showScene(scenes.quiz);
+    showScene("quizScene");
 
     loadQuestion();
 
@@ -416,7 +361,7 @@ function startQuiz() {
 
 
 /* =========================================================
-   6. LOAD QUESTION
+   LOAD QUESTION
 ========================================================= */
 
 function loadQuestion() {
@@ -427,16 +372,10 @@ function loadQuestion() {
     if (!question) return;
 
 
-    const questionText =
-        document.getElementById("questionText");
-
-    const answers =
-        document.getElementById("answers");
-
-    const wonderIcon =
+    const icon =
         document.getElementById("wonderIcon");
 
-    const wonderNumber =
+    const number =
         document.getElementById("wonderNumber");
 
     const counter =
@@ -445,17 +384,23 @@ function loadQuestion() {
     const progress =
         document.getElementById("progressBar");
 
+    const text =
+        document.getElementById("questionText");
+
+    const answers =
+        document.getElementById("answers");
+
     const feedback =
         document.getElementById("answerFeedback");
 
-    const nextButton =
+    const next =
         document.getElementById("nextQuestion");
 
 
-    wonderIcon.textContent =
+    icon.textContent =
         question.icon;
 
-    wonderNumber.textContent =
+    number.textContent =
         String(currentQuestion + 1).padStart(2, "0");
 
     counter.textContent =
@@ -463,18 +408,21 @@ function loadQuestion() {
         + " / "
         + String(questions.length).padStart(2, "0");
 
-    questionText.textContent =
-        question.question;
 
     progress.style.width =
         ((currentQuestion + 1) /
         questions.length * 100) + "%";
 
-    feedback.textContent = "";
 
-    nextButton.classList.remove("show");
+    text.textContent =
+        question.question;
+
 
     answers.innerHTML = "";
+
+    feedback.textContent = "";
+
+    next.classList.remove("show");
 
 
     question.answers.forEach(function (answer) {
@@ -482,20 +430,21 @@ function loadQuestion() {
         const button =
             document.createElement("button");
 
+        button.type = "button";
+
         button.className =
             "answer-button";
-
-        button.type =
-            "button";
 
         button.textContent =
             answer;
 
+
         button.addEventListener("click", function () {
 
-            selectAnswer(button, answer);
+            answerQuestion(button, answer);
 
         });
+
 
         answers.appendChild(button);
 
@@ -505,37 +454,32 @@ function loadQuestion() {
 
 
 /* =========================================================
-   7. SELECT ANSWER
+   ANSWER
 ========================================================= */
 
-function selectAnswer(button, answer) {
+function answerQuestion(button, answer) {
 
     const question =
         questions[currentQuestion];
+
 
     const buttons =
         document.querySelectorAll(".answer-button");
 
 
-    /*
-       Prevent multiple clicks.
-    */
+    buttons.forEach(function (item) {
 
-    buttons.forEach(function (btn) {
-
-        btn.classList.add("disabled");
+        item.classList.add("disabled");
 
     });
 
 
-    playAudio(clickSound, 0.6);
+    playSound(clickSound, 0.55);
 
 
     if (answer === question.correct) {
 
         button.classList.add("correct");
-
-        score++;
 
         document.getElementById(
             "answerFeedback"
@@ -546,22 +490,20 @@ function selectAnswer(button, answer) {
 
         button.classList.add("wrong");
 
+
         document.getElementById(
             "answerFeedback"
         ).textContent =
-            "Hmm... the answer was "
+            "Not quite... the answer was "
             + question.correct
             + ".";
 
 
-        buttons.forEach(function (btn) {
+        buttons.forEach(function (item) {
 
-            if (
-                btn.textContent ===
-                question.correct
-            ) {
+            if (item.textContent === question.correct) {
 
-                btn.classList.add("correct");
+                item.classList.add("correct");
 
             }
 
@@ -578,63 +520,71 @@ function selectAnswer(button, answer) {
 
 
 /* =========================================================
-   8. NEXT QUESTION
+   NEXT QUESTION
 ========================================================= */
 
-document
-    .getElementById("nextQuestion")
-    .addEventListener("click", function () {
+const nextQuestion =
+    document.getElementById("nextQuestion");
 
-        playAudio(clickSound, 0.6);
+
+if (nextQuestion) {
+
+    nextQuestion.addEventListener("click", function () {
+
+        playSound(clickSound, 0.55);
 
         currentQuestion++;
 
-        if (
-            currentQuestion <
-            questions.length
-        ) {
+
+        if (currentQuestion < questions.length) {
 
             loadQuestion();
 
         } else {
 
-            finishQuiz();
+            showTaj();
 
         }
 
     });
 
+}
+
 
 /* =========================================================
-   9. FINISH QUIZ
+   TAJ MAHAL
 ========================================================= */
 
-function finishQuiz() {
+function showTaj() {
 
-    showScene(scenes.taj);
+    showScene("tajScene");
 
-    playAudio(sparkleSound, 0.7);
+    playSound(sparkleSound, 0.8);
+
+}
+
+
+const tajContinue =
+    document.getElementById("tajContinue");
+
+
+if (tajContinue) {
+
+    tajContinue.addEventListener("click", function () {
+
+        playSound(clickSound, 0.55);
+
+        playSound(whooshSound, 0.6);
+
+        showScene("findScene");
+
+    });
 
 }
 
 
 /* =========================================================
-   10. TAJ MAHAL → FIND RITESH
-========================================================= */
-
-document
-    .getElementById("tajContinue")
-    .addEventListener("click", function () {
-
-        playAudio(whooshSound, 0.6);
-
-        showScene(scenes.find);
-
-    });
-
-
-/* =========================================================
-   11. FIND RITESH
+   FIND RITESH
 ========================================================= */
 
 const hiddenStars =
@@ -648,51 +598,33 @@ hiddenStars.forEach(function (star) {
 
     star.addEventListener("click", function () {
 
-        const correct =
+        const isCorrect =
             star.dataset.correct === "true";
 
 
-        if (correct) {
-
-            playAudio(sparkleSound, 0.8);
-
-            star.style.opacity = "0";
-
-            foundMessage.classList.add("show");
+        playSound(clickSound, 0.45);
 
 
-            setTimeout(function () {
+        if (!isCorrect) {
 
-                showScene(scenes.dinnerIntro);
-
-            }, 1800);
-
-
-        } else {
-
-            playAudio(clickSound, 0.4);
-
-            star.animate(
-                [
-                    {
-                        transform:
-                            "translate(-50%, -50%) scale(1)"
-                    },
-                    {
-                        transform:
-                            "translate(-50%, -50%) scale(1.5)"
-                    },
-                    {
-                        transform:
-                            "translate(-50%, -50%) scale(1)"
-                    }
-                ],
-                {
-                    duration: 350
-                }
-            );
+            return;
 
         }
+
+
+        playSound(sparkleSound, 0.85);
+
+
+        star.style.opacity = "0";
+
+        foundMessage.classList.add("show");
+
+
+        setTimeout(function () {
+
+            showScene("dinnerIntro");
+
+        }, 1800);
 
     });
 
@@ -700,54 +632,75 @@ hiddenStars.forEach(function (star) {
 
 
 /* =========================================================
-   12. DINNER INTRO
+   DINNER INTRO
 ========================================================= */
 
-document
-    .getElementById("dinnerStart")
-    .addEventListener("click", function () {
+const dinnerStart =
+    document.getElementById("dinnerStart");
 
-        playAudio(clickSound, 0.6);
 
-        showScene(scenes.dinner);
+if (dinnerStart) {
+
+    dinnerStart.addEventListener("click", function () {
+
+        playSound(clickSound, 0.55);
+
+        showScene("dinnerScene");
 
     });
 
+}
+
 
 /* =========================================================
-   13. DINNER DATA
+   DINNER FOOD
 ========================================================= */
 
 const foodData = {
 
     starter: {
+
         title: "The first bite",
+
         text:
             "For the beginning of every little adventure we've had."
+
     },
 
     main: {
+
         title: "For my beautiful lady",
+
         text:
             "Because ordinary dinners are boring when I can make one special for you."
+
     },
 
     dessert: {
+
         title: "Something sweet",
+
         text:
             "Although honestly... you're still sweeter."
+
     },
 
     drink: {
+
         title: "A little toast",
+
         text:
             "To everything we've already lived through — and everything still waiting for us."
+
     },
 
     secret: {
+
         title: "One last compliment",
+
         text:
             "I love how charismatic, interactive and full of life you are. You have a very special place in my life."
+
     }
 
 };
@@ -756,14 +709,16 @@ const foodData = {
 const foodButtons =
     document.querySelectorAll(".food-bite");
 
+
 const foodTitle =
     document.getElementById("foodTitle");
+
 
 const foodText =
     document.getElementById("foodText");
 
 
-let dinnerItemsClicked =
+const clickedFoods =
     new Set();
 
 
@@ -771,51 +726,50 @@ foodButtons.forEach(function (button) {
 
     button.addEventListener("click", function () {
 
-        const food =
+        const type =
             button.dataset.food;
 
+
         const data =
-            foodData[food];
+            foodData[type];
 
 
-        playAudio(clickSound, 0.5);
+        if (!data) return;
+
+
+        playSound(clickSound, 0.55);
 
 
         foodTitle.textContent =
             data.title;
 
+
         foodText.textContent =
             data.text;
 
 
-        dinnerItemsClicked.add(food);
+        clickedFoods.add(type);
 
 
         button.style.transform =
-            "scale(0.75)";
+            "scale(0.78)";
 
 
         setTimeout(function () {
 
             button.style.transform =
-                "scale(1)";
+                "";
 
-        }, 200);
+        }, 220);
 
 
-        /*
-           All five discovered.
-        */
-
-        if (
-            dinnerItemsClicked.size === 5
-        ) {
+        if (clickedFoods.size === 5) {
 
             setTimeout(function () {
 
-                startCurtainSequence();
+                startCurtainTransition();
 
-            }, 900);
+            }, 1000);
 
         }
 
@@ -825,60 +779,59 @@ foodButtons.forEach(function (button) {
 
 
 /* =========================================================
-   14. CURTAIN SEQUENCE
+   CURTAINS
 ========================================================= */
 
-let curtainStarted = false;
+let curtainsStarted = false;
 
 
-function startCurtainSequence() {
+function startCurtainTransition() {
 
-    if (curtainStarted) return;
+    if (curtainsStarted) return;
 
-    curtainStarted = true;
+    curtainsStarted = true;
 
 
-    playAudio(whooshSound, 0.7);
+    playSound(whooshSound, 0.75);
 
-    showScene(scenes.curtain);
+
+    showScene("curtainScene");
 
 
     /*
-       Let the curtains close,
-       then move to the final transition.
-    */
+     * Curtains close for 2.5 seconds.
+     *
+     * Then we keep the screen dark
+     * for another 2 seconds.
+     *
+     * Then the heart appears.
+     */
+
 
     setTimeout(function () {
 
-        startMemoryTransition();
+        showMemoryTransition();
 
-    }, 4300);
+    }, 4500);
 
 }
 
 
 /* =========================================================
-   15. MEMORY TRANSITION
+   MEMORY TRANSITION
 ========================================================= */
 
-function startMemoryTransition() {
+function showMemoryTransition() {
 
-    showScene(scenes.memory);
+    showScene("memoryTransition");
 
-
-    /*
-       Slowly lower music.
-    */
 
     if (bgMusic) {
 
-        bgMusic.volume = 0.18;
-
-        setTimeout(function () {
-
-            bgMusic.volume = 0.06;
-
-        }, 1200);
+        /*
+         * Softly lower the music
+         */
+        bgMusic.volume = 0.12;
 
     }
 
@@ -886,31 +839,114 @@ function startMemoryTransition() {
 
 
 /* =========================================================
-   16. GO TO PAGE 5
+   GO TO PAGE 5
 ========================================================= */
 
-document
-    .getElementById("memoryGo")
-    .addEventListener("click", function () {
+const memoryGo =
+    document.getElementById("memoryGo");
 
-        playAudio(whooshSound, 0.6);
+
+if (memoryGo) {
+
+    memoryGo.addEventListener("click", function () {
+
+        playSound(clickSound, 0.55);
+
+        playSound(whooshSound, 0.65);
+
 
         /*
-           Your Page 5 file.
-        */
+         * Small fade before Page 5
+         */
 
-        window.location.href =
-            "page5.html";
+        const transition =
+            document.getElementById("memoryTransition");
+
+
+        if (transition) {
+
+            transition.style.transition =
+                "opacity 0.8s ease";
+
+            transition.style.opacity = "0";
+
+        }
+
+
+        setTimeout(function () {
+
+            window.location.href =
+                "page5.html";
+
+        }, 800);
 
     });
 
+}
+
 
 /* =========================================================
-   INITIAL STATE
+   OPTIONAL FLOATING PARTICLES
 ========================================================= */
 
-showScene(scenes.intro);
+const particleContainer =
+    document.getElementById("particles");
+
+
+function createParticle() {
+
+    if (!particleContainer) return;
+
+
+    const particle =
+        document.createElement("div");
+
+
+    particle.className =
+        "particle";
+
+
+    particle.style.left =
+        Math.random() * 100 + "%";
+
+
+    particle.style.top =
+        (80 + Math.random() * 20) + "%";
+
+
+    particle.style.animationDuration =
+        (5 + Math.random() * 5) + "s";
+
+
+    particleContainer.appendChild(particle);
+
+
+    setTimeout(function () {
+
+        particle.remove();
+
+    }, 10000);
+
+}
+
+
+setInterval(createParticle, 900);
+
+
+/* =========================================================
+   DEBUG
+========================================================= */
 
 console.log(
-    "Page 4 loaded successfully."
+    "✓ Page 4 JavaScript loaded successfully"
+);
+
+console.log(
+    "✓ Audio elements detected:",
+    {
+        bgMusic: !!bgMusic,
+        clickSound: !!clickSound,
+        whooshSound: !!whooshSound,
+        sparkleSound: !!sparkleSound
+    }
 );
