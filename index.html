@@ -8,639 +8,553 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     >
 
-    <title>Our Little Story</title>
+    <meta name="theme-color" content="#09070a">
+
+    <title>Our Little Memory</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
 
     <link rel="stylesheet" href="page4.css">
 </head>
 
 <body>
 
-    <!-- =====================================================
-         AUDIO
-    ====================================================== -->
+    <!-- =========================================================
+         GLOBAL EFFECT LAYERS
+    ========================================================== -->
 
-    <audio id="bgMusic" loop preload="auto">
-        <source src="audio/page4-bgm.mp3" type="audio/mpeg">
-    </audio>
+    <div id="transitionLayer"></div>
 
-    <audio id="clickSound" preload="auto">
-        <source src="audio/click.mp3" type="audio/mpeg">
-    </audio>
+    <div id="particleLayer"></div>
 
-    <audio id="whooshSound" preload="auto">
-        <source src="audio/whoosh.mp3" type="audio/mpeg">
-    </audio>
-
-    <audio id="sparkleSound" preload="auto">
-        <source src="audio/sparkle.mp3" type="audio/mpeg">
-    </audio>
+    <div id="toast"></div>
 
 
-    <!-- MUSIC BUTTON -->
+    <!-- =========================================================
+         AUDIO CONTROL
+    ========================================================== -->
 
     <button
         id="musicButton"
         class="music-button"
-        type="button"
         aria-label="Toggle music"
+        type="button"
     >
-        ♪
+        <span class="music-bars">
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+        </span>
     </button>
 
 
-    <!-- PARTICLES -->
+    <!-- =========================================================
+         1. WAKE-UP INTRO
+    ========================================================== -->
 
-    <div id="particles"></div>
+    <main id="wakeScreen" class="screen active">
 
+        <div class="wake-background"></div>
 
-    <!-- =====================================================
-         APP
-    ====================================================== -->
+        <div class="wake-vignette"></div>
 
-    <main id="app">
+        <div class="wake-content">
 
-
-        <!-- =================================================
-             1. WAKE UP
-        ================================================== -->
-
-        <section
-            id="introScene"
-            class="scene active"
-        >
-
-            <div class="ambient-glow"></div>
-
-            <div class="bedroom-content">
-
-                <div class="sleeping-symbol">
-                    z
-                </div>
-
-                <div class="intro-title">
-                    <span>Good morning...</span>
-                    <strong>Tisha</strong>
-                </div>
-
-                <p class="intro-subtitle">
-                    Looks like someone finally woke up.
-                </p>
-
-                <button
-                    id="wakeButton"
-                    class="premium-button"
-                    type="button"
-                >
-                    Wake up →
-                </button>
-
+            <div class="wake-symbol">
+                <span></span>
             </div>
 
-        </section>
+            <h1 id="wakeText">
+                Tap to wake up...
+            </h1>
 
-
-        <!-- =================================================
-             2. TEASING POPUPS
-        ================================================== -->
-
-        <section
-            id="teaseScene"
-            class="scene"
-        >
-
-            <div class="tease-background"></div>
-
-            <div class="popup-container">
-
-                <div
-                    id="teasePopup"
-                    class="story-popup"
-                >
-
-                    <div class="popup-small">
-                        HEY YOU
-                    </div>
-
-                    <h2 id="teaseTitle">
-                        There you are...
-                    </h2>
-
-                    <p id="teaseText">
-                        Come on sweetheart. I know you're awake.
-                    </p>
-
-                    <button
-                        id="teaseNext"
-                        class="premium-button"
-                        type="button"
-                    >
-                        Continue →
-                    </button>
-
-                </div>
-
+            <div class="wake-progress">
+                <span class="wake-dot active"></span>
+                <span class="wake-dot"></span>
+                <span class="wake-dot"></span>
+                <span class="wake-dot"></span>
+                <span class="wake-dot"></span>
             </div>
 
-        </section>
-
-
-        <!-- =================================================
-             3. READY
-        ================================================== -->
-
-        <section
-            id="readyScene"
-            class="scene"
-        >
-
-            <div class="ready-glow"></div>
-
-            <div class="ready-content">
-
-                <div class="tiny-star">
-                    ✦
-                </div>
-
-                <h1>
-                    Ready?
-                </h1>
-
-                <p>
-                    Let's see how well<br>
-                    you remember us...
-                </p>
-
-                <button
-                    id="readyButton"
-                    class="premium-button"
-                    type="button"
-                >
-                    I'm ready →
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             4. SEVEN WONDERS INTRO
-        ================================================== -->
-
-        <section
-            id="wonderIntro"
-            class="scene"
-        >
-
-            <div class="wonder-intro-content">
-
-                <p class="fade-line">
-                    Let's see how well you remember us...
-                </p>
-
-                <div class="wonder-star">
-                    ✦
-                </div>
-
-                <div class="wonder-number">
-                    7
-                </div>
-
-                <div class="wonder-word">
-                    memories.
-                </div>
-
-                <div class="wonder-number second-number">
-                    7
-                </div>
-
-                <div class="wonder-word">
-                    wonders.
-                </div>
-
-                <p class="final-line">
-                    1 way to reach me.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             5. QUIZ
-        ================================================== -->
-
-        <section
-            id="quizScene"
-            class="scene"
-        >
-
-            <div class="quiz-background"></div>
-
-            <div class="quiz-top">
-
-                <span id="questionCounter">
-                    01 / 07
-                </span>
-
-                <div class="progress-track">
-                    <div id="progressBar"></div>
-                </div>
-
-            </div>
-
-
-            <div class="wonder-card">
-
-                <div
-                    id="wonderIcon"
-                    class="wonder-icon"
-                >
-                    ✦
-                </div>
-
-                <div class="wonder-label">
-                    WONDER
-                    <span id="wonderNumber">01</span>
-                </div>
-
-                <h2 id="questionText">
-                    Question
-                </h2>
-
-                <div id="answers"></div>
-
-                <p
-                    id="answerFeedback"
-                    class="answer-feedback"
-                ></p>
-
-                <button
-                    id="nextQuestion"
-                    class="premium-button next-button"
-                    type="button"
-                >
-                    Next wonder →
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             6. TAJ MAHAL
-        ================================================== -->
-
-        <section
-            id="tajScene"
-            class="scene"
-        >
-
-            <div class="taj-sky"></div>
-
-            <div class="taj-glow"></div>
-
-            <div class="taj-content">
-
-                <div class="taj-silhouette">
-
-                    <div class="taj-dome"></div>
-
-                    <div class="taj-building">
-
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
-                    </div>
-
-                    <div class="taj-minaret left"></div>
-                    <div class="taj-minaret right"></div>
-
-                </div>
-
-
-                <div class="taj-message">
-
-                    <div class="small-caption">
-                        THE LAST WONDER
-                    </div>
-
-                    <h1>
-                        Taj Mahal
-                    </h1>
-
-                    <p>
-                        Some places become memories.
-                    </p>
-
-                    <p>
-                        And some memories become
-                        <strong>everything.</strong>
-                    </p>
-
-                    <button
-                        id="tajContinue"
-                        class="premium-button"
-                        type="button"
-                    >
-                        Continue →
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             7. FIND RITESH
-        ================================================== -->
-
-        <section
-            id="findScene"
-            class="scene"
-        >
-
-            <div class="find-content">
-
-                <div class="find-label">
-                    ONE LAST THING
-                </div>
-
-                <h1>
-                    Find me.
-                </h1>
-
-                <p>
-                    Somewhere in this little universe...
-                </p>
-
-
-                <div
-                    id="findUniverse"
-                    class="find-universe"
-                >
-
-                    <button
-                        class="hidden-star"
-                        data-correct="false"
-                        style="--x:18%; --y:27%;"
-                        type="button"
-                    >
-                        ✦
-                    </button>
-
-                    <button
-                        class="hidden-star"
-                        data-correct="false"
-                        style="--x:72%; --y:20%;"
-                        type="button"
-                    >
-                        ✦
-                    </button>
-
-                    <button
-                        class="hidden-star"
-                        data-correct="false"
-                        style="--x:38%; --y:68%;"
-                        type="button"
-                    >
-                        ✦
-                    </button>
-
-                    <button
-                        class="hidden-star"
-                        data-correct="false"
-                        style="--x:82%; --y:72%;"
-                        type="button"
-                    >
-                        ✦
-                    </button>
-
-                    <button
-                        class="hidden-star"
-                        data-correct="true"
-                        style="--x:58%; --y:43%;"
-                        type="button"
-                    >
-                        ✦
-                    </button>
-
-
-                    <div
-                        id="foundMessage"
-                        class="found-message"
-                    >
-                        You found me. ♥
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             8. DINNER INTRO
-        ================================================== -->
-
-        <section
-            id="dinnerIntro"
-            class="scene"
-        >
-
-            <div class="dinner-content">
-
-                <div class="dinner-caption">
-                    SOMEWHERE QUIET
-                </div>
-
-                <h1>
-                    Just you & me.
-                </h1>
-
-                <p>
-                    No party.<br>
-                    No crowd.<br>
-                    Just one little dinner.
-                </p>
-
-                <button
-                    id="dinnerStart"
-                    class="premium-button"
-                    type="button"
-                >
-                    Sit with me →
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             9. INTERACTIVE DINNER
-        ================================================== -->
-
-        <section
-            id="dinnerScene"
-            class="scene"
-        >
-
-            <div class="dinner-background">
-
-                <div class="dinner-lamp"></div>
-
-                <div class="table">
-
-                    <div class="table-cloth"></div>
-
-                    <div class="candle">
-
-                        <div class="flame"></div>
-
-                    </div>
-
-                    <div class="plate">
-
-                        <button
-                            class="food-bite"
-                            data-food="starter"
-                            type="button"
-                        >
-                            ◉
-                        </button>
-
-                        <button
-                            class="food-bite"
-                            data-food="main"
-                            type="button"
-                        >
-                            ◉
-                        </button>
-
-                        <button
-                            class="food-bite"
-                            data-food="dessert"
-                            type="button"
-                        >
-                            ◉
-                        </button>
-
-                        <button
-                            class="food-bite"
-                            data-food="drink"
-                            type="button"
-                        >
-                            ◉
-                        </button>
-
-                        <button
-                            class="food-bite"
-                            data-food="secret"
-                            type="button"
-                        >
-                            ◉
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    id="foodPopup"
-                    class="food-popup"
-                >
-
-                    <div class="food-popup-small">
-                        A LITTLE SOMETHING
-                    </div>
-
-                    <h2 id="foodTitle">
-                        Tap something...
-                    </h2>
-
-                    <p id="foodText">
-                        Five little things are waiting for you.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             10. CURTAINS
-        ================================================== -->
-
-        <section
-            id="curtainScene"
-            class="scene"
-        >
-
-            <div class="curtain left-curtain"></div>
-
-            <div class="curtain right-curtain"></div>
-
-            <div class="curtain-center"></div>
-
-        </section>
-
-
-        <!-- =================================================
-             11. TIME TO LOOK AT US
-        ================================================== -->
-
-        <section
-            id="memoryTransition"
-            class="scene"
-        >
-
-            <div class="memory-darkness"></div>
-
-            <div class="memory-heart">
-                ♥
-            </div>
-
-            <div class="memory-popup">
-
-                <div class="memory-popup-sparkle">
-                    ✦
-                </div>
-
-                <h1>
-                    Time to look at us...
-                    <span>♥</span>
-                </h1>
-
-                <p>
-                    We've made a few memories worth keeping.
-                </p>
-
-                <button
-                    id="memoryGo"
-                    class="premium-button"
-                    type="button"
-                >
-                    Let's go →
-                </button>
-
-            </div>
-
-        </section>
+            <button
+                id="wakeButton"
+                class="invisible-fullscreen-button"
+                type="button"
+                aria-label="Wake up"
+            ></button>
+
+        </div>
 
     </main>
 
 
-    <script src="page4.js"></script>
+    <!-- =========================================================
+         2. WAKE-UP POPUP
+    ========================================================== -->
+
+    <section id="wakePopupScreen" class="screen hidden">
+
+        <div class="popup-backdrop"></div>
+
+        <div class="romantic-popup">
+
+            <div class="css-heart"></div>
+
+            <div class="popup-sparkles">
+                <span>✦</span>
+                <span>✧</span>
+                <span>✦</span>
+                <span>✧</span>
+            </div>
+
+            <p class="popup-small">A little message for you</p>
+
+            <h2>
+                So baby...<br>
+                you woke up. <span class="heart-symbol">♡</span>
+            </h2>
+
+            <p>
+                Nice...
+            </p>
+
+            <p class="popup-message">
+                I was wondering if I'm the only one remembering
+                all the little details about us...
+            </p>
+
+            <p class="popup-message">
+                Or do you have a sharp memory too?
+            </p>
+
+            <p class="popup-message">
+                <strong>Let's see...</strong><br>
+                Get all of them right to reach me.
+            </p>
+
+            <p class="popup-surprise">
+                I've got a surprise waiting for you...
+            </p>
+
+            <button
+                id="startQuizButton"
+                class="premium-button"
+                type="button"
+            >
+                Let's see
+                <span>→</span>
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         3–9. WONDER QUIZ
+    ========================================================== -->
+
+    <section id="quizScreen" class="screen hidden">
+
+        <div id="wonderBackground" class="wonder-background"></div>
+
+        <div class="wonder-overlay"></div>
+
+        <div class="wonder-vignette"></div>
+
+        <div class="ambient-light"></div>
+
+
+        <!-- TOP INFORMATION -->
+
+        <header class="quiz-header">
+
+            <div class="memory-number">
+                MEMORY
+                <strong id="memoryNumber">01</strong>
+                <span>/ 07</span>
+            </div>
+
+            <div class="quiz-title">
+                HOW WELL DO YOU REMEMBER US?
+            </div>
+
+            <button
+                id="infoButton"
+                class="info-button"
+                type="button"
+                aria-label="Wonder information"
+            >
+                i
+            </button>
+
+        </header>
+
+
+        <!-- QUESTION -->
+
+        <div class="question-wrapper">
+
+            <div class="question-card">
+
+                <div class="question-location" id="wonderName">
+                    GREAT WALL OF CHINA
+                </div>
+
+                <div class="question-divider">
+                    <span></span>
+                    <i>✦</i>
+                    <span></span>
+                </div>
+
+                <h2 id="questionText">
+                    What year was Ritesh born?
+                </h2>
+
+                <div
+                    id="answers"
+                    class="answers-container"
+                ></div>
+
+                <div
+                    id="memoryCaption"
+                    class="memory-caption"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NEXT ARROW -->
+
+        <button
+            id="nextQuestionButton"
+            class="next-arrow locked"
+            type="button"
+            aria-label="Next memory"
+        >
+            <span>→</span>
+        </button>
+
+
+        <!-- QUESTION PROGRESS -->
+
+        <div class="quiz-progress">
+
+            <span class="progress-line"></span>
+
+            <div
+                id="progressFill"
+                class="progress-fill"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         WONDER INFORMATION POPUP
+    ========================================================== -->
+
+    <section
+        id="infoPopup"
+        class="modal hidden"
+    >
+
+        <div class="modal-backdrop"></div>
+
+        <div class="info-card">
+
+            <button
+                id="closeInfoButton"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+            <div class="info-icon">
+                ✦
+            </div>
+
+            <p class="info-label">
+                ABOUT THIS PLACE
+            </p>
+
+            <h2 id="infoTitle">
+                Great Wall of China
+            </h2>
+
+            <div class="info-divider"></div>
+
+            <p id="infoText">
+                One of the world's most famous landmarks,
+                stretching across the historic landscapes of China.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         10. RITESH REVEAL / DINNER
+    ========================================================== -->
+
+    <section
+        id="dinnerScreen"
+        class="screen hidden"
+    >
+
+        <div class="dinner-background"></div>
+
+        <div class="dinner-overlay"></div>
+
+        <div class="dinner-light"></div>
+
+        <div class="dinner-particles"></div>
+
+
+        <!-- CURTAIN TOP DECOR -->
+
+        <div class="dinner-room">
+
+            <!-- LEFT CHARACTER -->
+
+            <div
+                id="ritesh"
+                class="character ritesh"
+            >
+                <div class="character-light"></div>
+
+                <div class="head"></div>
+
+                <div class="hair"></div>
+
+                <div class="body tuxedo-body">
+                    <div class="shirt"></div>
+                    <div class="bowtie"></div>
+                    <div class="lapel left"></div>
+                    <div class="lapel right"></div>
+                </div>
+
+                <div class="arm left-arm"></div>
+                <div class="arm right-arm"></div>
+            </div>
+
+
+            <!-- RIGHT CHARACTER -->
+
+            <div
+                id="tisha"
+                class="character tisha"
+            >
+                <div class="character-light"></div>
+
+                <div class="head"></div>
+
+                <div class="hair"></div>
+
+                <div class="body dress-body">
+                    <div class="dress-neck"></div>
+                    <div class="dress-highlight"></div>
+                </div>
+
+                <div class="arm left-arm"></div>
+                <div class="arm right-arm"></div>
+            </div>
+
+
+            <!-- DINING TABLE -->
+
+            <div class="dining-table">
+
+                <div class="table-top">
+
+                    <div class="plate ritesh-plate"></div>
+
+                    <div
+                        id="tishaPlate"
+                        class="plate tisha-plate"
+                    >
+                        <div
+                            id="food"
+                            class="food"
+                        >
+                            <span class="food-piece piece-1"></span>
+                            <span class="food-piece piece-2"></span>
+                            <span class="food-piece piece-3"></span>
+                            <span class="food-piece piece-4"></span>
+                            <span class="food-piece piece-5"></span>
+                        </div>
+                    </div>
+
+
+                    <!-- CANDLE 1 -->
+
+                    <div class="candle candle-one">
+                        <div class="flame"></div>
+                    </div>
+
+
+                    <!-- CANDLE 2 -->
+
+                    <div class="candle candle-two">
+                        <div class="flame"></div>
+                    </div>
+
+
+                    <!-- FLOWERS -->
+
+                    <div class="table-flower">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+
+                    <!-- GLASSES -->
+
+                    <div class="glass glass-one"></div>
+                    <div class="glass glass-two"></div>
+
+                </div>
+
+                <div class="table-cloth"></div>
+
+            </div>
+
+
+            <!-- DINNER INTRO -->
+
+            <div
+                id="dinnerIntro"
+                class="dinner-intro"
+            >
+
+                <p class="dinner-small">
+                    SOMEWHERE BETWEEN A MEMORY
+                    AND A DREAM
+                </p>
+
+                <h1>
+                    Ritesh
+                </h1>
+
+                <p>
+                    has been waiting for you.
+                </p>
+
+            </div>
+
+
+            <!-- SIT PROMPT -->
+
+            <button
+                id="sitButton"
+                class="premium-button sit-button"
+                type="button"
+            >
+                Come sit with me...
+            </button>
+
+
+            <!-- FOOD INTERACTION -->
+
+            <button
+                id="foodButton"
+                class="food-interaction hidden"
+                type="button"
+                aria-label="Taste the food"
+            >
+                <span class="fork-icon">✦</span>
+            </button>
+
+
+            <!-- COMPLIMENT -->
+
+            <div
+                id="complimentBox"
+                class="compliment-box"
+            >
+                <div class="compliment-heart">
+                    ♡
+                </div>
+
+                <p id="complimentText"></p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         13. CURTAINS
+    ========================================================== -->
+
+    <div
+        id="curtainLayer"
+        class="curtain-layer"
+    >
+
+        <div class="curtain curtain-left"></div>
+        <div class="curtain curtain-right"></div>
+
+    </div>
+
+
+    <!-- =========================================================
+         14. FINAL MESSAGE
+    ========================================================== -->
+
+    <section
+        id="finalScreen"
+        class="screen hidden"
+    >
+
+        <div class="final-background"></div>
+
+        <div class="final-glow"></div>
+
+        <div class="heel-symbol">
+
+            <div class="heel-shoe"></div>
+
+        </div>
+
+        <p class="final-small">
+            THE NEXT CHAPTER AWAITS
+        </p>
+
+        <h1>
+            Time to put your<br>
+            <span>dancing heels</span> on...
+        </h1>
+
+        <p class="final-ready">
+            Ready for the next part?
+        </p>
+
+        <button
+            id="danceButton"
+            class="premium-button final-button"
+            type="button"
+        >
+            Let's dance
+            <span>→</span>
+        </button>
+
+    </section>
+
+
+    <script src="ppage4.js"></script>
 
 </body>
 </html>
