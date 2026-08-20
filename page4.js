@@ -1,2381 +1,2529 @@
-/* ============================================================
+/* ==========================================================
    PAGE 4
-   PREMIUM ROMANTIC MEMORY EXPERIENCE
+   COMPLETE JAVASCRIPT
+========================================================== */
 
-   IMPORTANT:
-   Q6's fourth option is intentionally isolated here because
-   that "never visited" Patna location was not confirmed yet.
+document.addEventListener("DOMContentLoaded", () => {
 
-   Replace ONLY the text inside Q6_UNVISITED_PLACE.
-============================================================ */
+    "use strict";
 
 
-/* ============================================================
-   AUDIO ENGINE
-   No external audio files required.
-============================================================ */
+    /* ======================================================
+       ELEMENTS
+    ====================================================== */
 
-let audioContext = null;
+    const wakeScreen =
+        document.getElementById("wakeScreen");
 
-let masterGain = null;
-let musicGain = null;
+    const wakeButton =
+        document.getElementById("wakeButton");
 
-let musicRunning = false;
-let musicMuted = false;
+    const wakeProgress =
+        document.getElementById("wakeProgress");
 
-let musicNodes = [];
-let musicTimer = null;
+    const wakePopup =
+        document.getElementById("wakePopup");
 
+    const startMemoryButton =
+        document.getElementById("startMemoryButton");
 
-/* ============================================================
-   INITIALIZE AUDIO
-============================================================ */
+    const wonderScreen =
+        document.getElementById("wonderScreen");
 
-function initAudio() {
+    const wonderBackground =
+        document.getElementById("wonderBackground");
 
-    if (audioContext) {
-        return;
-    }
+    const questionNumber =
+        document.getElementById("questionNumber");
 
-    const AudioContextClass =
-        window.AudioContext ||
-        window.webkitAudioContext;
+    const questionCategory =
+        document.getElementById("questionCategory");
 
-    if (!AudioContextClass) {
-        return;
-    }
+    const questionText =
+        document.getElementById("questionText");
 
-    audioContext =
-        new AudioContextClass();
+    const answerOptions =
+        document.getElementById("answerOptions");
 
-    masterGain =
-        audioContext.createGain();
+    const answerMessage =
+        document.getElementById("answerMessage");
 
-    musicGain =
-        audioContext.createGain();
+    const nextQuestionButton =
+        document.getElementById("nextQuestionButton");
 
-    masterGain.gain.value = 0.8;
+    const wonderSymbol =
+        document.getElementById("wonderSymbol");
 
-    musicGain.gain.value = 0.045;
+    const infoButton =
+        document.getElementById("infoButton");
 
-    musicGain.connect(masterGain);
+    const infoPopup =
+        document.getElementById("infoPopup");
 
-    masterGain.connect(
-        audioContext.destination
-    );
-}
+    const closeInfoButton =
+        document.getElementById("closeInfoButton");
 
+    const infoWonderName =
+        document.getElementById("infoWonderName");
 
-/* ============================================================
-   RESUME AUDIO
-============================================================ */
+    const infoTitle =
+        document.getElementById("infoTitle");
 
-async function resumeAudio() {
+    const infoText =
+        document.getElementById("infoText");
 
-    initAudio();
+    const dinnerScreen =
+        document.getElementById("dinnerScreen");
 
-    if (!audioContext) {
-        return;
-    }
+    const sitButton =
+        document.getElementById("sitButton");
 
-    if (audioContext.state === "suspended") {
-        await audioContext.resume();
-    }
-}
+    const foodButton =
+        document.getElementById("foodButton");
 
+    const food =
+        document.getElementById("food");
 
-/* ============================================================
-   GENERIC TONE
-============================================================ */
+    const complimentBox =
+        document.getElementById("complimentBox");
 
-function playTone(
-    frequency,
-    duration = 0.15,
-    type = "sine",
-    volume = 0.06,
-    startDelay = 0
-) {
+    const complimentText =
+        document.getElementById("complimentText");
 
-    if (!audioContext || musicMuted) {
-        return;
-    }
+    const dinnerComplete =
+        document.getElementById("dinnerComplete");
 
-    const now =
-        audioContext.currentTime +
-        startDelay;
-
-    const oscillator =
-        audioContext.createOscillator();
-
-    const gain =
-        audioContext.createGain();
-
-    oscillator.type = type;
-
-    oscillator.frequency.setValueAtTime(
-        frequency,
-        now
-    );
-
-    gain.gain.setValueAtTime(
-        0.0001,
-        now
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        volume,
-        now + 0.015
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        now + duration
-    );
-
-    oscillator.connect(gain);
-    gain.connect(masterGain);
-
-    oscillator.start(now);
-    oscillator.stop(
-        now + duration + 0.03
-    );
-}
-
-
-/* ============================================================
-   AIRY WAKE TAP
-============================================================ */
-
-function wakeTap() {
-
-    resumeAudio();
-
-    playTone(
-        540,
-        0.08,
-        "sine",
-        0.035
-    );
-
-    playTone(
-        760,
-        0.13,
-        "sine",
-        0.018,
-        0.035
-    );
-}
-
-
-/* ============================================================
-   MAGICAL CHIME
-============================================================ */
-
-function magicalChime() {
-
-    resumeAudio();
-
-    playTone(
-        660,
-        0.65,
-        "sine",
-        0.055
-    );
-
-    playTone(
-        880,
-        0.72,
-        "sine",
-        0.045,
-        0.08
-    );
-
-    playTone(
-        1320,
-        0.85,
-        "sine",
-        0.025,
-        0.18
-    );
-}
-
-
-/* ============================================================
-   GLASS CHIME
-============================================================ */
-
-function glassChime() {
-
-    resumeAudio();
-
-    playTone(
-        780,
-        0.35,
-        "sine",
-        0.035
-    );
-
-    playTone(
-        1040,
-        0.48,
-        "sine",
-        0.028,
-        0.08
-    );
-
-    playTone(
-        1560,
-        0.55,
-        "sine",
-        0.018,
-        0.15
-    );
-}
-
-
-/* ============================================================
-   WRONG ANSWER
-============================================================ */
-
-function wrongSound() {
-
-    resumeAudio();
-
-    playTone(
-        180,
-        0.14,
-        "triangle",
-        0.045
-    );
-
-    playTone(
-        130,
-        0.18,
-        "triangle",
-        0.03,
-        0.06
-    );
-}
-
-
-/* ============================================================
-   CORRECT SOUND
-============================================================ */
-
-function correctSound() {
-
-    resumeAudio();
-
-    playTone(
-        523.25,
-        0.22,
-        "sine",
-        0.04
-    );
-
-    playTone(
-        659.25,
-        0.28,
-        "sine",
-        0.04,
-        0.08
-    );
-
-    playTone(
-        783.99,
-        0.45,
-        "sine",
-        0.035,
-        0.16
-    );
-}
-
-
-/* ============================================================
-   RISING CHIME
-============================================================ */
-
-function risingChime() {
-
-    resumeAudio();
-
-    playTone(
-        440,
-        0.25,
-        "sine",
-        0.025
-    );
-
-    playTone(
-        554.37,
-        0.3,
-        "sine",
-        0.03,
-        0.08
-    );
-
-    playTone(
-        659.25,
-        0.38,
-        "sine",
-        0.04,
-        0.16
-    );
-
-    playTone(
-        880,
-        0.55,
-        "sine",
-        0.035,
-        0.25
-    );
-}
-
-
-/* ============================================================
-   WHOOSH
-============================================================ */
-
-function whoosh() {
-
-    if (!audioContext || musicMuted) {
-        return;
-    }
-
-    const bufferSize =
-        audioContext.sampleRate * 0.45;
-
-    const buffer =
-        audioContext.createBuffer(
-            1,
-            bufferSize,
-            audioContext.sampleRate
-        );
-
-    const data =
-        buffer.getChannelData(0);
-
-    for (
-        let i = 0;
-        i < bufferSize;
-        i++
-    ) {
-
-        const fade =
-            1 - i / bufferSize;
-
-        data[i] =
-            (
-                Math.random() * 2 - 1
-            ) *
-            fade *
-            0.22;
-    }
-
-    const source =
-        audioContext.createBufferSource();
-
-    const filter =
-        audioContext.createBiquadFilter();
-
-    const gain =
-        audioContext.createGain();
-
-    source.buffer = buffer;
-
-    filter.type = "bandpass";
-
-    filter.frequency.setValueAtTime(
-        400,
-        audioContext.currentTime
-    );
-
-    filter.frequency.exponentialRampToValueAtTime(
-        2200,
-        audioContext.currentTime + 0.35
-    );
-
-    gain.gain.setValueAtTime(
-        0.0001,
-        audioContext.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        0.055,
-        audioContext.currentTime + 0.08
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        audioContext.currentTime + 0.43
-    );
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(masterGain);
-
-    source.start();
-}
-
-
-/* ============================================================
-   PLATE / FOOD SOUND
-============================================================ */
-
-function plateSound() {
-
-    resumeAudio();
-
-    playTone(
-        360,
-        0.08,
-        "triangle",
-        0.025
-    );
-
-    playTone(
-        620,
-        0.13,
-        "sine",
-        0.018,
-        0.04
-    );
-}
-
-
-/* ============================================================
-   GLASS CLINK
-============================================================ */
-
-function glassClink() {
-
-    resumeAudio();
-
-    playTone(
-        1100,
-        0.15,
-        "sine",
-        0.035
-    );
-
-    playTone(
-        1450,
-        0.22,
-        "sine",
-        0.02,
-        0.04
-    );
-}
-
-
-/* ============================================================
-   DINNER REVEAL SOUND
-============================================================ */
-
-function dinnerRevealSound() {
-
-    resumeAudio();
-
-    playTone(
-        261.63,
-        0.9,
-        "sine",
-        0.035
-    );
-
-    playTone(
-        329.63,
-        1.1,
-        "sine",
-        0.03,
-        0.15
-    );
-
-    playTone(
-        392,
-        1.25,
-        "sine",
-        0.025,
-        0.3
-    );
-
-    playTone(
-        523.25,
-        1.4,
-        "sine",
-        0.02,
-        0.48
-    );
-}
-
-
-/* ============================================================
-   ROMANTIC COMPLIMENT SOUND
-============================================================ */
-
-function complimentSound() {
-
-    resumeAudio();
-
-    playTone(
-        659.25,
-        0.35,
-        "sine",
-        0.028
-    );
-
-    playTone(
-        783.99,
-        0.45,
-        "sine",
-        0.022,
-        0.08
-    );
-}
-
-
-/* ============================================================
-   CURTAIN SOUND
-============================================================ */
-
-function curtainSound() {
-
-    whoosh();
-
-    setTimeout(() => {
-        playTone(
-            110,
-            0.9,
-            "sine",
-            0.025
-        );
-    }, 500);
-}
-
-
-/* ============================================================
-   FINAL SOUND
-============================================================ */
-
-function finalSparkle() {
-
-    resumeAudio();
-
-    playTone(
-        783.99,
-        0.35,
-        "sine",
-        0.025
-    );
-
-    playTone(
-        1046.5,
-        0.55,
-        "sine",
-        0.035,
-        0.08
-    );
-
-    playTone(
-        1568,
-        0.7,
-        "sine",
-        0.025,
-        0.17
-    );
-}
-
-
-/* ============================================================
-   DREAMY BGM
-============================================================ */
-
-const wakeChords = [
-    [261.63, 329.63, 392],
-    [220, 277.18, 329.63],
-    [246.94, 311.13, 369.99],
-    [196, 246.94, 293.66]
-];
-
-const dinnerChords = [
-    [220, 261.63, 329.63],
-    [174.61, 220, 293.66],
-    [196, 246.94, 329.63],
-    [164.81, 220, 261.63]
-];
-
-let currentMusicMode = "wake";
-
-function startBGM() {
-
-    if (musicRunning) {
-        return;
-    }
-
-    initAudio();
-
-    if (!audioContext) {
-        return;
-    }
-
-    musicRunning = true;
-
-    scheduleMusicCycle();
-}
-
-function scheduleMusicCycle() {
-
-    if (!musicRunning) {
-        return;
-    }
-
-    const chords =
-        currentMusicMode === "dinner"
-            ? dinnerChords
-            : wakeChords;
-
-    let chordIndex = 0;
-
-    function playChord() {
-
-        if (!musicRunning) {
+    const curtainScreen =
+        document.getElementById("curtainScreen");
+
+    const danceScreen =
+        document.getElementById("danceScreen");
+
+    const danceButton =
+        document.getElementById("danceButton");
+
+
+    /* ======================================================
+       AUDIO ENGINE
+    ====================================================== */
+
+    let audioContext = null;
+
+    let masterGain = null;
+
+    let musicGain = null;
+
+    let musicNodes = [];
+
+    let musicTimer = null;
+
+    let audioStarted = false;
+
+
+    function initializeAudio() {
+
+        if (audioContext) {
+
+            if (
+                audioContext.state ===
+                "suspended"
+            ) {
+                audioContext.resume();
+            }
+
             return;
         }
 
-        const chord =
-            chords[chordIndex];
 
-        chord.forEach(
-            (frequency, index) => {
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
 
-                const oscillator =
-                    audioContext.createOscillator();
 
-                const gain =
-                    audioContext.createGain();
+        if (!AudioContext) {
+            return;
+        }
 
-                oscillator.type =
-                    index === 0
-                        ? "sine"
-                        : "triangle";
 
-                oscillator.frequency.value =
-                    frequency;
+        audioContext =
+            new AudioContext();
 
-                const now =
-                    audioContext.currentTime;
 
-                gain.gain.setValueAtTime(
-                    0.0001,
-                    now
-                );
-
-                gain.gain.exponentialRampToValueAtTime(
-                    index === 0
-                        ? 0.022
-                        : 0.012,
-                    now + 1.1
-                );
-
-                gain.gain.exponentialRampToValueAtTime(
-                    0.0001,
-                    now + 4.8
-                );
-
-                oscillator.connect(gain);
-                gain.connect(musicGain);
-
-                oscillator.start(now);
-                oscillator.stop(now + 5);
-
-                musicNodes.push(
-                    oscillator
-                );
-            }
-        );
-
-        /* Soft high piano-like accent */
-
-        const accent =
-            chord[1] * 2;
-
-        const accentOsc =
-            audioContext.createOscillator();
-
-        const accentGain =
+        masterGain =
             audioContext.createGain();
 
-        accentOsc.type = "sine";
+        masterGain.gain.value = 0.8;
 
-        accentOsc.frequency.value =
-            accent;
-
-        const now =
-            audioContext.currentTime;
-
-        accentGain.gain.setValueAtTime(
-            0.0001,
-            now + 0.4
+        masterGain.connect(
+            audioContext.destination
         );
 
-        accentGain.gain.exponentialRampToValueAtTime(
-            currentMusicMode === "dinner"
-                ? 0.015
-                : 0.009,
-            now + 0.65
+
+        musicGain =
+            audioContext.createGain();
+
+        musicGain.gain.value = 0;
+
+        musicGain.connect(
+            masterGain
         );
 
-        accentGain.gain.exponentialRampToValueAtTime(
-            0.0001,
-            now + 1.9
-        );
 
-        accentOsc.connect(accentGain);
-        accentGain.connect(musicGain);
+        audioStarted = true;
 
-        accentOsc.start(now + 0.4);
-        accentOsc.stop(now + 2);
-
-        musicNodes.push(
-            accentOsc
-        );
-
-        chordIndex =
-            (chordIndex + 1) %
-            chords.length;
-
-        musicTimer =
-            setTimeout(
-                playChord,
-                5000
-            );
     }
 
-    playChord();
-}
 
+    function resumeAudio() {
 
-/* ============================================================
-   CHANGE MUSIC MODE
-============================================================ */
+        if (
+            audioContext &&
+            audioContext.state ===
+            "suspended"
+        ) {
+            audioContext.resume();
+        }
 
-function changeMusicMode(mode) {
-
-    currentMusicMode = mode;
-
-    if (!musicRunning) {
-        return;
     }
 
-    if (musicGain) {
+
+    /* ======================================================
+       GENERIC TONE
+    ====================================================== */
+
+    function playTone(
+        frequency,
+        duration = 0.2,
+        type = "sine",
+        volume = 0.05,
+        delay = 0
+    ) {
+
+        if (!audioContext) {
+            return;
+        }
+
 
         const now =
-            audioContext.currentTime;
+            audioContext.currentTime +
+            delay;
 
-        musicGain.gain.cancelScheduledValues(now);
 
-        musicGain.gain.setValueAtTime(
-            musicGain.gain.value,
+        const oscillator =
+            audioContext.createOscillator();
+
+        const gain =
+            audioContext.createGain();
+
+
+        oscillator.type = type;
+
+        oscillator.frequency.setValueAtTime(
+            frequency,
             now
         );
 
-        musicGain.gain.linearRampToValueAtTime(
-            mode === "dinner"
-                ? 0.052
-                : 0.045,
-            now + 2
-        );
-    }
-}
 
-
-/* ============================================================
-   MUTE
-============================================================ */
-
-function toggleMusic() {
-
-    initAudio();
-
-    if (!audioContext) {
-        return;
-    }
-
-    if (musicMuted) {
-
-        musicMuted = false;
-
-        masterGain.gain.setTargetAtTime(
-            0.8,
-            audioContext.currentTime,
-            0.08
-        );
-
-        musicButton.classList.remove(
-            "paused"
-        );
-
-    } else {
-
-        musicMuted = true;
-
-        masterGain.gain.setTargetAtTime(
+        gain.gain.setValueAtTime(
             0.0001,
-            audioContext.currentTime,
-            0.08
+            now
         );
 
-        musicButton.classList.add(
-            "paused"
-        );
-    }
-}
 
-
-/* ============================================================
-   DOM REFERENCES
-============================================================ */
-
-const wakeScreen =
-    document.getElementById(
-        "wakeScreen"
-    );
-
-const wakePopupScreen =
-    document.getElementById(
-        "wakePopupScreen"
-    );
-
-const quizScreen =
-    document.getElementById(
-        "quizScreen"
-    );
-
-const dinnerScreen =
-    document.getElementById(
-        "dinnerScreen"
-    );
-
-const finalScreen =
-    document.getElementById(
-        "finalScreen"
-    );
-
-const wakeButton =
-    document.getElementById(
-        "wakeButton"
-    );
-
-const wakeText =
-    document.getElementById(
-        "wakeText"
-    );
-
-const wakeDots =
-    document.querySelectorAll(
-        ".wake-dot"
-    );
-
-const startQuizButton =
-    document.getElementById(
-        "startQuizButton"
-    );
-
-const wonderBackground =
-    document.getElementById(
-        "wonderBackground"
-    );
-
-const memoryNumber =
-    document.getElementById(
-        "memoryNumber"
-    );
-
-const wonderName =
-    document.getElementById(
-        "wonderName"
-    );
-
-const questionText =
-    document.getElementById(
-        "questionText"
-    );
-
-const answers =
-    document.getElementById(
-        "answers"
-    );
-
-const memoryCaption =
-    document.getElementById(
-        "memoryCaption"
-    );
-
-const nextQuestionButton =
-    document.getElementById(
-        "nextQuestionButton"
-    );
-
-const progressFill =
-    document.getElementById(
-        "progressFill"
-    );
-
-const infoButton =
-    document.getElementById(
-        "infoButton"
-    );
-
-const infoPopup =
-    document.getElementById(
-        "infoPopup"
-    );
-
-const closeInfoButton =
-    document.getElementById(
-        "closeInfoButton"
-    );
-
-const infoTitle =
-    document.getElementById(
-        "infoTitle"
-    );
-
-const infoText =
-    document.getElementById(
-        "infoText"
-    );
-
-const dinnerRoom =
-    document.querySelector(
-        ".dinner-room"
-    );
-
-const sitButton =
-    document.getElementById(
-        "sitButton"
-    );
-
-const foodButton =
-    document.getElementById(
-        "foodButton"
-    );
-
-const food =
-    document.getElementById(
-        "food"
-    );
-
-const complimentBox =
-    document.getElementById(
-        "complimentBox"
-    );
-
-const complimentText =
-    document.getElementById(
-        "complimentText"
-    );
-
-const curtainLayer =
-    document.getElementById(
-        "curtainLayer"
-    );
-
-const danceButton =
-    document.getElementById(
-        "danceButton"
-    );
-
-const musicButton =
-    document.getElementById(
-        "musicButton"
-    );
-
-const toast =
-    document.getElementById(
-        "toast"
-    );
-
-const transitionLayer =
-    document.getElementById(
-        "transitionLayer"
-    );
-
-
-/* ============================================================
-   QUESTION DATA
-============================================================ */
-
-const Q6_UNVISITED_PLACE =
-    "[YOUR CONFIRMED NEVER-VISITED PLACE]";
-
-
-const questions = [
-
-    {
-        number: "01",
-
-        name: "GREAT WALL OF CHINA",
-
-        image:
-            "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=2000&q=85",
-
-        question:
-            "What year was Ritesh born?",
-
-        options: [
-            "2000",
-            "2001",
-            "2002",
-            "2003"
-        ],
-
-        correct: 1,
-
-        info:
-            "The Great Wall stretches across the historic landscapes of China and remains one of the most recognisable landmarks on Earth."
-    },
-
-
-    {
-        number: "02",
-
-        name: "PETRA",
-
-        image:
-            "https://images.unsplash.com/photo-1579606032821-4e6161c81bd3?auto=format&fit=crop&w=2000&q=85",
-
-        question:
-            "What was Tisha wearing when you first met at Patna Railway Station?",
-
-        options: [
-            "Black top, blue jeans & white heels",
-            "Brown top, black jeans & white heels",
-            "Brown top, blue jeans & white heels",
-            "White top, blue jeans & black heels"
-        ],
-
-        correct: 2,
-
-        caption:
-            "Brown top. Blue jeans. White heels.<br><em>And I still remember...</em> ♡",
-
-        info:
-            "Petra, famous for its rose-coloured stone architecture, is one of the most remarkable archaeological sites in the world."
-    },
-
-
-    {
-        number: "03",
-
-        name: "COLOSSEUM",
-
-        image:
-            "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=2000&q=85",
-
-        question:
-            "What bouquet did Ritesh bring when you first met?",
-
-        options: [
-            "Lilies",
-            "Red roses",
-            "White roses",
-            "White & pink roses"
-        ],
-
-        correct: 3,
-
-        caption:
-            "White & pink roses...<br><em>I remember that day too.</em> ♡",
-
-        info:
-            "Rome's Colosseum has stood as an icon of the ancient world for nearly two thousand years."
-    },
-
-
-    {
-        number: "04",
-
-        name: "MACHU PICCHU",
-
-        image:
-            "https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=2000&q=85",
-
-        question:
-            "Which combination did you two actually eat together?",
-
-        options: [
-            "Litti, Lassi, Tiramisu & Biryani",
-            "Litti, Lassi, Tiramisu, Biryani & Momos",
-            "Litti, Coffee, Pizza & Biryani",
-            "Lassi, Pasta, Tiramisu & Momos"
-        ],
-
-        correct: 1,
-
-        caption:
-            "Yep... you remembered the food too. 😏",
-
-        info:
-            "Machu Picchu sits high in the Andes and is one of the most extraordinary surviving sites of the Inca civilisation."
-    },
-
-
-    {
-        number: "05",
-
-        name: "CHRIST THE REDEEMER",
-
-        image:
-            "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=2000&q=85",
-
-        question:
-            "When Ritesh was pursuing his Master's in Electrical Engineering at IIT ISM, what was the name of his hostel?",
-
-        options: [
-            "Diamond Hostel",
-            "Ruby Hostel",
-            "Emerald Hostel",
-            "Sapphire Hostel"
-        ],
-
-        correct: 3,
-
-        caption:
-            "Sapphire Hostel.<br><em>That's a pretty specific memory...</em> ♡",
-
-        info:
-            "Christ the Redeemer overlooks Rio de Janeiro from the summit of Mount Corcovado."
-    },
-
-
-    {
-        number: "06",
-
-        name: "CHICHÉN ITZÁ",
-
-        image:
-            "https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=2000&q=85",
-
-        question:
-            "Which of these places did you two visit together during your time in Patna?",
-
-        options: [
-            "Sabyata Dwar",
-            "Science City",
-            "Hanuman Mandir",
-            Q6_UNVISITED_PLACE
-        ],
-
-        /*
-            The confirmed shared Patna places from the memory
-            are Sabyata Dwar, Science City, Hanuman Mandir
-            and Marine Drive.
-
-            Until the fourth never-visited place is confirmed,
-            the correct shared-memory answer is Hanuman Mandir.
-        */
-
-        correct: 2,
-
-        caption:
-            "Another one you remembered. ✦",
-
-        info:
-            "Chichén Itzá was a major Maya city and is now one of the most celebrated archaeological sites in Mexico."
-    },
-
-
-    {
-        number: "07",
-
-        name: "TAJ MAHAL",
-
-        image:
-            "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=2000&q=85",
-
-        question:
-            "One last memory before you reach me... ♡<br><br>When was our first kiss?",
-
-        options: [
-            "12th July",
-            "13th July",
-            "14th July",
-            "15th July"
-        ],
-
-        correct: 1,
-
-        caption:
-            "You remembered. ♡",
-
-        info:
-            "The Taj Mahal is one of the world's most enduring symbols of love, built in white marble beside the Yamuna River."
-    }
-
-];
-
-
-/* ============================================================
-   STATE
-============================================================ */
-
-let wakeTaps = 0;
-
-let currentQuestion = 0;
-
-let questionAnswered = false;
-
-let foodClicks = 0;
-
-let dinnerStarted = false;
-
-
-/* ============================================================
-   SCREEN HELPERS
-============================================================ */
-
-function showScreen(screen) {
-
-    [
-        wakeScreen,
-        wakePopupScreen,
-        quizScreen,
-        dinnerScreen,
-        finalScreen
-    ].forEach(
-        item => {
-
-            item.classList.remove(
-                "active"
-            );
-
-            item.classList.add(
-                "hidden"
-            );
-        }
-    );
-
-    screen.classList.remove(
-        "hidden"
-    );
-
-    requestAnimationFrame(
-        () => {
-            screen.classList.add(
-                "active"
-            );
-        }
-    );
-}
-
-
-/* ============================================================
-   GLOBAL PARTICLES
-============================================================ */
-
-function createParticle() {
-
-    const particle =
-        document.createElement("span");
-
-    particle.className =
-        "global-particle";
-
-    particle.style.left =
-        Math.random() * 100 + "%";
-
-    particle.style.top =
-        70 + Math.random() * 30 + "%";
-
-    particle.style.setProperty(
-        "--drift",
-        `${(Math.random() * 80) - 40}px`
-    );
-
-    particle.style.animationDuration =
-        `${5 + Math.random() * 6}s`;
-
-    document
-        .getElementById("particleLayer")
-        .appendChild(particle);
-
-    setTimeout(
-        () => particle.remove(),
-        12000
-    );
-}
-
-setInterval(
-    createParticle,
-    700
-);
-
-
-/* ============================================================
-   TOAST
-============================================================ */
-
-let toastTimer;
-
-function showToast(message) {
-
-    clearTimeout(toastTimer);
-
-    toast.innerHTML =
-        message;
-
-    toast.classList.add(
-        "show"
-    );
-
-    toastTimer =
-        setTimeout(
-            () => {
-                toast.classList.remove(
-                    "show"
-                );
-            },
-            2200
-        );
-}
-
-
-/* ============================================================
-   WAKE-UP
-============================================================ */
-
-wakeButton.addEventListener(
-    "click",
-    async () => {
-
-        await resumeAudio();
-
-        if (!musicRunning) {
-            startBGM();
-        }
-
-        if (wakeTaps >= 5) {
-            return;
-        }
-
-        wakeTaps++;
-
-        wakeTap();
-
-        const progress =
-            wakeTaps / 5;
-
-        const textOpacity =
-            Math.max(
-                0,
-                0.85 - progress * 0.85
-            );
-
-        wakeText.style.color =
-            `rgba(248,238,225,${textOpacity})`;
-
-        wakeText.style.transform =
-            `scale(${1 + progress * 0.025})`;
-
-        wakeDots.forEach(
-            (dot, index) => {
-
-                if (index < wakeTaps) {
-
-                    dot.classList.add(
-                        "active"
-                    );
-
-                } else {
-
-                    dot.classList.remove(
-                        "active"
-                    );
-                }
-            }
+        gain.gain.exponentialRampToValueAtTime(
+            volume,
+            now + 0.025
         );
 
-        const background =
-            document.querySelector(
-                ".wake-background"
-            );
 
-        background.style.filter =
-            `blur(${Math.max(0, 4 - wakeTaps * 0.8)}px)`;
-
-        background.style.transform =
-            `scale(${Math.max(1.01, 1.06 - wakeTaps * 0.01)})`;
-
-        if (wakeTaps === 5) {
-
-            magicalChime();
-
-            wakeText.style.opacity = "0";
-
-            setTimeout(
-                () => {
-
-                    showScreen(
-                        wakePopupScreen
-                    );
-
-                    glassChime();
-
-                },
-                750
-            );
-        }
-    }
-);
-
-
-/* ============================================================
-   START QUIZ
-============================================================ */
-
-startQuizButton.addEventListener(
-    "click",
-    async () => {
-
-        await resumeAudio();
-
-        whoosh();
-
-        setTimeout(
-            () => {
-
-                showScreen(
-                    quizScreen
-                );
-
-                quizScreen.classList.add(
-                    "quiz-screen-active"
-                );
-
-                loadQuestion(
-                    0
-                );
-
-            },
-            550
-        );
-    }
-);
-
-
-/* ============================================================
-   LOAD QUESTION
-============================================================ */
-
-function loadQuestion(index) {
-
-    currentQuestion =
-        index;
-
-    questionAnswered =
-        false;
-
-    const data =
-        questions[index];
-
-    memoryNumber.textContent =
-        data.number;
-
-    wonderName.textContent =
-        data.name;
-
-    questionText.innerHTML =
-        data.question;
-
-    wonderBackground.style.opacity =
-        "0";
-
-    wonderBackground.style.filter =
-        "blur(8px) saturate(0.5)";
-
-    wonderBackground.style.transform =
-        "scale(1.13)";
-
-    setTimeout(
-        () => {
-
-            wonderBackground.style.backgroundImage =
-                `url("${data.image}")`;
-
-            wonderBackground.style.opacity =
-                "1";
-
-            wonderBackground.style.filter =
-                "blur(0) saturate(0.82)";
-
-            wonderBackground.style.transform =
-                "scale(1.02)";
-
-        },
-        350
-    );
-
-    answers.innerHTML =
-        "";
-
-    memoryCaption.innerHTML =
-        "";
-
-    memoryCaption.classList.remove(
-        "show"
-    );
-
-    data.options.forEach(
-        (option, optionIndex) => {
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-            button.type =
-                "button";
-
-            button.className =
-                "answer-button";
-
-            button.innerHTML =
-                option;
-
-            button.dataset.index =
-                optionIndex;
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    selectAnswer(
-                        optionIndex,
-                        button
-                    );
-
-                }
-            );
-
-            answers.appendChild(
-                button
-            );
-        }
-    );
-
-    nextQuestionButton.classList.add(
-        "locked"
-    );
-
-    nextQuestionButton.classList.remove(
-        "unlocked"
-    );
-
-    progressFill.style.width =
-        `${((index + 1) / 7) * 100}%`;
-
-    if (index === 6) {
-
-        quizScreen.style.setProperty(
-            "--taj-mode",
-            "1"
+        gain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            now + duration
         );
 
-    } else {
 
-        quizScreen.style.setProperty(
-            "--taj-mode",
-            "0"
-        );
-    }
-}
+        oscillator.connect(gain);
+
+        gain.connect(masterGain);
 
 
-/* ============================================================
-   SELECT ANSWER
-============================================================ */
+        oscillator.start(now);
 
-function selectAnswer(
-    selectedIndex,
-    button
-) {
-
-    if (questionAnswered) {
-        return;
-    }
-
-    const data =
-        questions[currentQuestion];
-
-    if (
-        selectedIndex !==
-        data.correct
-    ) {
-
-        button.classList.add(
-            "wrong"
+        oscillator.stop(
+            now + duration + 0.03
         );
 
-        wrongSound();
-
-        setTimeout(
-            () => {
-                button.classList.remove(
-                    "wrong"
-                );
-            },
-            500
-        );
-
-        return;
     }
 
 
-    /* ========================================================
-       CORRECT
-    ======================================================== */
+    /* ======================================================
+       WAKE TAP
+    ====================================================== */
 
-    questionAnswered =
-        true;
+    function playWakeTap() {
 
-    button.classList.add(
-        "correct"
-    );
-
-    answers
-        .querySelectorAll(
-            ".answer-button"
-        )
-        .forEach(
-            item => {
-
-                if (
-                    item !== button
-                ) {
-                    item.classList.add(
-                        "disabled"
-                    );
-                }
-
-            }
+        playTone(
+            560,
+            0.18,
+            "sine",
+            0.045
         );
 
-    correctSound();
-
-    createSparkleBurst(
-        button
-    );
-
-    if (data.caption) {
-
-        setTimeout(
-            () => {
-
-                memoryCaption.innerHTML =
-                    data.caption;
-
-                memoryCaption.classList.add(
-                    "show"
-                );
-
-            },
-            300
+        playTone(
+            760,
+            0.22,
+            "sine",
+            0.025,
+            0.04
         );
+
     }
 
-    nextQuestionButton.classList.remove(
-        "locked"
-    );
 
-    nextQuestionButton.classList.add(
-        "unlocked"
-    );
+    /* ======================================================
+       MAGICAL CHIME
+    ====================================================== */
 
-    risingChime();
+    function playChime() {
 
+        const notes = [
+            523.25,
+            659.25,
+            783.99,
+            1046.50
+        ];
 
-    if (currentQuestion === 6) {
 
-        setTimeout(
-            () => {
-
-                wonderBackground.style.filter =
-                    "blur(0) saturate(1) brightness(1.12)";
-
-            },
-            400
-        );
-    }
-}
-
-
-/* ============================================================
-   SPARKLE BURST
-============================================================ */
-
-function createSparkleBurst(
-    element
-) {
-
-    const rect =
-        element.getBoundingClientRect();
-
-    const symbols =
-        ["✦", "✧", "✦", "✧", "✦", "✧"];
-
-    symbols.forEach(
-        (symbol, index) => {
-
-            const sparkle =
-                document.createElement(
-                    "span"
-                );
-
-            sparkle.className =
-                "answer-sparkle";
-
-            sparkle.textContent =
-                symbol;
-
-            sparkle.style.left =
-                `${rect.left + rect.width / 2}px`;
-
-            sparkle.style.top =
-                `${rect.top + rect.height / 2}px`;
-
-            sparkle.style.setProperty(
-                "--x",
-                `${Math.cos(index) * (35 + Math.random() * 40)}px`
-            );
-
-            sparkle.style.setProperty(
-                "--y",
-                `${Math.sin(index) * (35 + Math.random() * 40)}px`
-            );
-
-            document.body.appendChild(
-                sparkle
-            );
-
-            setTimeout(
-                () => sparkle.remove(),
-                1000
-            );
-        }
-    );
-}
-
-
-/* ============================================================
-   NEXT QUESTION
-============================================================ */
-
-nextQuestionButton.addEventListener(
-    "click",
-    () => {
-
-        if (!questionAnswered) {
-            return;
-        }
-
-        whoosh();
-
-        nextQuestionButton.classList.add(
-            "locked"
-        );
-
-        if (
-            currentQuestion <
-            questions.length - 1
-        ) {
-
-            transitionLayer.classList.add(
-                "show"
-            );
-
-            setTimeout(
-                () => {
-
-                    loadQuestion(
-                        currentQuestion + 1
-                    );
-
-                    transitionLayer.classList.remove(
-                        "show"
-                    );
-
-                },
-                650
-            );
-
-        } else {
-
-            transitionLayer.classList.add(
-                "show"
-            );
-
-            setTimeout(
-                () => {
-
-                    showDinner();
-
-                    transitionLayer.classList.remove(
-                        "show"
-                    );
-
-                },
-                950
-            );
-        }
-    }
-);
-
-
-/* ============================================================
-   INFO BUTTON
-============================================================ */
-
-infoButton.addEventListener(
-    "click",
-    () => {
-
-        const data =
-            questions[currentQuestion];
-
-        infoTitle.textContent =
-            data.name
-                .toLowerCase()
-                .replace(/\b\w/g, char =>
-                    char.toUpperCase()
-                );
-
-        infoText.textContent =
-            data.info;
-
-        infoPopup.classList.remove(
-            "hidden"
-        );
-
-        glassChime();
-    }
-);
-
-
-closeInfoButton.addEventListener(
-    "click",
-    () => {
-
-        infoPopup.classList.add(
-            "hidden"
-        );
-    }
-);
-
-
-document
-    .querySelector(".modal-backdrop")
-    .addEventListener(
-        "click",
-        () => {
-
-            infoPopup.classList.add(
-                "hidden"
-            );
-        }
-    );
-
-
-/* ============================================================
-   INFO BUTTON PERIODIC ATTENTION
-============================================================ */
-
-setInterval(
-    () => {
-
-        if (
-            quizScreen.classList.contains(
-                "active"
-            ) &&
-            infoPopup.classList.contains(
-                "hidden"
-            )
-        ) {
-
-            infoButton.classList.add(
-                "attention"
-            );
-
-            setTimeout(
-                () => {
-
-                    infoButton.classList.remove(
-                        "attention"
-                    );
-
-                },
-                800
-            );
-        }
-
-    },
-    6500
-);
-
-
-/* ============================================================
-   DINNER REVEAL
-============================================================ */
-
-function showDinner() {
-
-    changeMusicMode(
-        "dinner"
-    );
-
-    showScreen(
-        dinnerScreen
-    );
-
-    dinnerRevealSound();
-
-    setTimeout(
-        () => {
-
-            dinnerRoom.classList.add(
-                "sitting-ready"
-            );
-
-        },
-        500
-    );
-}
-
-
-/* ============================================================
-   SIT WITH ME
-============================================================ */
-
-sitButton.addEventListener(
-    "click",
-    async () => {
-
-        if (dinnerStarted) {
-            return;
-        }
-
-        dinnerStarted =
-            true;
-
-        await resumeAudio();
-
-        whoosh();
-
-        dinnerRoom.classList.add(
-            "sitting"
-        );
-
-        setTimeout(
-            () => {
+        notes.forEach(
+            (note, index) => {
 
                 playTone(
-                    160,
-                    0.25,
-                    "triangle",
-                    0.018
+                    note,
+                    0.8,
+                    "sine",
+                    0.055,
+                    index * 0.09
                 );
 
-            },
-            650
+            }
         );
 
-        setTimeout(
-            () => {
-
-                showToast(
-                    "Dinner is served..."
-                );
-
-            },
-            1200
-        );
     }
-);
 
 
-/* ============================================================
-   FOOD INTERACTION
-============================================================ */
+    /* ======================================================
+       WRONG SOUND
+    ====================================================== */
 
-foodButton.addEventListener(
-    "click",
-    () => {
+    function playWrong() {
 
-        if (!dinnerStarted) {
+        playTone(
+            190,
+            0.14,
+            "triangle",
+            0.035
+        );
+
+        playTone(
+            145,
+            0.2,
+            "triangle",
+            0.025,
+            0.08
+        );
+
+    }
+
+
+    /* ======================================================
+       CORRECT SOUND
+    ====================================================== */
+
+    function playCorrect() {
+
+        playTone(
+            659.25,
+            0.28,
+            "sine",
+            0.045
+        );
+
+        playTone(
+            783.99,
+            0.4,
+            "sine",
+            0.045,
+            0.08
+        );
+
+        playTone(
+            1046.50,
+            0.6,
+            "sine",
+            0.035,
+            0.16
+        );
+
+    }
+
+
+    /* ======================================================
+       WHOOSH
+    ====================================================== */
+
+    function playWhoosh() {
+
+        if (!audioContext) {
             return;
         }
 
-        if (foodClicks >= 5) {
+
+        const now =
+            audioContext.currentTime;
+
+
+        const oscillator =
+            audioContext.createOscillator();
+
+        const gain =
+            audioContext.createGain();
+
+
+        oscillator.type = "sine";
+
+
+        oscillator.frequency.setValueAtTime(
+            180,
+            now
+        );
+
+
+        oscillator.frequency.exponentialRampToValueAtTime(
+            950,
+            now + 0.45
+        );
+
+
+        gain.gain.setValueAtTime(
+            0.0001,
+            now
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.06,
+            now + 0.12
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            now + 0.5
+        );
+
+
+        oscillator.connect(gain);
+
+        gain.connect(masterGain);
+
+
+        oscillator.start(now);
+
+        oscillator.stop(
+            now + 0.55
+        );
+
+    }
+
+
+    /* ======================================================
+       PLATE SOUND
+    ====================================================== */
+
+    function playPlate() {
+
+        playTone(
+            720,
+            0.12,
+            "triangle",
+            0.025
+        );
+
+        playTone(
+            970,
+            0.16,
+            "sine",
+            0.018,
+            0.04
+        );
+
+    }
+
+
+    /* ======================================================
+       SOFT ROMANTIC CHIME
+    ====================================================== */
+
+    function playRomanticChime() {
+
+        playTone(
+            392,
+            0.45,
+            "sine",
+            0.035
+        );
+
+        playTone(
+            523.25,
+            0.65,
+            "sine",
+            0.04,
+            0.12
+        );
+
+        playTone(
+            659.25,
+            0.8,
+            "sine",
+            0.035,
+            0.24
+        );
+
+    }
+
+
+    /* ======================================================
+       DINNER REVEAL SOUND
+    ====================================================== */
+
+    function playReveal() {
+
+        const notes = [
+            261.63,
+            329.63,
+            392,
+            523.25,
+            659.25
+        ];
+
+
+        notes.forEach(
+            (note, index) => {
+
+                playTone(
+                    note,
+                    1.3,
+                    "sine",
+                    0.035,
+                    index * 0.13
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ======================================================
+       BGM
+       DREAMY ROMANTIC SYNTH
+    ====================================================== */
+
+    function createDreamBGM() {
+
+        if (!audioContext) {
             return;
         }
 
-        foodClicks++;
 
-        plateSound();
+        stopMusic();
 
-        food.className =
-            `food eaten-${foodClicks}`;
 
-        const compliments = [
+        musicGain.gain.cancelScheduledValues(
+            audioContext.currentTime
+        );
 
-            "That red dress looks absolutely beautiful on you...",
 
-            "Although... I think you make the dress look even better.",
+        musicGain.gain.setValueAtTime(
+            0.0001,
+            audioContext.currentTime
+        );
 
-            "And honestly... you look breathtaking tonight.",
 
-            "But you know what I love most? It's not just how beautiful you are... it's the person you are. Your personality, your energy, the way you make everything feel alive.",
+        musicGain.gain.exponentialRampToValueAtTime(
+            0.055,
+            audioContext.currentTime + 5
+        );
 
-            "Alright sweetheart... let's finish the food. ♡"
+
+        const bassNotes = [
+            130.81,
+            146.83,
+            110,
+            123.47
+        ];
+
+
+        let index = 0;
+
+
+        function playLoopNote() {
+
+            if (!audioContext) {
+                return;
+            }
+
+
+            const now =
+                audioContext.currentTime;
+
+
+            const note =
+                bassNotes[index % bassNotes.length];
+
+
+            const oscillator =
+                audioContext.createOscillator();
+
+
+            const gain =
+                audioContext.createGain();
+
+
+            oscillator.type = "sine";
+
+            oscillator.frequency.value =
+                note;
+
+
+            gain.gain.setValueAtTime(
+                0.0001,
+                now
+            );
+
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.035,
+                now + 0.4
+            );
+
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.0001,
+                now + 3.2
+            );
+
+
+            oscillator.connect(gain);
+
+            gain.connect(musicGain);
+
+
+            oscillator.start(now);
+
+            oscillator.stop(
+                now + 3.3
+            );
+
+
+            musicNodes.push(
+                oscillator
+            );
+
+
+            index++;
+
+
+            musicTimer =
+                setTimeout(
+                    playLoopNote,
+                    3100
+                );
+
+        }
+
+
+        playLoopNote();
+
+
+        /* soft high notes */
+
+        const melody = [
+            261.63,
+            329.63,
+            392,
+            329.63,
+            293.66,
+            349.23,
+            440,
+            349.23
+        ];
+
+
+        let melodyIndex = 0;
+
+
+        function playMelody() {
+
+            if (!audioContext) {
+                return;
+            }
+
+
+            const now =
+                audioContext.currentTime;
+
+
+            const osc =
+                audioContext.createOscillator();
+
+            const gain =
+                audioContext.createGain();
+
+
+            osc.type = "triangle";
+
+            osc.frequency.value =
+                melody[
+                    melodyIndex %
+                    melody.length
+                ];
+
+
+            gain.gain.setValueAtTime(
+                0.0001,
+                now
+            );
+
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.012,
+                now + 0.3
+            );
+
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.0001,
+                now + 1.8
+            );
+
+
+            osc.connect(gain);
+
+            gain.connect(musicGain);
+
+
+            osc.start(now);
+
+            osc.stop(
+                now + 1.9
+            );
+
+
+            musicNodes.push(osc);
+
+
+            melodyIndex++;
+
+
+            setTimeout(
+                playMelody,
+                1900
+            );
+
+        }
+
+
+        playMelody();
+
+    }
+
+
+    /* ======================================================
+       DINNER BGM
+    ====================================================== */
+
+    function createDinnerBGM() {
+
+        if (!audioContext) {
+            return;
+        }
+
+
+        stopMusic();
+
+
+        musicGain.gain.cancelScheduledValues(
+            audioContext.currentTime
+        );
+
+
+        musicGain.gain.setValueAtTime(
+            0.0001,
+            audioContext.currentTime
+        );
+
+
+        musicGain.gain.exponentialRampToValueAtTime(
+            0.06,
+            audioContext.currentTime + 4
+        );
+
+
+        const chords = [
+
+            [261.63, 329.63, 392],
+
+            [220, 277.18, 329.63],
+
+            [174.61, 220, 261.63],
+
+            [196, 246.94, 293.66]
 
         ];
 
-        showCompliment(
-            compliments[
-                foodClicks - 1
-            ]
-        );
 
-        complimentSound();
+        let chordIndex = 0;
 
 
-        if (foodClicks === 4) {
+        function playChord() {
 
-            changeMusicVolumeTemporarily();
+            if (!audioContext) {
+                return;
+            }
+
+
+            const now =
+                audioContext.currentTime;
+
+
+            const chord =
+                chords[
+                    chordIndex %
+                    chords.length
+                ];
+
+
+            chord.forEach(
+                (frequency) => {
+
+                    const osc =
+                        audioContext.createOscillator();
+
+                    const gain =
+                        audioContext.createGain();
+
+
+                    osc.type = "sine";
+
+                    osc.frequency.value =
+                        frequency;
+
+
+                    gain.gain.setValueAtTime(
+                        0.0001,
+                        now
+                    );
+
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.012,
+                        now + 0.5
+                    );
+
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.0001,
+                        now + 4.3
+                    );
+
+
+                    osc.connect(gain);
+
+                    gain.connect(musicGain);
+
+
+                    osc.start(now);
+
+                    osc.stop(
+                        now + 4.4
+                    );
+
+
+                    musicNodes.push(osc);
+
+                }
+            );
+
+
+            chordIndex++;
+
+
+            musicTimer =
+                setTimeout(
+                    playChord,
+                    4200
+                );
 
         }
 
 
-        if (foodClicks === 5) {
+        playChord();
 
-            glassClink();
+    }
+
+
+    /* ======================================================
+       STOP MUSIC
+    ====================================================== */
+
+    function stopMusic() {
+
+        if (musicTimer) {
+
+            clearTimeout(
+                musicTimer
+            );
+
+            musicTimer = null;
+
+        }
+
+
+        musicNodes.forEach(
+            (node) => {
+
+                try {
+                    node.stop();
+                } catch (e) {}
+
+            }
+        );
+
+
+        musicNodes = [];
+
+    }
+
+
+    /* ======================================================
+       FADE MUSIC
+    ====================================================== */
+
+    function fadeMusic(
+        targetVolume,
+        duration = 1
+    ) {
+
+        if (
+            !audioContext ||
+            !musicGain
+        ) {
+            return;
+        }
+
+
+        const now =
+            audioContext.currentTime;
+
+
+        musicGain.gain.cancelScheduledValues(
+            now
+        );
+
+
+        musicGain.gain.setValueAtTime(
+            Math.max(
+                0.0001,
+                musicGain.gain.value
+            ),
+            now
+        );
+
+
+        musicGain.gain.exponentialRampToValueAtTime(
+            Math.max(
+                0.0001,
+                targetVolume
+            ),
+            now + duration
+        );
+
+    }
+
+
+    /* ======================================================
+       WAKE-UP
+    ====================================================== */
+
+    let wakeCount = 0;
+
+    const totalWakeTaps = 5;
+
+
+    wakeButton.addEventListener(
+        "click",
+        () => {
+
+            initializeAudio();
+
+            resumeAudio();
+
+
+            wakeCount++;
+
+
+            if (
+                wakeCount <
+                totalWakeTaps
+            ) {
+
+                playWakeTap();
+
+
+                const opacity =
+                    0.12 +
+                    wakeCount * 0.16;
+
+
+                const blur =
+                    Math.max(
+                        0,
+                        2 -
+                        wakeCount * 0.5
+                    );
+
+
+                wakeScreen.style.opacity =
+                    opacity;
+
+
+                wakeScreen.style.filter =
+                    `blur(${blur}px)`;
+
+
+                wakeProgress.textContent =
+                    `${wakeCount} / 5`;
+
+
+                wakeButton.style.opacity =
+                    1 -
+                    wakeCount * 0.16;
+
+
+                return;
+            }
+
+
+            /* fifth tap */
+
+            playChime();
+
+
+            wakeScreen.style.opacity =
+                "1";
+
+
+            wakeScreen.style.filter =
+                "blur(0)";
+
+
+            wakeButton.style.opacity =
+                "0";
+
+
+            wakeProgress.style.opacity =
+                "0";
+
+
+            /* Start dreamy BGM */
+
+            createDreamBGM();
+
 
             setTimeout(
                 () => {
 
-                    foodButton.style.display =
-                        "none";
+                    wakeScreen.classList.add(
+                        "hidden"
+                    );
 
-                    setTimeout(
-                        beginCurtainClosing,
-                        2600
+                    wakePopup.classList.add(
+                        "show"
                     );
 
                 },
                 900
             );
+
         }
-    }
-);
-
-
-/* ============================================================
-   COMPLIMENT DISPLAY
-============================================================ */
-
-function showCompliment(
-    text
-) {
-
-    complimentText.textContent =
-        "";
-
-    complimentBox.classList.add(
-        "show"
     );
 
-    let index = 0;
 
-    const speed =
-        text.length > 130
-            ? 18
-            : 28;
+    /* ======================================================
+       START MEMORY QUIZ
+    ====================================================== */
 
-    complimentText.classList.add(
-        "typewriter"
-    );
-
-    const timer =
-        setInterval(
-            () => {
-
-                complimentText.textContent =
-                    text.slice(
-                        0,
-                        index
-                    );
-
-                index++;
-
-                if (
-                    index >
-                    text.length
-                ) {
-
-                    clearInterval(
-                        timer
-                    );
-
-                    complimentText.classList.remove(
-                        "typewriter"
-                    );
-                }
-
-            },
-            speed
-        );
-}
-
-
-/* ============================================================
-   TEMPORARY MUSIC LIFT
-============================================================ */
-
-function changeMusicVolumeTemporarily() {
-
-    if (
-        !audioContext ||
-        !musicGain
-    ) {
-        return;
-    }
-
-    const now =
-        audioContext.currentTime;
-
-    musicGain.gain.cancelScheduledValues(
-        now
-    );
-
-    musicGain.gain.linearRampToValueAtTime(
-        0.07,
-        now + 0.5
-    );
-
-    musicGain.gain.linearRampToValueAtTime(
-        0.052,
-        now + 2.5
-    );
-}
-
-
-/* ============================================================
-   CURTAIN CLOSING
-============================================================ */
-
-function beginCurtainClosing() {
-
-    complimentBox.classList.remove(
-        "show"
-    );
-
-    curtainLayer.classList.add(
-        "active"
-    );
-
-    curtainSound();
-
-    if (
-        audioContext &&
-        musicGain
-    ) {
-
-        musicGain.gain.linearRampToValueAtTime(
-            0.0001,
-            audioContext.currentTime + 2
-        );
-    }
-
-    setTimeout(
+    startMemoryButton.addEventListener(
+        "click",
         () => {
 
-            showFinalScreen();
+            initializeAudio();
+
+            resumeAudio();
+
+            playWhoosh();
+
+            wakePopup.classList.remove(
+                "show"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    startQuiz();
+
+                },
+                600
+            );
+
+        }
+    );
+
+
+    /* ======================================================
+       QUIZ DATA
+    ====================================================== */
+
+    const questions = [
+
+        {
+            wonder:
+                "Great Wall of China",
+
+            symbol:
+                "✦",
+
+            category:
+                "MEMORY 01",
+
+            background:
+                "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=2200&q=85",
+
+            question:
+                "What year was Ritesh born?",
+
+            options: [
+                "2000",
+                "2001",
+                "2002",
+                "2003"
+            ],
+
+            correct: 1,
+
+            message:
+                "2001... You remembered. ✦",
+
+            infoTitle:
+                "A Wonder of the World",
+
+            infoText:
+                "The Great Wall stretches across the Chinese landscape, built and rebuilt across centuries. Tonight, it becomes the first stop in our little journey through memory."
 
         },
-        1900
-    );
-}
 
 
-/* ============================================================
-   FINAL SCREEN
-============================================================ */
+        {
+            wonder:
+                "Petra",
 
-function showFinalScreen() {
+            symbol:
+                "✧",
 
-    curtainLayer.classList.remove(
-        "active"
-    );
+            category:
+                "MEMORY 02",
 
-    changeMusicMode(
-        "wake"
-    );
+            background:
+                "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=2200&q=85",
 
-    showScreen(
-        finalScreen
-    );
+            question:
+                "What was Tisha wearing when you first met at Patna Railway Station?",
 
-    finalSparkle();
+            options: [
+                "Black top, blue jeans & white heels",
+                "Brown top, black jeans & white heels",
+                "Brown top, blue jeans & white heels",
+                "White top, blue jeans & black heels"
+            ],
 
-    setTimeout(
-        () => {
+            correct: 2,
 
-            createFinalParticles();
+            message:
+                "Brown top. Blue jeans. White heels. And I still remember... ♡",
+
+            infoTitle:
+                "Petra",
+
+            infoText:
+                "Carved into rose-coloured sandstone, Petra has watched countless stories unfold around it. This one is about remembering the very first details of ours."
 
         },
-        500
-    );
-}
 
 
-/* ============================================================
-   FINAL PARTICLES
-============================================================ */
+        {
+            wonder:
+                "Colosseum",
 
-function createFinalParticles() {
+            symbol:
+                "✦",
 
-    for (
-        let i = 0;
-        i < 18;
-        i++
-    ) {
+            category:
+                "MEMORY 03",
+
+            background:
+                "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=2200&q=85",
+
+            question:
+                "What bouquet did Ritesh bring when you first met?",
+
+            options: [
+                "Lilies",
+                "Red roses",
+                "White roses",
+                "White & pink roses"
+            ],
+
+            correct: 3,
+
+            message:
+                "White & pink roses... I remember that day too. ♡",
+
+            infoTitle:
+                "The Colosseum",
+
+            infoText:
+                "An ancient Roman landmark surrounded by stories of its own. Somehow, even a place this old feels fitting for a memory that still feels so fresh."
+
+        },
+
+
+        {
+            wonder:
+                "Machu Picchu",
+
+            symbol:
+                "✧",
+
+            category:
+                "MEMORY 04",
+
+            background:
+                "https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=2200&q=85",
+
+            question:
+                "Which combination did you two actually eat together?",
+
+            options: [
+                "Litti, Lassi, Tiramisu & Biryani",
+                "Litti, Lassi, Tiramisu, Biryani & Momos",
+                "Litti, Coffee, Pizza & Biryani",
+                "Lassi, Pasta, Tiramisu & Momos"
+            ],
+
+            correct: 1,
+
+            message:
+                "Yep... you remembered the food too. 😏",
+
+            infoTitle:
+                "Machu Picchu",
+
+            infoText:
+                "High in the Andes, Machu Picchu feels almost dreamlike. A perfect place for a question about memories that are a little more playful."
+
+        },
+
+
+        {
+            wonder:
+                "Christ the Redeemer",
+
+            symbol:
+                "✦",
+
+            category:
+                "MEMORY 05",
+
+            background:
+                "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=2200&q=85",
+
+            question:
+                "When Ritesh was pursuing his Master's in Electrical Engineering at IIT ISM, what was the name of his hostel?",
+
+            options: [
+                "Diamond Hostel",
+                "Ruby Hostel",
+                "Emerald Hostel",
+                "Sapphire Hostel"
+            ],
+
+            correct: 3,
+
+            message:
+                "Sapphire Hostel. That's a pretty specific memory... ♡",
+
+            infoTitle:
+                "Christ the Redeemer",
+
+            infoText:
+                "Standing above Rio de Janeiro, Christ the Redeemer overlooks an entire city. This question, though, looks a little closer to home."
+
+        },
+
+
+        {
+            wonder:
+                "Chichén Itzá",
+
+            symbol:
+                "✧",
+
+            category:
+                "MEMORY 06",
+
+            background:
+                "https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=2200&q=85",
+
+            question:
+                "Which of these places did you two visit together during your time in Patna?",
+
+            options: [
+                "Sabyata Dwar",
+                "Science City",
+                "Hanuman Mandir",
+                "PATNA NEVER-VISITED LOCATION — CHANGE THIS"
+            ],
+
+            /*
+             * IMPORTANT:
+             * Change only the number below after
+             * you confirm the actual answer.
+             *
+             * 0 = A
+             * 1 = B
+             * 2 = C
+             * 3 = D
+             */
+
+            correct: 0,
+
+            message:
+                "Another one you remembered. ✦",
+
+            infoTitle:
+                "Chichén Itzá",
+
+            infoText:
+                "One of the most recognizable archaeological sites in Mexico. Another beautiful backdrop for one of the small memories that belongs only to you two."
+
+        },
+
+
+        {
+            wonder:
+                "Taj Mahal",
+
+            symbol:
+                "♡",
+
+            category:
+                "MEMORY 07",
+
+            background:
+                "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=2200&q=85",
+
+            question:
+                "When was our first kiss?",
+
+            options: [
+                "12th July",
+                "13th July",
+                "14th July",
+                "15th July"
+            ],
+
+            correct: 1,
+
+            message:
+                "You remembered. ♡",
+
+            infoTitle:
+                "The Taj Mahal",
+
+            infoText:
+                "The final memory. Slow down for this one."
+
+        }
+
+    ];
+
+
+    /* ======================================================
+       QUIZ STATE
+    ====================================================== */
+
+    let currentQuestion = 0;
+
+    let questionAnswered = false;
+
+
+    /* ======================================================
+       START QUIZ
+    ====================================================== */
+
+    function startQuiz() {
+
+        wonderScreen.classList.remove(
+            "hidden"
+        );
+
 
         setTimeout(
             () => {
 
-                const particle =
-                    document.createElement(
-                        "span"
-                    );
-
-                particle.className =
-                    "global-particle";
-
-                particle.style.left =
-                    `${20 + Math.random() * 60}%`;
-
-                particle.style.top =
-                    `${55 + Math.random() * 35}%`;
-
-                particle.style.setProperty(
-                    "--drift",
-                    `${(Math.random() * 100) - 50}px`
+                loadQuestion(
+                    currentQuestion
                 );
 
-                particle.style.animationDuration =
-                    `${4 + Math.random() * 5}s`;
-
-                document
-                    .getElementById(
-                        "particleLayer"
-                    )
-                    .appendChild(
-                        particle
-                    );
-
             },
-            i * 180
+            100
         );
+
     }
-}
 
 
-/* ============================================================
-   PAGE 5
-============================================================ */
+    /* ======================================================
+       LOAD QUESTION
+    ====================================================== */
 
-danceButton.addEventListener(
-    "click",
-    async () => {
+    function loadQuestion(index) {
 
-        await resumeAudio();
+        const data =
+            questions[index];
 
-        whoosh();
 
-        transitionLayer.classList.add(
+        questionAnswered = false;
+
+
+        nextQuestionButton.disabled =
+            true;
+
+
+        nextQuestionButton.classList.remove(
+            "unlocked"
+        );
+
+
+        nextQuestionButton.classList.add(
+            "locked"
+        );
+
+
+        answerMessage.classList.remove(
             "show"
         );
 
+
+        answerMessage.textContent =
+            "";
+
+
+        questionNumber.textContent =
+            String(index + 1)
+                .padStart(2, "0");
+
+
+        questionCategory.textContent =
+            data.category;
+
+
+        questionText.textContent =
+            data.question;
+
+
+        wonderSymbol.textContent =
+            data.symbol;
+
+
+        wonderBackground.style.backgroundImage =
+            `url("${data.background}")`;
+
+
+        infoWonderName.textContent =
+            data.wonder.toUpperCase();
+
+
+        infoTitle.textContent =
+            data.infoTitle;
+
+
+        infoText.textContent =
+            data.infoText;
+
+
+        renderOptions(
+            data
+        );
+
+
+        if (
+            index === 6
+        ) {
+
+            fadeMusic(
+                0.025,
+                2
+            );
+
+        } else {
+
+            fadeMusic(
+                0.055,
+                2
+            );
+
+        }
+
+
+        /* periodically nudge info button */
+
         setTimeout(
             () => {
 
-                window.location.href =
-                    "page5.html";
+                infoButton.classList.add(
+                    "attention"
+                );
+
+                setTimeout(
+                    () => {
+
+                        infoButton.classList.remove(
+                            "attention"
+                        );
+
+                    },
+                    600
+                );
 
             },
-            800
+            5000
         );
+
     }
-);
 
 
-/* ============================================================
-   MUSIC BUTTON
-============================================================ */
+    /* ======================================================
+       RENDER ANSWERS
+    ====================================================== */
 
-musicButton.addEventListener(
-    "click",
-    async () => {
+    function renderOptions(data) {
 
-        await resumeAudio();
+        answerOptions.innerHTML =
+            "";
 
-        toggleMusic();
+
+        data.options.forEach(
+            (option, index) => {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.type =
+                    "button";
+
+
+                button.className =
+                    "answer-button";
+
+
+                button.textContent =
+                    option;
+
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        selectAnswer(
+                            button,
+                            index
+                        );
+
+                    }
+                );
+
+
+                answerOptions.appendChild(
+                    button
+                );
+
+            }
+        );
+
     }
-);
 
 
-/* ============================================================
-   FIRST USER INTERACTION
-   Helps browsers unlock Web Audio.
-============================================================ */
+    /* ======================================================
+       ANSWER
+    ====================================================== */
 
-document.addEventListener(
-    "pointerdown",
-    () => {
+    function selectAnswer(
+        button,
+        selectedIndex
+    ) {
+
+        if (
+            questionAnswered
+        ) {
+            return;
+        }
+
+
+        initializeAudio();
 
         resumeAudio();
 
-    },
-    {
-        once: true
+
+        const data =
+            questions[
+                currentQuestion
+            ];
+
+
+        if (
+            selectedIndex !==
+            data.correct
+        ) {
+
+            playWrong();
+
+
+            button.classList.remove(
+                "wrong"
+            );
+
+
+            void button.offsetWidth;
+
+
+            button.classList.add(
+                "wrong"
+            );
+
+
+            answerMessage.textContent =
+                "Not quite... try again.";
+
+
+            answerMessage.classList.add(
+                "show"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    answerMessage.classList.remove(
+                        "show"
+                    );
+
+                },
+                1200
+            );
+
+
+            return;
+        }
+
+
+        /* correct */
+
+        questionAnswered =
+            true;
+
+
+        playCorrect();
+
+
+        button.classList.add(
+            "correct"
+        );
+
+
+        const allButtons =
+            answerOptions.querySelectorAll(
+                ".answer-button"
+            );
+
+
+        allButtons.forEach(
+            (otherButton) => {
+
+                if (
+                    otherButton !==
+                    button
+                ) {
+
+                    otherButton.style.opacity =
+                        "0.38";
+
+                }
+
+            }
+        );
+
+
+        answerMessage.textContent =
+            data.message;
+
+
+        answerMessage.classList.add(
+            "show"
+        );
+
+
+        createSparkles(
+            button
+        );
+
+
+        unlockArrow();
+
     }
-);
 
 
-/* ============================================================
-   PRELOAD WONDER IMAGES
-============================================================ */
+    /* ======================================================
+       SPARKLE BURST
+    ====================================================== */
 
-questions.forEach(
-    question => {
+    function createSparkles(
+        element
+    ) {
 
-        const image =
-            new Image();
+        const rect =
+            element.getBoundingClientRect();
 
-        image.src =
-            question.image;
+
+        const centerX =
+            rect.left +
+            rect.width / 2;
+
+
+        const centerY =
+            rect.top +
+            rect.height / 2;
+
+
+        for (
+            let i = 0;
+            i < 10;
+            i++
+        ) {
+
+            const sparkle =
+                document.createElement(
+                    "div"
+                );
+
+
+            sparkle.className =
+                "answer-sparkle";
+
+
+            sparkle.textContent =
+                i % 2 === 0
+                    ? "✦"
+                    : "✧";
+
+
+            sparkle.style.left =
+                `${centerX}px`;
+
+
+            sparkle.style.top =
+                `${centerY}px`;
+
+
+            sparkle.style.setProperty(
+                "--sx",
+                `${(Math.random() - 0.5) * 150}px`
+            );
+
+
+            sparkle.style.setProperty(
+                "--sy",
+                `${(Math.random() - 0.5) * 100}px`
+            );
+
+
+            document.body.appendChild(
+                sparkle
+            );
+
+
+            setTimeout(
+                () => {
+
+                    sparkle.remove();
+
+                },
+                1000
+            );
+
+        }
+
     }
-);
 
 
-/* ============================================================
-   INITIAL STATE
-============================================================ */
+    /* ======================================================
+       UNLOCK ARROW
+    ====================================================== */
 
-showScreen(
-    wakeScreen
-);
+    function unlockArrow() {
 
-console.log(
-    "Page 4 loaded successfully."
-);
+        nextQuestionButton.disabled =
+            false;
+
+
+        nextQuestionButton.classList.remove(
+            "locked"
+        );
+
+
+        nextQuestionButton.classList.add(
+            "unlocked"
+        );
+
+
+        playChime();
+
+    }
+
+
+    /* ======================================================
+       NEXT QUESTION
+    ====================================================== */
+
+    nextQuestionButton.addEventListener(
+        "click",
+        () => {
+
+            if (
+                !questionAnswered
+            ) {
+                return;
+            }
+
+
+            playWhoosh();
+
+
+            nextQuestionButton.style.transform =
+                "translateX(10px) scale(0.94)";
+
+
+            setTimeout(
+                () => {
+
+                    nextQuestionButton.style.transform =
+                        "";
+
+
+                    if (
+                        currentQuestion <
+                        questions.length - 1
+                    ) {
+
+                        transitionToNextQuestion();
+
+                    } else {
+
+                        finishQuiz();
+
+                    }
+
+                },
+                400
+            );
+
+        }
+    );
+
+
+    /* ======================================================
+       WONDER TRANSITION
+    ====================================================== */
+
+    function transitionToNextQuestion() {
+
+        wonderScreen.style.opacity =
+            "0";
+
+
+        wonderBackground.style.filter =
+            "blur(5px)";
+
+
+        wonderBackground.style.transform =
+            "scale(1.12)";
+
+
+        setTimeout(
+            () => {
+
+                currentQuestion++;
+
+
+                wonderBackground.style.filter =
+                    "blur(0)";
+
+
+                wonderBackground.style.transform =
+                    "scale(1.05)";
+
+
+                loadQuestion(
+                    currentQuestion
+                );
+
+
+                wonderScreen.style.opacity =
+                    "1";
+
+
+            },
+            750
+        );
+
+    }
+
+
+    /* ======================================================
+       FINISH QUIZ
+    ====================================================== */
+
+    function finishQuiz() {
+
+        playChime();
+
+
+        wonderScreen.style.opacity =
+            "0";
+
+
+        setTimeout(
+            () => {
+
+                wonderScreen.classList.add(
+                    "hidden"
+                );
+
+
+                fadeMusic(
+                    0,
+                    1.2
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        startDinner();
+
+                    },
+                    700
+                );
+
+            },
+            900
+        );
+
+    }
+
+
+    /* ======================================================
+       INFO BUTTON
+    ====================================================== */
+
+    infoButton.addEventListener(
+        "click",
+        () => {
+
+            initializeAudio();
+
+            playTone(
+                720,
+                0.16,
+                "sine",
+                0.025
+            );
+
+
+            infoPopup.classList.add(
+                "show"
+            );
+
+        }
+    );
+
+
+    closeInfoButton.addEventListener(
+        "click",
+        () => {
+
+            infoPopup.classList.remove(
+                "show"
+            );
+
+        }
+    );
+
+
+    infoPopup.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                event.target ===
+                infoPopup
+            ) {
+
+                infoPopup.classList.remove(
+                    "show"
+                );
+
+            }
+
+        }
+    );
+
+
+    /* ======================================================
+       DINNER START
+    ====================================================== */
+
+    function startDinner() {
+
+        dinnerScreen.classList.remove(
+            "hidden"
+        );
+
+
+        playReveal();
+
+
+        createDinnerBGM();
+
+
+        setTimeout(
+            () => {
+
+                dinnerScreen.classList.add(
+                    "visible"
+                );
+
+            },
+            100
+        );
+
+
+        /* Let the scene breathe first */
+
+        setTimeout(
+            () => {
+
+                sitButton.style.opacity =
+                    "1";
+
+            },
+            2000
+        );
+
+    }
+
+
+    /* ======================================================
+       SIT DOWN
+    ====================================================== */
+
+    let sitting =
+        false;
+
+
+    sitButton.addEventListener(
+        "click",
+        () => {
+
+            if (sitting) {
+                return;
+            }
+
+
+            sitting = true;
+
+
+            initializeAudio();
+
+            playTone(
+                190,
+                0.18,
+                "triangle",
+                0.025
+            );
+
+
+            dinnerScreen.classList.add(
+                "sitting"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    foodButton.style.opacity =
+                        "1";
+
+                },
+                1200
+            );
+
+        }
+    );
+
+
+    /* ======================================================
+       FOOD / COMPLIMENTS
+    ====================================================== */
+
+    const compliments = [
+
+        "That red dress looks absolutely beautiful on you...",
+
+        "Although... I think you make the dress look even better.",
+
+        "And honestly... you look breathtaking tonight.",
+
+        "But you know what I love most? It's not just how beautiful you are... it's the person you are. Your personality, your energy, the way you make everything feel alive.",
+
+        "Alright sweetheart... let's finish the food. ❤️"
+
+    ];
+
+
+    let foodClicks =
+        0;
+
+
+    foodButton.addEventListener(
+        "click",
+        () => {
+
+            if (
+                !sitting ||
+                foodClicks >= 5
+            ) {
+                return;
+            }
+
+
+            initializeAudio();
+
+            resumeAudio();
+
+
+            playPlate();
+
+
+            const pieces =
+                food.querySelectorAll(
+                    ".food-piece"
+                );
+
+
+            if (
+                pieces[foodClicks]
+            ) {
+
+                pieces[
+                    foodClicks
+                ].classList.add(
+                    "eaten"
+                );
+
+            }
+
+
+            foodClicks++;
+
+
+            showCompliment(
+                compliments[
+                    foodClicks - 1
+                ]
+            );
+
+
+            if (
+                foodClicks === 5
+            ) {
+
+                foodButton.classList.add(
+                    "finished"
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        dinnerComplete.classList.add(
+                            "show"
+                        );
+
+
+                        playRomanticChime();
+
+
+                        setTimeout(
+                            () => {
+
+                                dinnerComplete.classList.remove(
+                                    "show"
+                                );
+
+
+                                beginCurtains();
+
+                            },
+                            2600
+                        );
+
+                    },
+                    1300
+                );
+
+            }
+
+        }
+    );
+
+
+    /* ======================================================
+       SHOW COMPLIMENT
+    ====================================================== */
+
+    function showCompliment(
+        text
+    ) {
+
+        complimentText.textContent =
+            "";
+
+
+        complimentBox.classList.remove(
+            "show"
+        );
+
+
+        setTimeout(
+            () => {
+
+                complimentBox.classList.add(
+                    "show"
+                );
+
+
+                typeText(
+                    complimentText,
+                    text,
+                    24
+                );
+
+            },
+            100
+        );
+
+
+        setTimeout(
+            () => {
+
+                if (
+                    foodClicks <
+                    4
+                ) {
+
+                    complimentBox.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            },
+            foodClicks === 4
+                ? 7000
+                : 3000
+        );
+
+    }
+
+
+    /* ======================================================
+       TYPEWRITER
+    ====================================================== */
+
+    function typeText(
+        element,
+        text,
+        speed
+    ) {
+
+        let index = 0;
+
+
+        element.textContent =
+            "";
+
+
+        function write() {
+
+            if (
+                index >=
+                text.length
+            ) {
+                return;
+            }
+
+
+            element.textContent +=
+                text.charAt(index);
+
+
+            index++;
+
+
+            setTimeout(
+                write,
+                speed
+            );
+
+        }
+
+
+        write();
+
+    }
+
+
+    /* ======================================================
+       CURTAIN CLOSING
+    ====================================================== */
+
+    function beginCurtains() {
+
+        fadeMusic(
+            0.01,
+            3
+        );
+
+
+        curtainScreen.classList.remove(
+            "hidden"
+        );
+
+
+        playWhoosh();
+
+
+        setTimeout(
+            () => {
+
+                curtainScreen.classList.add(
+                    "closing"
+                );
+
+            },
+            300
+        );
+
+
+        setTimeout(
+            () => {
+
+                fadeMusic(
+                    0,
+                    2
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        curtainScreen.classList.add(
+                            "hidden"
+                        );
+
+
+                        showDanceScreen();
+
+                    },
+                    1000
+                );
+
+            },
+            3300
+        );
+
+    }
+
+
+    /* ======================================================
+       DANCE SCREEN
+    ====================================================== */
+
+    function showDanceScreen() {
+
+        danceScreen.classList.remove(
+            "hidden"
+        );
+
+
+        setTimeout(
+            () => {
+
+                danceScreen.classList.add(
+                    "visible"
+                );
+
+
+                playChime();
+
+            },
+            100
+        );
+
+    }
+
+
+    /* ======================================================
+       NEXT PAGE
+    ====================================================== */
+
+    danceButton.addEventListener(
+        "click",
+        () => {
+
+            initializeAudio();
+
+            playWhoosh();
+
+
+            danceButton.disabled =
+                true;
+
+
+            danceScreen.style.opacity =
+                "0";
+
+
+            /*
+             * PAGE 5
+             *
+             * Make sure the next page
+             * is named page5.html.
+             */
+
+            setTimeout(
+                () => {
+
+                    window.location.href =
+                        "page5.html";
+
+                },
+                900
+            );
+
+        }
+    );
+
+
+    /* ======================================================
+       GLOBAL FIRST TOUCH AUDIO UNLOCK
+       IMPORTANT FOR ANDROID / CHROME
+    ====================================================== */
+
+    document.addEventListener(
+        "touchstart",
+        () => {
+
+            initializeAudio();
+
+            resumeAudio();
+
+        },
+        {
+            once: true,
+            passive: true
+        }
+    );
+
+
+    document.addEventListener(
+        "pointerdown",
+        () => {
+
+            initializeAudio();
+
+            resumeAudio();
+
+        },
+        {
+            once: true
+        }
+    );
+
+
+    /* ======================================================
+       INITIAL SAFETY STATE
+    ====================================================== */
+
+    if (wakeScreen) {
+
+        wakeScreen.style.opacity =
+            "0.12";
+
+        wakeScreen.style.filter =
+            "blur(2px)";
+
+    }
+
+
+    if (foodButton) {
+
+        foodButton.style.opacity =
+            "0";
+
+    }
+
+
+    if (sitButton) {
+
+        sitButton.style.opacity =
+            "0";
+
+    }
+
+});
