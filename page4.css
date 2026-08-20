@@ -1,0 +1,984 @@
+/* =========================================
+   PAGE 4 - MIDNIGHT STORY
+   ========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #080b18;
+    color: #ffffff;
+}
+
+
+/* =========================================
+   MAIN
+   ========================================= */
+
+#page4 {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* =========================================
+   SCENES
+   ========================================= */
+
+.scene {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 1.2s ease,
+        visibility 1.2s ease;
+}
+
+.scene.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================================
+   PARTY ENDING
+   ========================================= */
+
+#partyEnding {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(170, 38, 80, 0.25),
+            transparent 55%
+        ),
+        linear-gradient(
+            135deg,
+            #260b20,
+            #130918,
+            #080b18
+        );
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition:
+        opacity 2s ease,
+        visibility 2s ease;
+}
+
+
+/* =========================================
+   PARTY POPUP
+   ========================================= */
+
+.popup-container {
+    width: min(90%, 520px);
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.story-popup {
+    padding: 28px 30px;
+
+    border-radius: 24px;
+
+    background: rgba(255, 255, 255, 0.09);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35),
+        0 0 40px rgba(255, 80, 150, 0.08);
+
+    animation: popupAppear 0.8s ease;
+}
+
+.story-popup p {
+    font-size: clamp(20px, 4vw, 29px);
+    line-height: 1.5;
+    color: #fff5fa;
+}
+
+
+/* =========================================
+   BALLOONS
+   ========================================= */
+
+.floating-balloon {
+    position: absolute;
+
+    width: 70px;
+    height: 90px;
+
+    border-radius: 50% 50% 45% 45%;
+
+    opacity: 0.65;
+
+    animation:
+        balloonFloat 7s ease-in-out infinite;
+}
+
+.floating-balloon::after {
+    content: "";
+    position: absolute;
+
+    width: 1px;
+    height: 100px;
+
+    background: rgba(255, 255, 255, 0.25);
+
+    top: 85px;
+    left: 50%;
+}
+
+.balloon-one {
+    left: 10%;
+    bottom: -120px;
+    background: #c74273;
+}
+
+.balloon-two {
+    right: 12%;
+    bottom: -160px;
+    background: #8f4c8d;
+    animation-delay: 2s;
+}
+
+.balloon-three {
+    left: 45%;
+    bottom: -180px;
+    background: #c88b55;
+    animation-delay: 4s;
+}
+
+
+/* =========================================
+   SPARKLES
+   ========================================= */
+
+.party-sparkles span {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.7);
+
+    animation:
+        sparkleMove 5s linear infinite;
+}
+
+.party-sparkles span:nth-child(1) {
+    top: 15%;
+    left: 20%;
+}
+
+.party-sparkles span:nth-child(2) {
+    top: 25%;
+    right: 15%;
+    animation-delay: 1s;
+}
+
+.party-sparkles span:nth-child(3) {
+    bottom: 25%;
+    left: 15%;
+    animation-delay: 2s;
+}
+
+.party-sparkles span:nth-child(4) {
+    bottom: 15%;
+    right: 25%;
+    animation-delay: 3s;
+}
+
+.party-sparkles span:nth-child(5) {
+    top: 12%;
+    left: 60%;
+    animation-delay: 4s;
+}
+
+
+/* =========================================
+   BLACK SCREEN
+   ========================================= */
+
+#blackScene {
+    background: #000000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.black-story {
+    width: min(90%, 700px);
+    padding: 30px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-label {
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+    letter-spacing: 4px;
+
+    color: rgba(255, 255, 255, 0.4);
+
+    margin-bottom: 35px;
+}
+
+#blackText {
+    min-height: 100px;
+
+    font-size: clamp(20px, 4vw, 28px);
+    line-height: 1.8;
+
+    color: rgba(255, 255, 255, 0.9);
+
+    max-width: 650px;
+}
+
+.continue-button {
+    margin-top: 30px;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: white;
+
+    padding: 13px 25px;
+
+    border-radius: 50px;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.continue-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+#blackContinue {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+/* =========================================
+   BEDROOM
+   ========================================= */
+
+#bedroomScene {
+    background:
+        radial-gradient(
+            circle at 70% 20%,
+            rgba(93, 109, 160, 0.2),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            #080b18 0%,
+            #0c1021 50%,
+            #111326 100%
+        );
+
+    overflow-y: auto;
+}
+
+
+/* =========================================
+   MOON
+   ========================================= */
+
+.moon {
+    position: absolute;
+
+    top: 7%;
+    right: 9%;
+
+    width: 75px;
+    height: 75px;
+
+    border-radius: 50%;
+
+    background: #fff9df;
+
+    box-shadow:
+        0 0 25px rgba(255, 249, 223, 0.5),
+        0 0 70px rgba(255, 249, 223, 0.15);
+}
+
+
+/* =========================================
+   WINDOW
+   ========================================= */
+
+.window {
+    position: absolute;
+
+    top: 8%;
+    left: 8%;
+
+    width: 180px;
+    height: 220px;
+
+    border: 8px solid rgba(255, 255, 255, 0.07);
+
+    background:
+        linear-gradient(
+            180deg,
+            #070b19,
+            #121936
+        );
+
+    box-shadow:
+        inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.window-frame::before,
+.window-frame::after {
+    content: "";
+
+    position: absolute;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.window-frame::before {
+    width: 3px;
+    height: 100%;
+
+    left: 50%;
+}
+
+.window-frame::after {
+    height: 3px;
+    width: 100%;
+
+    top: 50%;
+}
+
+.window-stars span {
+    position: absolute;
+
+    font-size: 9px;
+
+    color: rgba(255, 255, 255, 0.8);
+
+    animation: starTwinkle 3s ease-in-out infinite;
+}
+
+.window-stars span:nth-child(1) {
+    top: 20%;
+    left: 20%;
+}
+
+.window-stars span:nth-child(2) {
+    top: 30%;
+    right: 20%;
+    animation-delay: 1s;
+}
+
+.window-stars span:nth-child(3) {
+    bottom: 25%;
+    left: 28%;
+    animation-delay: 1.5s;
+}
+
+.window-stars span:nth-child(4) {
+    bottom: 18%;
+    right: 30%;
+    animation-delay: 2s;
+}
+
+.window-stars span:nth-child(5) {
+    top: 15%;
+    left: 60%;
+    animation-delay: 0.5s;
+}
+
+.window-stars span:nth-child(6) {
+    bottom: 40%;
+    left: 15%;
+    animation-delay: 2.5s;
+}
+
+
+/* =========================================
+   BEDROOM CONTENT
+   ========================================= */
+
+.bedroom-content {
+    width: min(94%, 650px);
+
+    margin: 0 auto;
+
+    padding-top: 7vh;
+    padding-bottom: 80px;
+
+    position: relative;
+    z-index: 5;
+}
+
+.midnight-clock {
+    text-align: center;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+    letter-spacing: 4px;
+
+    color: rgba(255, 255, 255, 0.5);
+
+    margin-bottom: 18px;
+}
+
+.clock-dot {
+    display: inline-block;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #e88ba8;
+
+    margin-right: 8px;
+
+    box-shadow: 0 0 10px #e88ba8;
+}
+
+.wake-message {
+    text-align: center;
+
+    font-size: 15px;
+
+    color: rgba(255, 255, 255, 0.6);
+
+    margin-bottom: 15px;
+}
+
+.bedroom-title {
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+.bedroom-title h1 {
+    font-size: clamp(35px, 8vw, 55px);
+
+    font-weight: normal;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 8px;
+}
+
+.bedroom-title p {
+    color: rgba(255, 255, 255, 0.55);
+
+    font-size: 14px;
+}
+
+
+/* =========================================
+   CHAT
+   ========================================= */
+
+.chat-wrapper {
+    width: 100%;
+
+    border-radius: 25px;
+
+    background: rgba(11, 14, 29, 0.78);
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.45),
+        0 0 50px rgba(105, 120, 180, 0.05);
+
+    overflow: hidden;
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+
+/* =========================================
+   CHAT HEADER
+   ========================================= */
+
+.chat-header {
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 12px 18px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.profile-circle {
+    width: 43px;
+    height: 43px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(210, 78, 118, 0.15);
+
+    margin-right: 12px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.profile-info strong {
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+}
+
+.profile-info span {
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.header-moon {
+    margin-left: auto;
+}
+
+
+/* =========================================
+   CHAT MESSAGES
+   ========================================= */
+
+.chat-messages {
+    min-height: 370px;
+    max-height: 48vh;
+
+    overflow-y: auto;
+
+    padding: 25px 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 13px;
+
+    scrollbar-width: thin;
+}
+
+.message {
+    max-width: 78%;
+
+    padding: 12px 16px;
+
+    border-radius: 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+
+    line-height: 1.45;
+
+    animation: messageAppear 0.45s ease;
+}
+
+.message.tisha {
+    align-self: flex-start;
+
+    background: rgba(190, 66, 111, 0.16);
+
+    border: 1px solid rgba(224, 107, 145, 0.12);
+
+    border-bottom-left-radius: 5px;
+}
+
+.message.ritesh {
+    align-self: flex-end;
+
+    background: rgba(255, 255, 255, 0.09);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-bottom-right-radius: 5px;
+}
+
+.message-name {
+    display: block;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    color: rgba(255, 255, 255, 0.4);
+
+    margin-bottom: 4px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================
+   TYPING INDICATOR
+   ========================================= */
+
+.typing-indicator {
+    display: none;
+
+    align-items: center;
+
+    gap: 4px;
+
+    margin: 0 18px 12px;
+}
+
+.typing-indicator.active {
+    display: flex;
+}
+
+.typing-indicator span {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.5);
+
+    animation: typing 1.2s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+
+/* =========================================
+   CHAT BUTTON
+   ========================================= */
+
+.chat-bottom {
+    padding: 10px 18px 18px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.run-button {
+    border: none;
+
+    padding: 13px 26px;
+
+    border-radius: 50px;
+
+    background: rgba(211, 77, 119, 0.18);
+
+    border: 1px solid rgba(224, 107, 145, 0.25);
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+.run-button.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.run-button:hover {
+    transform: translateY(-2px);
+
+    background: rgba(211, 77, 119, 0.3);
+
+    box-shadow:
+        0 8px 25px rgba(211, 77, 119, 0.15);
+}
+
+
+/* =========================================
+   FINAL ENDING
+   ========================================= */
+
+#endingScene {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(192, 65, 110, 0.12),
+            transparent 50%
+        ),
+        #080b18;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+.ending-content {
+    width: min(90%, 500px);
+}
+
+.heart-pulse {
+    font-size: 55px;
+
+    margin-bottom: 25px;
+
+    animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+.ending-content p {
+    font-size: 18px;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    margin-bottom: 15px;
+}
+
+.ending-content h2 {
+    font-size: clamp(25px, 6vw, 40px);
+
+    font-weight: normal;
+
+    color: #fff5fa;
+
+    margin-bottom: 10px;
+}
+
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+
+@keyframes popupAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+@keyframes balloonFloat {
+
+    0% {
+        transform: translateY(0) rotate(-3deg);
+    }
+
+    50% {
+        transform: translateY(-120vh) rotate(5deg);
+    }
+
+    100% {
+        transform: translateY(-240vh) rotate(-4deg);
+    }
+}
+
+
+@keyframes sparkleMove {
+
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+
+@keyframes starTwinkle {
+
+    0%,
+    100% {
+        opacity: 0.25;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+
+@keyframes messageAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes typing {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+
+    30% {
+        transform: translateY(-4px);
+        opacity: 1;
+    }
+}
+
+
+@keyframes heartBeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .floating-balloon {
+        width: 50px;
+        height: 68px;
+    }
+
+    .story-popup {
+        padding: 22px 18px;
+    }
+
+    .story-popup p {
+        font-size: 20px;
+    }
+
+    .window {
+        width: 120px;
+        height: 160px;
+
+        left: 5%;
+        top: 5%;
+    }
+
+    .moon {
+        width: 55px;
+        height: 55px;
+
+        right: 7%;
+        top: 7%;
+    }
+
+    .bedroom-content {
+        width: 94%;
+
+        padding-top: 25vh;
+    }
+
+    .bedroom-title h1 {
+        font-size: 38px;
+    }
+
+    .chat-messages {
+        min-height: 350px;
+    }
+
+    .message {
+        max-width: 84%;
+        font-size: 13px;
+    }
+}
+
+
+@media (max-height: 650px) {
+
+    .bedroom-content {
+        padding-top: 8vh;
+    }
+
+    .chat-messages {
+        min-height: 300px;
+    }
+
+    .window {
+        opacity: 0.5;
+    }
+}
