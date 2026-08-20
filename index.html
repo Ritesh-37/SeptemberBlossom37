@@ -3,73 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#080914">
-    <title>Midnight</title>
+    <meta name="theme-color" content="#080a17">
+
+    <title>Midnight — Page 4</title>
+
     <link rel="stylesheet" href="page4.css">
 </head>
 
 <body>
 
-<div id="app">
+<main id="page4">
 
-    <!-- Ambient stars -->
-    <div id="stars"></div>
+    <!-- =====================================================
+         AMBIENT PARTICLES
+         ===================================================== -->
 
-    <!-- ================= PARTY ================= -->
+    <div id="particles"></div>
+
+
+    <!-- =====================================================
+         SCENE 1 — PARTY ENDING
+         ===================================================== -->
 
     <section id="partyScene" class="scene active">
 
-        <div class="partyGlow"></div>
+        <div class="fading-party-glow"></div>
 
-        <div class="partyBalloon b1">🎈</div>
-        <div class="partyBalloon b2">🎈</div>
-        <div class="partyBalloon b3">🎈</div>
+        <div class="balloon balloon1"></div>
+        <div class="balloon balloon2"></div>
+        <div class="balloon balloon3"></div>
 
-        <div class="storyText">
-            <div id="partyText"></div>
+        <div class="party-sparkles">
+            <span>✦</span>
+            <span>✧</span>
+            <span>✦</span>
+            <span>✧</span>
+            <span>✦</span>
+        </div>
+
+        <div class="tap-story">
+
+            <div class="story-card">
+                <p id="partyStoryText"></p>
+            </div>
+
         </div>
 
     </section>
 
 
-    <!-- ================= BLACK STORY ================= -->
+    <!-- =====================================================
+         SCENE 2 — BLACK STORY
+         ===================================================== -->
 
     <section id="blackScene" class="scene">
 
-        <div class="blackTime">12:32 AM</div>
+        <div class="black-story">
 
-        <div id="blackText" class="blackText"></div>
+            <div class="story-time">
+                12:32 AM
+            </div>
+
+            <p id="blackStoryText"></p>
+
+        </div>
 
     </section>
 
 
-    <!-- ================= BEDROOM INTRO ================= -->
+    <!-- =====================================================
+         SCENE 3 — BEDROOM INTRO
+         ===================================================== -->
 
-    <section id="bedroomScene" class="scene">
+    <section id="bedroomIntro" class="scene">
 
         <div class="moon"></div>
 
-        <div class="window">
+        <div class="bedroom-window">
 
-            <div class="windowBar vertical"></div>
-            <div class="windowBar horizontal"></div>
+            <div class="window-cross vertical"></div>
+            <div class="window-cross horizontal"></div>
 
             <span>✦</span>
             <span>✧</span>
             <span>✦</span>
-            <span>·</span>
+            <span>✧</span>
+            <span>✦</span>
 
         </div>
 
-        <div class="bedroomContent">
+        <div class="bedroom-light"></div>
 
-            <div class="time">12:47 AM</div>
+        <div class="bedroom-intro-content">
 
-            <h1>Midnight</h1>
+            <div class="midnight-time">
+                12:47 AM
+            </div>
+
+            <h1>Midnight 🌙</h1>
 
             <p>
-                Everyone is gone...<br>
-                It's just the two of you now.
+                Everyone is gone.<br>
+                It's just the two of you now. <span class="cute-heart">♡</span>
             </p>
 
         </div>
@@ -77,46 +112,64 @@
     </section>
 
 
-    <!-- ================= CHAT ================= -->
+    <!-- =====================================================
+         SCENE 4 — MIDNIGHT CHAT
+         ===================================================== -->
 
     <section id="chatScene" class="scene">
 
-        <div class="chatWrapper">
+        <div class="chat-background">
 
-            <div class="chatTime">
+            <div class="moon small-moon"></div>
+
+            <div class="bedroom-window mini-window">
+                <span>✦</span>
+                <span>✧</span>
+                <span>✦</span>
+            </div>
+
+        </div>
+
+
+        <div class="chat-page">
+
+            <div class="chat-clock">
                 12:47 AM
             </div>
 
-            <div class="chatStatus">
-                Tisha is awake <span class="onlineDot"></span>
+            <div class="chat-status">
+                Tisha is awake... <span>♡</span>
             </div>
 
-            <div class="chatBox">
 
-                <div class="chatHeader">
+            <div class="chat-box">
 
-                    <div class="profileHeart">
-                        ♥
+                <header class="chat-header">
+
+                    <div class="profile-picture">
+                        ♡
                     </div>
 
                     <div>
                         <strong>Ritesh</strong>
-                        <small>midnight</small>
+                        <small>online • midnight</small>
                     </div>
 
-                    <div class="headerMoon">
+                    <div class="header-moon">
                         ☾
                     </div>
 
-                </div>
+                </header>
 
-                <div id="messages"></div>
 
-                <div id="typing">
+                <div id="messages" class="messages"></div>
 
-                    <i></i>
-                    <i></i>
-                    <i></i>
+
+                <div id="typing" class="typing">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
 
                 </div>
 
@@ -127,147 +180,244 @@
     </section>
 
 
-    <!-- ================= KISS ================= -->
+    <!-- =====================================================
+         SCENE 5 — RUNNING TO HER / KISS
+         ===================================================== -->
 
     <section id="kissScene" class="scene">
 
-        <div class="romanticMoon"></div>
+        <div class="romantic-background">
 
-        <div class="kissCaption">
-            He ran to her and planted a kiss...
-        </div>
+            <div class="kiss-moon"></div>
 
-        <div id="kissCouple">
+            <div class="bedroom-bed-background">
 
-            <!-- BOY -->
-
-            <div id="boy" class="person boy">
-
-                <div class="boyHair"></div>
-
-                <div class="personHead boyHead">
-
-                    <div class="eye leftEye"></div>
-                    <div class="eye rightEye"></div>
-
-                </div>
-
-                <div class="personBody boyBody"></div>
-
-                <div class="personArm boyArm"></div>
-
-            </div>
-
-
-            <!-- GIRL -->
-
-            <div id="girl" class="person girl">
-
-                <div class="girlHair"></div>
-
-                <div class="personHead girlHead">
-
-                    <div class="eye leftEye"></div>
-                    <div class="eye rightEye"></div>
-
-                </div>
-
-                <div class="personBody girlBody"></div>
-
-                <div class="personArm girlArm"></div>
+                <div class="pillow"></div>
+                <div class="blanket"></div>
 
             </div>
 
         </div>
 
 
-        <!-- Kiss particles -->
+        <div class="kiss-content">
 
-        <div id="kissParticles"></div>
-
-
-        <div id="teaseCaption">
-            ...and couldn't resist teasing her.
-        </div>
+            <div class="scene-caption">
+                He ran to her and planted a kiss... <span>♡</span>
+            </div>
 
 
-        <div id="tishaReaction">
-            Tisha: <span class="blushEmoji">😳</span>
+            <div class="couple" id="kissCouple">
+
+                <!-- BOY -->
+
+                <div class="character boy">
+
+                    <div class="head">
+                        <div class="hair boy-hair"></div>
+
+                        <div class="boy-face">
+                            <span class="eye"></span>
+                            <span class="eye"></span>
+                        </div>
+                    </div>
+
+                    <div class="neck"></div>
+
+                    <div class="body boy-body">
+                        <div class="shirt-line"></div>
+                    </div>
+
+                </div>
+
+
+                <!-- GIRL -->
+
+                <div class="character girl">
+
+                    <div class="head">
+                        <div class="hair girl-hair"></div>
+
+                        <div class="girl-face">
+                            <span class="eye"></span>
+                            <span class="eye"></span>
+                        </div>
+                    </div>
+
+                    <div class="neck"></div>
+
+                    <div class="body girl-body">
+                        <div class="dress-line"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- KISS EMOJIS CREATED BY JS -->
+
+            <div id="kissParticles"></div>
+
+
+            <div id="kissMark" class="kiss-mark">
+                💋
+            </div>
+
+
+            <div id="teaseText" class="tease-text">
+                ...and couldn't resist teasing her. <span>♡</span>
+            </div>
+
+
+            <div id="reactionText" class="reaction-text">
+                Tisha: 😳
+            </div>
+
         </div>
 
     </section>
 
 
-    <!-- ================= CUDDLE ================= -->
+    <!-- =====================================================
+         SCENE 6 — CUDDLING
+         ===================================================== -->
 
     <section id="cuddleScene" class="scene">
 
-        <div class="cuddleMoon"></div>
+        <div class="cuddle-background">
 
-        <div class="cuddleWindow">
+            <div class="cuddle-moon"></div>
 
-            <span>✦</span>
-            <span>✧</span>
-            <span>·</span>
+            <div class="cuddle-window">
 
-        </div>
-
-
-        <div class="cuddleTitle">
-            And finally... exactly where they both wanted to be.
-        </div>
-
-
-        <div id="cuddleBed">
-
-            <div class="pillow"></div>
-
-            <div id="cuddleBoy" class="cuddlePerson cuddleBoy">
-
-                <div class="cuddleHead"></div>
-
-                <div class="cuddleBody boyClothes"></div>
-
-                <div class="cuddleArm"></div>
-
-            </div>
-
-
-            <div id="cuddleGirl" class="cuddlePerson cuddleGirl">
-
-                <div class="cuddleHead"></div>
-
-                <div class="cuddleBody girlClothes"></div>
+                <span>✦</span>
+                <span>✧</span>
+                <span>✦</span>
 
             </div>
 
         </div>
 
 
-        <div id="cuddleMessage">
-            Tap again...
-        </div>
+        <div class="cuddle-content">
+
+            <div class="cuddle-title">
+                And finally... exactly where they both wanted to be. <span>♡</span>
+            </div>
 
 
-        <div id="cuddleProgress">
+            <div class="cuddle-bed" id="cuddleBed">
 
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+                <div class="cuddle-pillow"></div>
+
+
+                <!-- BOY -->
+
+                <div class="cuddle-person person-back" id="cuddleBoy">
+
+                    <div class="cuddle-head boy-cuddle-head">
+                        <div class="cuddle-hair"></div>
+                    </div>
+
+                    <div class="cuddle-body boy-cuddle-body"></div>
+
+                    <div class="cuddle-arm"></div>
+
+                </div>
+
+
+                <!-- GIRL -->
+
+                <div class="cuddle-person person-front" id="cuddleGirl">
+
+                    <div class="cuddle-head girl-cuddle-head">
+                        <div class="cuddle-hair girl-cuddle-hair"></div>
+                    </div>
+
+                    <div class="cuddle-body girl-cuddle-body"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="cuddle-tap-text" id="cuddleTapText">
+                <span>♡</span> Tap to cuddle closer <span>♡</span>
+            </div>
+
+
+            <div class="cuddle-choices" id="cuddleChoices">
+
+                <button data-choice="closer">
+                    🤗 Cuddle closer
+                </button>
+
+                <button data-choice="kiss">
+                    💋 Kiss him again
+                </button>
+
+                <button data-choice="stay">
+                    ☾ Just stay like this
+                </button>
+
+            </div>
+
+
+            <p id="cuddleResponse"></p>
+
+
+            <button id="continueLove" class="continue-love">
+                Continue <span>♡</span>
+            </button>
 
         </div>
 
     </section>
 
 
-    <!-- ================= LOVE QUESTION ================= -->
+    <!-- =====================================================
+         PHONE EASTER EGG
+         ===================================================== -->
 
-    <section id="loveScene" class="scene">
+    <div id="phonePopup" class="overlay-popup">
 
-        <div class="loveMoon">☾</div>
+        <div class="phone-card">
 
-        <div class="loveContent">
+            <button id="closePhone">×</button>
+
+            <div class="phone-icon">
+                📱
+            </div>
+
+            <h3>1:03 AM</h3>
+
+            <p>
+                Apparently neither of us is going to sleep
+                anytime soon. <span>♡</span>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <button id="hiddenPhone" aria-label="Hidden phone">
+        📱
+    </button>
+
+
+    <!-- =====================================================
+         FINAL LOVE QUESTION
+         ===================================================== -->
+
+    <section id="loveQuestionScene" class="scene">
+
+        <div class="love-question">
+
+            <div class="final-moon">
+                ☾
+            </div>
 
             <p>
                 Tisha looked at him...
@@ -285,15 +435,15 @@
                 "Do you love me?"
             </h2>
 
-            <button id="page5Button">
-                Continue <span>♥</span>
+            <button id="nextPage">
+                Continue <span>♡</span>
             </button>
 
         </div>
 
     </section>
 
-</div>
+</main>
 
 <script src="page4.js"></script>
 
