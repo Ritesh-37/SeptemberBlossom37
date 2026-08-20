@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Seven Wonders ✦</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Georgia,"Times New Roman",serif;
+    color:white;
+    background:#1b0008;
+}
+
+body{
+    position:relative;
+}
+
+#wonderScene{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    background-size:cover;
+    background-position:center;
+    transition:
+        background-image 1.2s ease,
+        transform 1.2s ease;
+}
+
+#wonderScene::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(20,0,5,.9),
+            rgba(30,0,8,.35),
+            rgba(10,0,4,.75)
+        );
+}
+
+#wonderScene::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 20%,
+            rgba(0,0,0,.75) 100%
+        );
+}
+
+.kenburns{
+    animation:kenburns 12s ease-in-out infinite alternate;
+}
+
+@keyframes kenburns{
+    from{
+        background-position:center;
+        transform:scale(1);
+    }
+    to{
+        background-position:54% 46%;
+        transform:scale(1.06);
+    }
+}
+
+.particles{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:3;
+}
+
+.particle{
+    position:absolute;
+    width:3px;
+    height:3px;
+    border-radius:50%;
+    background:#e6bd69;
+    box-shadow:0 0 10px #e6bd69;
+    animation:float 8s linear infinite;
+    opacity:.5;
+}
+
+@keyframes float{
+    0%{
+        transform:translateY(100vh) translateX(0);
+        opacity:0;
+    }
+    20%{opacity:.6}
+    80%{opacity:.4}
+    100%{
+        transform:translateY(-10vh) translateX(50px);
+        opacity:0;
+    }
+}
+
+.content{
+    position:relative;
+    z-index:10;
+    width:min(1100px,92%);
+    height:100%;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.card{
+    width:min(760px,100%);
+    padding:42px;
+    border:1px solid rgba(238,193,108,.35);
+    border-radius:28px;
+    background:rgba(35,0,10,.54);
+    backdrop-filter:blur(16px);
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.65),
+        inset 0 0 40px rgba(255,190,100,.035);
+    transform:translateY(20px);
+    animation:cardIn 1.2s ease forwards;
+}
+
+@keyframes cardIn{
+    to{
+        transform:translateY(0);
+    }
+}
+
+.eyebrow{
+    color:#e8bd6b;
+    letter-spacing:5px;
+    text-transform:uppercase;
+    font-family:Arial,sans-serif;
+    font-size:.72rem;
+    margin-bottom:15px;
+}
+
+h1{
+    font-size:clamp(2.5rem,6vw,5rem);
+    font-weight:400;
+    line-height:1;
+    margin-bottom:12px;
+}
+
+.description{
+    color:#e8d8c0;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+
+.question{
+    font-size:1.2rem;
+    margin-bottom:18px;
+    color:#f5d79d;
+}
+
+.options{
+    display:grid;
+    gap:11px;
+}
+
+.option{
+    border:1px solid rgba(255,220,160,.2);
+    background:rgba(255,255,255,.055);
+    color:#fff;
+    border-radius:15px;
+    padding:15px 17px;
+    cursor:pointer;
+    transition:.3s;
+    font-family:Arial,sans-serif;
+    text-align:left;
+}
+
+.option:hover{
+    background:rgba(222,168,79,.14);
+    border-color:rgba(245,199,110,.55);
+    transform:translateX(5px);
+}
+
+.option.selected{
+    background:rgba(191,130,37,.3);
+    border-color:#e8bd6b;
+    box-shadow:0 0 20px rgba(230,190,100,.15);
+}
+
+.option.correct{
+    background:rgba(80,150,90,.25);
+    border-color:#9bd6a1;
+}
+
+.option.wrong{
+    background:rgba(170,30,40,.3);
+    border-color:#ff8088;
+}
+
+.next{
+    margin-top:25px;
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    border:1px solid #dcb467;
+    background:linear-gradient(
+        135deg,
+        rgba(211,164,72,.22),
+        rgba(100,0,20,.4)
+    );
+    color:#f4d49b;
+    padding:13px 22px;
+    border-radius:30px;
+    cursor:pointer;
+    font-family:Arial,sans-serif;
+    letter-spacing:1px;
+    transition:.3s;
+}
+
+.next:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 25px rgba(0,0,0,.4);
+}
+
+.progress{
+    position:absolute;
+    top:30px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:20;
+    display:flex;
+    gap:8px;
+}
+
+.dot{
+    width:35px;
+    height:3px;
+    border-radius:3px;
+    background:rgba(255,255,255,.2);
+    transition:.5s;
+}
+
+.dot.active{
+    background:#e9c16e;
+    box-shadow:0 0 10px #e9c16e;
+}
+
+.wonder-popup{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(10,0,3,.75);
+    backdrop-filter:blur(10px);
+}
+
+.popup-box{
+    width:min(650px,95%);
+    padding:45px;
+    text-align:center;
+    border:1px solid rgba(237,194,111,.55);
+    border-radius:30px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(74,0,17,.94),
+            rgba(22,0,7,.96)
+        );
+    box-shadow:0 30px 100px rgba(0,0,0,.7);
+    animation:popupIn .7s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes popupIn{
+    from{
+        transform:scale(.65) rotate(-2deg);
+        opacity:0;
+    }
+    to{
+        transform:scale(1) rotate(0);
+        opacity:1;
+    }
+}
+
+.popup-kicker{
+    color:#d9ad5d;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    font-family:Arial,sans-serif;
+    font-size:.7rem;
+}
+
+.popup-box h2{
+    font-size:clamp(2rem,5vw,4rem);
+    font-weight:400;
+    margin:15px 0;
+}
+
+.popup-description{
+    color:#ddcdb6;
+    line-height:1.7;
+    margin-bottom:20px;
+}
+
+.compliment{
+    color:#f0c977;
+    font-size:1.15rem;
+    font-style:italic;
+    line-height:1.6;
+    margin:25px 0;
+}
+
+.continue{
+    padding:14px 28px;
+    border:1px solid #e5bd6d;
+    border-radius:30px;
+    color:#f5d69b;
+    background:rgba(210,160,60,.12);
+    cursor:pointer;
+}
+
+@media(max-width:600px){
+    .card{
+        padding:28px 20px;
+        max-height:88vh;
+        overflow:auto;
+    }
+
+    .popup-box{
+        padding:32px 22px;
+    }
+
+    .progress{
+        top:18px;
+    }
+
+    .dot{
+        width:25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="wonderScene" class="kenburns">
+
+    <div class="particles" id="particles"></div>
+
+    <div class="progress" id="progress"></div>
+
+    <main class="content">
+
+        <section class="card">
+
+            <div class="eyebrow" id="number">
+                Wonder 01
+            </div>
+
+            <h1 id="title">
+                The Great Wall of China
+            </h1>
+
+            <p class="description" id="description"></p>
+
+            <div class="question" id="question"></div>
+
+            <div class="options" id="options"></div>
+
+            <button class="next" id="nextBtn" style="display:none">
+                Continue <span>→</span>
+            </button>
+
+        </section>
+
+    </main>
+</div>
+
+<div class="wonder-popup" id="popup">
+
+    <div class="popup-box">
+
+        <div class="popup-kicker">
+            Correct ✦
+        </div>
+
+        <h2 id="popupTitle"></h2>
+
+        <p class="popup-description" id="popupDescription"></p>
+
+        <div class="compliment" id="compliment"></div>
+
+        <button class="continue" id="continueBtn">
+            Next Wonder →
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const wonders=[
+
+{
+name:"The Great Wall of China",
+image:"https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1800&q=90",
+description:"A monumental network of fortifications stretching across China's historic northern frontier.",
+question:"Why was the Great Wall primarily built?",
+options:[
+"To protect against invasions",
+"To transport silk",
+"To create royal gardens",
+"To mark the capital"
+],
+correct:[0],
+compliment:"Strong, breathtaking and impossible to ignore... honestly, that description sounds suspiciously familiar. ❤️"
+},
+
+{
+name:"Petra",
+image:"https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1800&q=90",
+description:"The ancient Nabataean city carved into rose-coloured sandstone cliffs in present-day Jordan.",
+question:"What is Petra famously known for?",
+options:[
+"Its underground railway",
+"Its rock-cut architecture",
+"Its floating temples",
+"Its giant statues"
+],
+correct:[1],
+compliment:"Petra is called the Rose City... but you somehow make rose look like it was named after you. 🌹"
+},
+
+{
+name:"Colosseum",
+image:"https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1800&q=90",
+description:"Rome's legendary amphitheatre, one of the most enduring symbols of ancient Roman engineering.",
+question:"Which ancient civilisation built the Colosseum?",
+options:[
+"Greek",
+"Roman",
+"Mayan",
+"Egyptian"
+],
+correct:[1],
+compliment:"Thousands once gathered to look at this masterpiece. I'd probably understand the feeling if you walked into the room. 😏"
+},
+
+{
+name:"Chichén Itzá",
+image:"https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=1800&q=90",
+description:"A remarkable Maya archaeological complex famous for its monumental pyramid and astronomical significance.",
+question:"Chichén Itzá belonged primarily to which civilisation?",
+options:[
+"Maya",
+"Roman",
+"Persian",
+"Viking"
+],
+correct:[0],
+compliment:"Ancient, mysterious and ridiculously captivating... you're beginning to see the pattern, aren't you? ✦"
+},
+
+{
+name:"Machu Picchu",
+image:"https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1800&q=90",
+description:"The spectacular 15th-century Inca citadel perched high among the Andes mountains of Peru.",
+question:"Machu Picchu is associated with which civilisation?",
+options:[
+"Inca",
+"Roman",
+"Aztec",
+"Egyptian"
+],
+correct:[0],
+compliment:"Hidden among the mountains, surrounded by beauty... I can think of one person who belongs in a view like this. ❤️"
+},
+
+{
+name:"Taj Mahal",
+image:"https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1800&q=90",
+description:"An iconic white-marble mausoleum in Agra, built by Shah Jahan in memory of Mumtaz Mahal.",
+question:"The Taj Mahal was built primarily as a monument to...",
+options:[
+"Victory",
+"Trade",
+"Love",
+"Science"
+],
+correct:[2],
+compliment:"A monument built out of love... okay, this one was obviously going to remind me of you. ❤️"
+},
+
+{
+name:"Christ the Redeemer",
+image:"https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1800&q=90",
+description:"The immense Art Deco statue overlooking Rio de Janeiro from the summit of Mount Corcovado.",
+question:"Where is Christ the Redeemer located?",
+options:[
+"Rio de Janeiro",
+"Lisbon",
+"Buenos Aires",
+"Santiago"
+],
+correct:[0],
+compliment:"Standing above an entire city and still somehow not stealing the spotlight as much as you do. 😌"
+}
+
+];
+
+let current=0;
+let selected=[];
+
+const scene=document.getElementById("wonderScene");
+const number=document.getElementById("number");
+const title=document.getElementById("title");
+const description=document.getElementById("description");
+const question=document.getElementById("question");
+const options=document.getElementById("options");
+const nextBtn=document.getElementById("nextBtn");
+const popup=document.getElementById("popup");
+const popupTitle=document.getElementById("popupTitle");
+const popupDescription=document.getElementById("popupDescription");
+const compliment=document.getElementById("compliment");
+const continueBtn=document.getElementById("continueBtn");
+const progress=document.getElementById("progress");
+
+function createParticles(){
+
+    for(let i=0;i<35;i++){
+
+        const p=document.createElement("div");
+
+        p.className="particle";
+
+        p.style.left=Math.random()*100+"%";
+        p.style.animationDelay=Math.random()*8+"s";
+        p.style.animationDuration=(6+Math.random()*8)+"s";
+
+        document.getElementById("particles").appendChild(p);
+    }
+}
+
+function createProgress(){
+
+    progress.innerHTML="";
+
+    wonders.forEach((_,i)=>{
+
+        const d=document.createElement("div");
+
+        d.className="dot";
+
+        if(i===current)
+            d.classList.add("active");
+
+        progress.appendChild(d);
+    });
+}
+
+function loadWonder(){
+
+    selected=[];
+
+    const w=wonders[current];
+
+    scene.style.backgroundImage=`url("${w.image}")`;
+
+    scene.classList.remove("kenburns");
+
+    void scene.offsetWidth;
+
+    scene.classList.add("kenburns");
+
+    number.textContent=`Wonder ${String(current+1).padStart(2,"0")}`;
+
+    title.textContent=w.name;
+
+    description.textContent=w.description;
+
+    question.textContent=w.question;
+
+    options.innerHTML="";
+
+    nextBtn.style.display="none";
+
+    w.options.forEach((text,index)=>{
+
+        const button=document.createElement("button");
+
+        button.className="option";
+
+        button.textContent=text;
+
+        button.addEventListener("click",()=>selectAnswer(index,button));
+
+        options.appendChild(button);
+    });
+
+    createProgress();
+}
+
+function selectAnswer(index,button){
+
+    const w=wonders[current];
+
+    /*
+      Q6 is intentionally multi-answer.
+      For the sixth wonder the player can select multiple answers.
+    */
+
+    if(current===5){
+
+        if(selected.includes(index)){
+
+            selected=selected.filter(i=>i!==index);
+
+            button.classList.remove("selected");
+
+        }else{
+
+            selected.push(index);
+
+            button.classList.add("selected");
+        }
+
+        if(selected.length>0)
+            nextBtn.style.display="inline-flex";
+
+        return;
+    }
+
+    selected=[index];
+
+    document.querySelectorAll(".option").forEach(b=>{
+        b.classList.remove("selected");
+    });
+
+    button.classList.add("selected");
+
+    nextBtn.style.display="inline-flex";
+}
+
+nextBtn.addEventListener("click",()=>{
+
+    const w=wonders[current];
+
+    const correct =
+        selected.length===w.correct.length &&
+        selected.every(i=>w.correct.includes(i));
+
+    if(!correct){
+
+        document.querySelectorAll(".option").forEach((button,i)=>{
+
+            if(w.correct.includes(i))
+                button.classList.add("correct");
+
+            else if(selected.includes(i))
+                button.classList.add("wrong");
+        });
+
+        return;
+    }
+
+    showPopup();
+});
+
+function showPopup(){
+
+    const w=wonders[current];
+
+    popupTitle.textContent=w.name;
+
+    popupDescription.textContent=w.description;
+
+    compliment.textContent=w.compliment;
+
+    popup.style.display="flex";
+}
+
+continueBtn.addEventListener("click",()=>{
+
+    popup.style.display="none";
+
+    if(current<wonders.length-1){
+
+        current++;
+
+        loadWonder();
+
+    }else{
+
+        document.body.style.transition="opacity 1.5s";
+
+        document.body.style.opacity="0";
+
+        setTimeout(()=>{
+            window.location.href="dinner.html";
+        },1500);
+    }
+});
+
+createParticles();
+loadWonder();
+
+</script>
+
+</body>
+</html>
