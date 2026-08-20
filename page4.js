@@ -1,8 +1,8 @@
 /* =========================================================
-   PAGE 4
-   OUR LITTLE STORY
+   PAGE 4 - OPTIMIZED JAVASCRIPT
 ========================================================= */
 
+"use strict";
 
 /* =========================================================
    ELEMENTS
@@ -29,22 +29,29 @@ const sparkleSound = document.getElementById("sparkleSound");
 
 const musicButton = document.getElementById("musicButton");
 
-let musicStarted = false;
-
 
 /* =========================================================
-   SAFE SOUND
+   SAFE AUDIO
 ========================================================= */
 
-function playSound(audio) {
+function playAudio(audio, volume = 1) {
 
     if (!audio) return;
 
-    audio.currentTime = 0;
+    try {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.volume = volume;
 
-    audio.play().catch(() => {
-        // Browser may block audio before user interaction.
-    });
+        const promise = audio.play();
+
+        if (promise) {
+            promise.catch(() => {});
+        }
+
+    } catch (error) {
+        console.log("Audio unavailable.");
+    }
 }
 
 
@@ -52,49 +59,62 @@ function playSound(audio) {
    MUSIC
 ========================================================= */
 
+let musicPlaying = false;
+
 function startMusic() {
 
-    if (musicStarted) return;
+    if (!bgMusic) return;
 
-    bgMusic.volume = 0.42;
+    bgMusic.volume = 0.4;
 
-    bgMusic.play()
-        .then(() => {
+    const promise = bgMusic.play();
 
-            musicStarted = true;
+    if (promise) {
 
-            musicButton.classList.add("playing");
+        promise
+            .then(() => {
 
-        })
-        .catch(() => {
-            // Audio will start after another interaction.
-        });
+                musicPlaying = true;
+
+                musicButton.classList.add("playing");
+
+            })
+            .catch(() => {});
+
+    }
 }
 
-musicButton.addEventListener("click", () => {
+
+musicButton.addEventListener("click", function () {
 
     if (bgMusic.paused) {
 
-        bgMusic.play().catch(() => {});
-
-        musicButton.classList.add("playing");
+        startMusic();
 
     } else {
 
         bgMusic.pause();
 
+        musicPlaying = false;
+
         musicButton.classList.remove("playing");
+
     }
+
 });
 
 
 /* =========================================================
-   SCENE SWITCHER
+   RELIABLE SCENE SWITCH
 ========================================================= */
 
 function showScene(scene) {
 
-    Object.values(scenes).forEach(currentScene => {
+    if (!scene) return;
+
+    Object.values(scenes).forEach(function (currentScene) {
+
+        if (!currentScene) return;
 
         currentScene.classList.add("hidden");
         currentScene.classList.remove("active");
@@ -103,16 +123,23 @@ function showScene(scene) {
 
     scene.classList.remove("hidden");
     scene.classList.add("active");
+
 }
 
 
 /* =========================================================
-   PARTICLES
+   SMALL PARTICLES
 ========================================================= */
 
 function createParticle() {
 
-    const particle = document.createElement("div");
+    const container =
+        document.getElementById("particles");
+
+    if (!container) return;
+
+    const particle =
+        document.createElement("div");
 
     particle.className = "particle";
 
@@ -120,46 +147,47 @@ function createParticle() {
         Math.random() * 100 + "%";
 
     particle.style.bottom =
-        (-10 - Math.random() * 20) + "px";
+        "-10px";
 
     particle.style.animationDuration =
-        (4 + Math.random() * 6) + "s";
+        (5 + Math.random() * 5) + "s";
 
-    particle.style.animationDelay =
-        Math.random() * 2 + "s";
+    container.appendChild(particle);
 
-    particle.style.opacity =
-        0.3 + Math.random() * 0.7;
+    setTimeout(function () {
 
-    document.getElementById("particles")
-        .appendChild(particle);
-
-    setTimeout(() => {
         particle.remove();
+
     }, 10000);
+
 }
 
-setInterval(createParticle, 450);
+setInterval(createParticle, 700);
 
 
 /* =========================================================
-   INTRO
+   1. WAKE UP
 ========================================================= */
 
-document
-    .getElementById("wakeButton")
-    .addEventListener("click", () => {
+const wakeButton =
+    document.getElementById("wakeButton");
 
-        startMusic();
-        playSound(clickSound);
 
-        showScene(scenes.tease);
+wakeButton.addEventListener("click", function () {
 
-    });
+    console.log("Wake button clicked.");
+
+    startMusic();
+
+    playAudio(clickSound, 0.7);
+
+    showScene(scenes.tease);
+
+});
 
 
 /* =========================================================
-   TEASING POPUPS
+   2. TEASING POPUPS
 ========================================================= */
 
 const teaseTitle =
@@ -196,32 +224,37 @@ const teaseMessages = [
 
 ];
 
+
 let teaseIndex = 0;
 
 
-teaseNext.addEventListener("click", () => {
+teaseNext.addEventListener("click", function () {
 
-    playSound(clickSound);
+    playAudio(clickSound, 0.7);
 
     teaseIndex++;
 
     if (teaseIndex < teaseMessages.length) {
 
-        teaseTitle.style.opacity = "0";
-        teaseText.style.opacity = "0";
+        teaseTitle.textContent =
+            teaseMessages[teaseIndex].title;
 
-        setTimeout(() => {
+        teaseText.textContent =
+            teaseMessages[teaseIndex].text;
 
-            teaseTitle.textContent =
-                teaseMessages[teaseIndex].title;
+        /*
+           Restart popup animation.
+        */
 
-            teaseText.textContent =
-                teaseMessages[teaseIndex].text;
+        const popup =
+            document.getElementById("teasePopup");
 
-            teaseTitle.style.opacity = "1";
-            teaseText.style.opacity = "1";
+        popup.style.animation = "none";
 
-        }, 250);
+        void popup.offsetWidth;
+
+        popup.style.animation =
+            "popupIn 0.8s cubic-bezier(.2,.8,.2,1)";
 
     } else {
 
@@ -233,53 +266,53 @@ teaseNext.addEventListener("click", () => {
 
 
 /* =========================================================
-   READY
+   3. READY
 ========================================================= */
 
-document
-    .getElementById("readyButton")
-    .addEventListener("click", () => {
+const readyButton =
+    document.getElementById("readyButton");
 
-        playSound(whooshSound);
 
-        showScene(scenes.wonderIntro);
+readyButton.addEventListener("click", function () {
 
-        const content =
-            document.querySelector(".wonder-intro-content");
+    playAudio(whooshSound, 0.6);
 
-        content.classList.remove("show");
+    showScene(scenes.wonderIntro);
 
-        setTimeout(() => {
-            content.classList.add("show");
-        }, 150);
+    const content =
+        document.querySelector(".wonder-intro-content");
 
-        setTimeout(() => {
+    content.classList.remove("show");
 
-            startQuiz();
+    void content.offsetWidth;
 
-        }, 5200);
+    content.classList.add("show");
 
-    });
+    /*
+       Short cinematic pause.
+       Not an unnecessary long JS delay.
+    */
+
+    setTimeout(function () {
+
+        startQuiz();
+
+    }, 3800);
+
+});
 
 
 /* =========================================================
-   QUIZ DATA
+   4. QUIZ DATA
 ========================================================= */
-
-/*
-   IMPORTANT:
-
-   These are the seven questions for now.
-   You can change the questions and answers
-   directly here without touching the HTML.
-*/
 
 const questions = [
 
     {
         wonder: "Great Wall",
         icon: "✦",
-        question: "Who is more likely to remember a tiny detail from a conversation?",
+        question:
+            "Who is more likely to remember a tiny detail from a conversation?",
         answers: [
             "Ritesh",
             "Tisha"
@@ -290,7 +323,8 @@ const questions = [
     {
         wonder: "Petra",
         icon: "◆",
-        question: "Who was more likely to start talking first?",
+        question:
+            "Who was more likely to start talking first?",
         answers: [
             "Ritesh",
             "Tisha"
@@ -301,7 +335,8 @@ const questions = [
     {
         wonder: "Colosseum",
         icon: "◇",
-        question: "Who is more dramatic when something doesn't go their way?",
+        question:
+            "Who is more dramatic when something doesn't go their way?",
         answers: [
             "Ritesh",
             "Tisha"
@@ -312,7 +347,8 @@ const questions = [
     {
         wonder: "Machu Picchu",
         icon: "✧",
-        question: "Who is more likely to say 'I'm fine' when they clearly aren't?",
+        question:
+            "Who is more likely to say 'I'm fine' when they clearly aren't?",
         answers: [
             "Ritesh",
             "Tisha"
@@ -323,7 +359,8 @@ const questions = [
     {
         wonder: "Christ the Redeemer",
         icon: "✦",
-        question: "Who would plan a surprise and then struggle to keep it secret?",
+        question:
+            "Who would plan a surprise and then struggle to keep it secret?",
         answers: [
             "Ritesh",
             "Tisha"
@@ -334,7 +371,8 @@ const questions = [
     {
         wonder: "Chichén Itzá",
         icon: "◆",
-        question: "Who would fall asleep first during a movie?",
+        question:
+            "Who would fall asleep first during a movie?",
         answers: [
             "Ritesh",
             "Tisha"
@@ -345,7 +383,8 @@ const questions = [
     {
         wonder: "Taj Mahal",
         icon: "♥",
-        question: "Who has the more special place in the other's heart?",
+        question:
+            "Who has the more special place in the other's heart?",
         answers: [
             "Ritesh",
             "Tisha"
@@ -361,7 +400,7 @@ let score = 0;
 
 
 /* =========================================================
-   START QUIZ
+   5. START QUIZ
 ========================================================= */
 
 function startQuiz() {
@@ -377,7 +416,7 @@ function startQuiz() {
 
 
 /* =========================================================
-   LOAD QUESTION
+   6. LOAD QUESTION
 ========================================================= */
 
 function loadQuestion() {
@@ -385,10 +424,13 @@ function loadQuestion() {
     const question =
         questions[currentQuestion];
 
+    if (!question) return;
+
+
     const questionText =
         document.getElementById("questionText");
 
-    const answersContainer =
+    const answers =
         document.getElementById("answers");
 
     const wonderIcon =
@@ -417,22 +459,25 @@ function loadQuestion() {
         String(currentQuestion + 1).padStart(2, "0");
 
     counter.textContent =
-        `${String(currentQuestion + 1).padStart(2, "0")} / 07`;
+        String(currentQuestion + 1).padStart(2, "0")
+        + " / "
+        + String(questions.length).padStart(2, "0");
 
     questionText.textContent =
         question.question;
 
     progress.style.width =
-        `${((currentQuestion + 1) / questions.length) * 100}%`;
+        ((currentQuestion + 1) /
+        questions.length * 100) + "%";
 
     feedback.textContent = "";
 
     nextButton.classList.remove("show");
 
-    answersContainer.innerHTML = "";
+    answers.innerHTML = "";
 
 
-    question.answers.forEach(answer => {
+    question.answers.forEach(function (answer) {
 
         const button =
             document.createElement("button");
@@ -440,16 +485,19 @@ function loadQuestion() {
         button.className =
             "answer-button";
 
+        button.type =
+            "button";
+
         button.textContent =
             answer;
 
-        button.addEventListener("click", () => {
+        button.addEventListener("click", function () {
 
             selectAnswer(button, answer);
 
         });
 
-        answersContainer.appendChild(button);
+        answers.appendChild(button);
 
     });
 
@@ -457,7 +505,7 @@ function loadQuestion() {
 
 
 /* =========================================================
-   ANSWER
+   7. SELECT ANSWER
 ========================================================= */
 
 function selectAnswer(button, answer) {
@@ -468,13 +516,19 @@ function selectAnswer(button, answer) {
     const buttons =
         document.querySelectorAll(".answer-button");
 
-    buttons.forEach(btn => {
+
+    /*
+       Prevent multiple clicks.
+    */
+
+    buttons.forEach(function (btn) {
 
         btn.classList.add("disabled");
 
     });
 
-    playSound(clickSound);
+
+    playAudio(clickSound, 0.6);
 
 
     if (answer === question.correct) {
@@ -483,27 +537,38 @@ function selectAnswer(button, answer) {
 
         score++;
 
-        document.getElementById("answerFeedback")
-            .textContent =
+        document.getElementById(
+            "answerFeedback"
+        ).textContent =
             "I knew you'd remember that. ♥";
 
     } else {
 
         button.classList.add("wrong");
 
-        document.getElementById("answerFeedback")
-            .textContent =
-            `Hmm... the answer was ${question.correct}.`;
+        document.getElementById(
+            "answerFeedback"
+        ).textContent =
+            "Hmm... the answer was "
+            + question.correct
+            + ".";
 
-        buttons.forEach(btn => {
 
-            if (btn.textContent === question.correct) {
+        buttons.forEach(function (btn) {
+
+            if (
+                btn.textContent ===
+                question.correct
+            ) {
+
                 btn.classList.add("correct");
+
             }
 
         });
 
     }
+
 
     document
         .getElementById("nextQuestion")
@@ -513,18 +578,21 @@ function selectAnswer(button, answer) {
 
 
 /* =========================================================
-   NEXT QUESTION
+   8. NEXT QUESTION
 ========================================================= */
 
 document
     .getElementById("nextQuestion")
-    .addEventListener("click", () => {
+    .addEventListener("click", function () {
 
-        playSound(clickSound);
+        playAudio(clickSound, 0.6);
 
         currentQuestion++;
 
-        if (currentQuestion < questions.length) {
+        if (
+            currentQuestion <
+            questions.length
+        ) {
 
             loadQuestion();
 
@@ -538,27 +606,27 @@ document
 
 
 /* =========================================================
-   FINISH QUIZ
+   9. FINISH QUIZ
 ========================================================= */
 
 function finishQuiz() {
 
     showScene(scenes.taj);
 
-    playSound(sparkleSound);
+    playAudio(sparkleSound, 0.7);
 
 }
 
 
 /* =========================================================
-   TAJ CONTINUE
+   10. TAJ MAHAL → FIND RITESH
 ========================================================= */
 
 document
     .getElementById("tajContinue")
-    .addEventListener("click", () => {
+    .addEventListener("click", function () {
 
-        playSound(whooshSound);
+        playAudio(whooshSound, 0.6);
 
         showScene(scenes.find);
 
@@ -566,7 +634,7 @@ document
 
 
 /* =========================================================
-   FIND RITESH
+   11. FIND RITESH
 ========================================================= */
 
 const hiddenStars =
@@ -576,30 +644,33 @@ const foundMessage =
     document.getElementById("foundMessage");
 
 
-hiddenStars.forEach(star => {
+hiddenStars.forEach(function (star) {
 
-    star.addEventListener("click", () => {
+    star.addEventListener("click", function () {
 
-        playSound(clickSound);
-
-        const isCorrect =
+        const correct =
             star.dataset.correct === "true";
 
-        if (isCorrect) {
 
-            playSound(sparkleSound);
+        if (correct) {
 
-            foundMessage.classList.add("show");
+            playAudio(sparkleSound, 0.8);
 
             star.style.opacity = "0";
 
-            setTimeout(() => {
+            foundMessage.classList.add("show");
+
+
+            setTimeout(function () {
 
                 showScene(scenes.dinnerIntro);
 
-            }, 2500);
+            }, 1800);
+
 
         } else {
+
+            playAudio(clickSound, 0.4);
 
             star.animate(
                 [
@@ -629,14 +700,14 @@ hiddenStars.forEach(star => {
 
 
 /* =========================================================
-   DINNER START
+   12. DINNER INTRO
 ========================================================= */
 
 document
     .getElementById("dinnerStart")
-    .addEventListener("click", () => {
+    .addEventListener("click", function () {
 
-        playSound(clickSound);
+        playAudio(clickSound, 0.6);
 
         showScene(scenes.dinner);
 
@@ -644,34 +715,39 @@ document
 
 
 /* =========================================================
-   DINNER FOOD
+   13. DINNER DATA
 ========================================================= */
 
 const foodData = {
 
     starter: {
         title: "The first bite",
-        text: "For the beginning of every little adventure we've had."
+        text:
+            "For the beginning of every little adventure we've had."
     },
 
     main: {
         title: "For my beautiful lady",
-        text: "Because ordinary dinners are boring when I can make one special for you."
+        text:
+            "Because ordinary dinners are boring when I can make one special for you."
     },
 
     dessert: {
         title: "Something sweet",
-        text: "Although honestly... you're still sweeter."
+        text:
+            "Although honestly... you're still sweeter."
     },
 
     drink: {
         title: "A little toast",
-        text: "To everything we've already lived through — and everything still waiting for us."
+        text:
+            "To everything we've already lived through — and everything still waiting for us."
     },
 
     secret: {
         title: "One last compliment",
-        text: "I love how charismatic, interactive and full of life you are. You have a very special place in my life."
+        text:
+            "I love how charismatic, interactive and full of life you are. You have a very special place in my life."
     }
 
 };
@@ -687,11 +763,13 @@ const foodText =
     document.getElementById("foodText");
 
 
-foodButtons.forEach(button => {
+let dinnerItemsClicked =
+    new Set();
 
-    button.addEventListener("click", () => {
 
-        playSound(clickSound);
+foodButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
 
         const food =
             button.dataset.food;
@@ -699,48 +777,45 @@ foodButtons.forEach(button => {
         const data =
             foodData[food];
 
+
+        playAudio(clickSound, 0.5);
+
+
         foodTitle.textContent =
             data.title;
 
         foodText.textContent =
             data.text;
 
-        button.style.transform =
-            "scale(0.7)";
 
-        setTimeout(() => {
+        dinnerItemsClicked.add(food);
+
+
+        button.style.transform =
+            "scale(0.75)";
+
+
+        setTimeout(function () {
 
             button.style.transform =
                 "scale(1)";
 
-        }, 250);
-
-    });
-
-});
+        }, 200);
 
 
-/* =========================================================
-   DINNER COMPLETION
-========================================================= */
+        /*
+           All five discovered.
+        */
 
-let dinnerItemsClicked = new Set();
+        if (
+            dinnerItemsClicked.size === 5
+        ) {
 
-foodButtons.forEach(button => {
-
-    button.addEventListener("click", () => {
-
-        dinnerItemsClicked.add(
-            button.dataset.food
-        );
-
-        if (dinnerItemsClicked.size === 5) {
-
-            setTimeout(() => {
+            setTimeout(function () {
 
                 startCurtainSequence();
 
-            }, 1400);
+            }, 900);
 
         }
 
@@ -750,97 +825,92 @@ foodButtons.forEach(button => {
 
 
 /* =========================================================
-   CURTAIN SEQUENCE
+   14. CURTAIN SEQUENCE
 ========================================================= */
+
+let curtainStarted = false;
+
 
 function startCurtainSequence() {
 
-    playSound(whooshSound);
+    if (curtainStarted) return;
+
+    curtainStarted = true;
+
+
+    playAudio(whooshSound, 0.7);
 
     showScene(scenes.curtain);
 
+
     /*
-        Curtains close for 2.5 seconds.
-        Then the center goes black.
-        Then Page 4's final transition begins.
+       Let the curtains close,
+       then move to the final transition.
     */
 
-    setTimeout(() => {
+    setTimeout(function () {
 
         startMemoryTransition();
 
-    }, 5800);
+    }, 4300);
 
 }
 
 
 /* =========================================================
-   TIME TO LOOK AT US
+   15. MEMORY TRANSITION
 ========================================================= */
 
 function startMemoryTransition() {
 
-    bgMusic.volume = 0.15;
-
     showScene(scenes.memory);
 
-    setTimeout(() => {
 
-        bgMusic.volume = 0.05;
+    /*
+       Slowly lower music.
+    */
 
-    }, 1200);
+    if (bgMusic) {
+
+        bgMusic.volume = 0.18;
+
+        setTimeout(function () {
+
+            bgMusic.volume = 0.06;
+
+        }, 1200);
+
+    }
 
 }
 
 
 /* =========================================================
-   GO TO PAGE 5
+   16. GO TO PAGE 5
 ========================================================= */
 
 document
     .getElementById("memoryGo")
-    .addEventListener("click", () => {
+    .addEventListener("click", function () {
 
-        playSound(whooshSound);
+        playAudio(whooshSound, 0.6);
 
         /*
-            CHANGE THIS FILE NAME IF YOUR PAGE 5
-            FILE HAS A DIFFERENT NAME.
+           Your Page 5 file.
         */
 
-        window.location.href = "page5.html";
+        window.location.href =
+            "page5.html";
 
     });
 
 
 /* =========================================================
-   INITIAL SETUP
+   INITIAL STATE
 ========================================================= */
 
-document.addEventListener("click", () => {
+showScene(scenes.intro);
 
-    startMusic();
-
-}, {
-    once: true
-});
-
-
-/* =========================================================
-   PAGE VISIBILITY
-========================================================= */
-
-document.addEventListener(
-    "visibilitychange",
-    () => {
-
-        if (document.hidden) {
-
-            bgMusic.pause();
-
-            musicButton.classList.remove("playing");
-
-        }
-
-    }
+console.log(
+    "Page 4 loaded successfully."
 );
