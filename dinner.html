@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dinner With You ❤️</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#080003;
+    color:white;
+    font-family:Georgia,"Times New Roman",serif;
+}
+
+body{
+    position:relative;
+}
+
+.room{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 45%,
+            rgba(180,74,38,.24),
+            transparent 32%
+        ),
+        radial-gradient(
+            ellipse at 50% 75%,
+            rgba(190,91,40,.12),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            #170007,
+            #35000d 55%,
+            #090003
+        );
+}
+
+.room::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.75),
+            transparent 28%,
+            transparent 72%,
+            rgba(0,0,0,.75)
+        );
+}
+
+.room::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 30%,
+            rgba(0,0,0,.7) 100%
+        );
+    pointer-events:none;
+}
+
+.ceiling-light{
+    position:absolute;
+    top:-100px;
+    left:50%;
+    transform:translateX(-50%);
+    width:500px;
+    height:300px;
+    background:radial-gradient(
+        ellipse,
+        rgba(255,163,65,.13),
+        transparent 65%
+    );
+    filter:blur(20px);
+}
+
+.table{
+    position:absolute;
+    width:min(900px,90vw);
+    height:310px;
+    left:50%;
+    bottom:8%;
+    transform:translateX(-50%);
+    border-radius:50% 50% 20% 20%;
+    background:
+        linear-gradient(
+            180deg,
+            #35100c,
+            #170604
+        );
+    border:2px solid rgba(196,128,63,.4);
+    box-shadow:
+        0 -5px 30px rgba(130,47,19,.3),
+        0 40px 100px #000;
+}
+
+.table::before{
+    content:"";
+    position:absolute;
+    inset:15px;
+    border-radius:50%;
+    border:1px solid rgba(231,183,98,.18);
+}
+
+.plate{
+    position:absolute;
+    width:185px;
+    height:185px;
+    border-radius:50%;
+    background:
+        radial-gradient(
+            circle,
+            #eee7d9 0 48%,
+            #d0b997 49% 51%,
+            #f2e8d3 52% 100%
+        );
+    top:38px;
+    box-shadow:0 8px 20px rgba(0,0,0,.5);
+}
+
+.plate.left{
+    left:18%;
+}
+
+.plate.right{
+    right:18%;
+}
+
+.food{
+    position:absolute;
+    width:95px;
+    height:55px;
+    border-radius:50%;
+    top:65px;
+    left:45px;
+    background:
+        radial-gradient(circle at 30% 40%,#c66b30 0 12%,transparent 13%),
+        radial-gradient(circle at 55% 60%,#8f3e22 0 15%,transparent 16%),
+        radial-gradient(circle at 75% 35%,#d68c35 0 12%,transparent 13%),
+        #6c2519;
+    box-shadow:
+        inset 0 -8px 10px rgba(0,0,0,.3),
+        0 5px 10px rgba(0,0,0,.2);
+    transition:.8s;
+}
+
+.food.eaten{
+    opacity:0;
+    transform:scale(.3) rotate(20deg);
+}
+
+.glass{
+    position:absolute;
+    width:52px;
+    height:90px;
+    border:2px solid rgba(235,220,194,.45);
+    border-top:none;
+    bottom:20px;
+    background:
+        linear-gradient(
+            to top,
+            rgba(108,13,25,.85) 0 48%,
+            transparent 49%
+        );
+    border-radius:0 0 22px 22px;
+}
+
+.glass.left{
+    left:38%;
+}
+
+.glass.right{
+    right:38%;
+}
+
+.glass::after{
+    content:"";
+    position:absolute;
+    width:2px;
+    height:55px;
+    background:rgba(240,225,200,.5);
+    bottom:-55px;
+    left:50%;
+}
+
+.glass.eaten{
+    opacity:.15;
+}
+
+.candle{
+    position:absolute;
+    width:14px;
+    height:70px;
+    background:linear-gradient(
+        90deg,
+        #d9bd8a,
+        #fff4d0,
+        #b99965
+    );
+    bottom:90px;
+    border-radius:5px;
+    z-index:10;
+}
+
+.candle.one{
+    left:50%;
+}
+
+.candle.two{
+    left:58%;
+}
+
+.flame{
+    position:absolute;
+    width:24px;
+    height:35px;
+    left:50%;
+    top:-31px;
+    transform:translateX(-50%);
+    background:
+        radial-gradient(
+            ellipse at center bottom,
+            #fff 0 10%,
+            #ffd16a 35%,
+            #ff7b20 60%,
+            transparent 72%
+        );
+    animation:flicker .12s infinite alternate;
+    filter:drop-shadow(0 0 12px #ff9d37);
+}
+
+@keyframes flicker{
+    from{
+        transform:translateX(-50%) scale(1) rotate(-2deg);
+    }
+    to{
+        transform:translateX(-50%) scale(.85,1.15) rotate(3deg);
+    }
+}
+
+.person{
+    position:absolute;
+    bottom:25%;
+    width:100px;
+    height:180px;
+    z-index:5;
+}
+
+.person.left{
+    left:6%;
+}
+
+.person.right{
+    right:6%;
+}
+
+.head{
+    position:absolute;
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    top:0;
+    left:18px;
+    background:
+        radial-gradient(
+            circle at 35% 35%,
+            #dca57e,
+            #9c5f42
+        );
+}
+
+.body{
+    position:absolute;
+    width:100px;
+    height:130px;
+    top:50px;
+    border-radius:50px 50px 20px 20px;
+    background:linear-gradient(
+        135deg,
+        #1b1b24,
+        #08080c
+    );
+}
+
+.person.right .body{
+    background:
+        linear-gradient(
+            135deg,
+            #8d0e24,
+            #34000d
+        );
+}
+
+.person::after{
+    content:"";
+    position:absolute;
+    width:90px;
+    height:150px;
+    top:-20px;
+    left:5px;
+    background:radial-gradient(
+        ellipse,
+        rgba(255,143,54,.18),
+        transparent 70%
+    );
+    filter:blur(15px);
+    z-index:-1;
+}
+
+.name{
+    position:absolute;
+    top:190px;
+    width:100%;
+    text-align:center;
+    color:#d5a85c;
+    font-family:Arial,sans-serif;
+    letter-spacing:3px;
+    font-size:.7rem;
+}
+
+.dialogue{
+    position:absolute;
+    z-index:30;
+    top:8%;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(800px,90%);
+    text-align:center;
+}
+
+.kicker{
+    color:#d6a65c;
+    font-family:Arial,sans-serif;
+    font-size:.7rem;
+    letter-spacing:5px;
+    text-transform:uppercase;
+    margin-bottom:18px;
+}
+
+#compliment{
+    font-size:clamp(1.5rem,4vw,3.2rem);
+    line-height:1.15;
+    font-weight:400;
+    text-shadow:0 5px 25px #000;
+    transition:opacity .6s,transform .6s;
+}
+
+#instruction{
+    margin-top:22px;
+    color:rgba(255,230,190,.65);
+    font-family:Arial,sans-serif;
+    font-size:.7rem;
+    letter-spacing:3px;
+}
+
+.tap{
+    position:absolute;
+    inset:0;
+    z-index:100;
+    cursor:pointer;
+}
+
+.counter{
+    position:absolute;
+    bottom:5%;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:40;
+    color:#bd985c;
+    font-family:Arial,sans-serif;
+    font-size:.65rem;
+    letter-spacing:3px;
+}
+
+.heart{
+    position:fixed;
+    z-index:60;
+    pointer-events:none;
+    font-size:22px;
+    animation:heartFloat 2s forwards;
+}
+
+@keyframes heartFloat{
+    from{
+        opacity:0;
+        transform:translateY(0) scale(.5);
+    }
+    20%{
+        opacity:1;
+    }
+    to{
+        opacity:0;
+        transform:translateY(-180px) scale(1.5);
+    }
+}
+
+.fade{
+    animation:fade 1.7s forwards;
+}
+
+@keyframes fade{
+    to{
+        opacity:0;
+        filter:blur(15px);
+        transform:scale(1.08);
+    }
+}
+
+.curtains{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    pointer-events:none;
+    display:flex;
+}
+
+.curtain{
+    width:50%;
+    height:100%;
+    background:
+        linear-gradient(
+            90deg,
+            #080003,
+            #550010 45%,
+            #1b0007
+        );
+    box-shadow:0 0 50px #000;
+    transition:transform 2.5s cubic-bezier(.7,0,.2,1);
+}
+
+.curtain.left{
+    transform:translateX(-100%);
+}
+
+.curtain.right{
+    transform:translateX(100%);
+}
+
+.curtains.close .left{
+    transform:translateX(0);
+}
+
+.curtains.close .right{
+    transform:translateX(0);
+}
+
+@media(max-width:700px){
+
+    .person{
+        transform:scale(.65);
+        bottom:25%;
+    }
+
+    .person.left{
+        left:-5%;
+    }
+
+    .person.right{
+        right:-5%;
+    }
+
+    .table{
+        bottom:13%;
+        height:250px;
+    }
+
+    .plate{
+        width:125px;
+        height:125px;
+    }
+
+    .plate.left{
+        left:12%;
+    }
+
+    .plate.right{
+        right:12%;
+    }
+
+    .food{
+        width:70px;
+        height:40px;
+        top:43px;
+        left:27px;
+    }
+
+    .glass.left{
+        left:34%;
+    }
+
+    .glass.right{
+        right:34%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="room" id="room">
+
+    <div class="ceiling-light"></div>
+
+    <div class="dialogue">
+
+        <div class="kicker">
+            Dinner for two
+        </div>
+
+        <div id="compliment">
+            You made it. ❤️
+        </div>
+
+        <div id="instruction">
+            TAP ANYWHERE
+        </div>
+
+    </div>
+
+    <div class="person left">
+        <div class="head"></div>
+        <div class="body"></div>
+        <div class="name">RITESH</div>
+    </div>
+
+    <div class="person right">
+        <div class="head"></div>
+        <div class="body"></div>
+        <div class="name">TISHA</div>
+    </div>
+
+    <div class="table">
+
+        <div class="plate left">
+            <div class="food" id="food1"></div>
+        </div>
+
+        <div class="plate right">
+            <div class="food" id="food2"></div>
+        </div>
+
+        <div class="glass left" id="glass1"></div>
+
+        <div class="glass right" id="glass2"></div>
+
+        <div class="candle one">
+            <div class="flame"></div>
+        </div>
+
+        <div class="candle two">
+            <div class="flame"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="counter" id="counter">
+    DINNER · 0 / 7
+</div>
+
+<div class="tap" id="tap"></div>
+
+<div class="curtains" id="curtains">
+    <div class="curtain left"></div>
+    <div class="curtain right"></div>
+</div>
+
+<script>
+
+const compliments=[
+
+"You made it. ❤️",
+
+"That red dress looks absolutely beautiful on you...",
+
+"I was supposed to be paying attention to dinner, but you're making that unnecessarily difficult. 😏",
+
+"Every time I look at you, I forget what I was about to say.",
+
+"Somehow you always manage to make everything around you look a little less interesting. 😏",
+
+"And honestly... I don't think it's just because you're beautiful.",
+
+"It's the way you carry yourself. Your personality. Your energy. The way you make everything feel alive.",
+
+"Tonight was never really about the dinner.",
+
+"It was about getting a little time with you... just you and me. ❤️"
+
+];
+
+let taps=0;
+
+const tap=document.getElementById("tap");
+const compliment=document.getElementById("compliment");
+const counter=document.getElementById("counter");
+const room=document.getElementById("room");
+const curtains=document.getElementById("curtains");
+
+tap.addEventListener("click",()=>{
+
+    if(taps>=compliments.length)
+        return;
+
+    taps++;
+
+    compliment.style.opacity=0;
+    compliment.style.transform="translateY(15px)";
+
+    setTimeout(()=>{
+
+        compliment.textContent=compliments[taps-1];
+
+        compliment.style.opacity=1;
+        compliment.style.transform="translateY(0)";
+
+    },350);
+
+    consumeDinner();
+
+    createHeart();
+
+    counter.textContent=`DINNER · ${taps} / ${compliments.length-1}`;
+
+    if(taps===compliments.length){
+
+        setTimeout(endDinner,3000);
+
+    }
+
+});
+
+function consumeDinner(){
+
+    /*
+       Dinner progression:
+       1-2: food
+       3-4: more food
+       5-6: wine
+       7+: table almost empty
+    */
+
+    if(taps===2){
+        document.getElementById("food1").classList.add("eaten");
+    }
+
+    if(taps===3){
+        document.getElementById("food2").classList.add("eaten");
+    }
+
+    if(taps===5){
+        document.getElementById("glass1").classList.add("eaten");
+    }
+
+    if(taps===6){
+        document.getElementById("glass2").classList.add("eaten");
+    }
+
+    if(taps>=7){
+
+        document.getElementById("food1").classList.add("eaten");
+        document.getElementById("food2").classList.add("eaten");
+        document.getElementById("glass1").classList.add("eaten");
+        document.getElementById("glass2").classList.add("eaten");
+
+    }
+}
+
+function createHeart(){
+
+    const heart=document.createElement("div");
+
+    heart.className="heart";
+
+    heart.textContent=
+        Math.random()>.4
+        ? "♡"
+        : "♥";
+
+    heart.style.left=(35+Math.random()*30)+"%";
+    heart.style.top=(45+Math.random()*25)+"%";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>{
+        heart.remove();
+    },2000);
+}
+
+function endDinner(){
+
+    room.classList.add("fade");
+
+    setTimeout(()=>{
+
+        curtains.classList.add("close");
+
+    },800);
+
+    setTimeout(()=>{
+
+        /*
+          Change this URL if you eventually want another
+          page after dinner.
+        */
+
+        window.location.href="wake.html";
+
+    },4000);
+}
+
+</script>
+
+</body>
+</html>
