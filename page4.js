@@ -1,416 +1,846 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#09050b">
+/* =========================================================
+   PAGE 4
+   OUR LITTLE STORY
+========================================================= */
 
-    <title>Midnight With You</title>
 
-    <link rel="stylesheet" href="page4.css">
-</head>
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
-<body>
+const scenes = {
+    intro: document.getElementById("introScene"),
+    tease: document.getElementById("teaseScene"),
+    ready: document.getElementById("readyScene"),
+    wonderIntro: document.getElementById("wonderIntro"),
+    quiz: document.getElementById("quizScene"),
+    taj: document.getElementById("tajScene"),
+    find: document.getElementById("findScene"),
+    dinnerIntro: document.getElementById("dinnerIntro"),
+    dinner: document.getElementById("dinnerScene"),
+    curtain: document.getElementById("curtainScene"),
+    memory: document.getElementById("memoryTransition")
+};
 
-    <main id="app">
+const bgMusic = document.getElementById("bgMusic");
+const clickSound = document.getElementById("clickSound");
+const whooshSound = document.getElementById("whooshSound");
+const sparkleSound = document.getElementById("sparkleSound");
 
-        <!-- Background -->
-        <div class="stars" aria-hidden="true">
-            <span>✦</span>
-            <span>✧</span>
-            <span>✦</span>
-            <span>✧</span>
-            <span>·</span>
-            <span>✦</span>
-            <span>·</span>
-            <span>✧</span>
-            <span>✦</span>
-            <span>·</span>
-            <span>✧</span>
-            <span>✦</span>
-        </div>
+const musicButton = document.getElementById("musicButton");
 
-        <!-- Music -->
-        <button id="musicBtn" class="music-btn" type="button">
-            ♫
-        </button>
+let musicStarted = false;
 
-        <!-- Invisible tap area -->
-        <button
-            id="tapLayer"
-            class="tap-layer"
-            type="button"
-            aria-label="Continue">
-        </button>
 
-        <!-- Story popup -->
-        <section id="story" class="story-card hidden">
+/* =========================================================
+   SAFE SOUND
+========================================================= */
 
-            <div id="storyEmoji" class="story-emoji">
-                🌙
-            </div>
+function playSound(audio) {
 
-            <p id="storyText"></p>
+    if (!audio) return;
 
-        </section>
+    audio.currentTime = 0;
 
+    audio.play().catch(() => {
+        // Browser may block audio before user interaction.
+    });
+}
 
-        <!-- Black screen / disclaimer -->
-        <section id="disclaimer" class="full-screen hidden">
 
-            <div class="disclaimer-card">
+/* =========================================================
+   MUSIC
+========================================================= */
 
-                <div class="tiny-label">
-                    MIDNIGHT • 12:00 AM
-                </div>
+function startMusic() {
 
-                <h2>
-                    What happened next?
-                </h2>
+    if (musicStarted) return;
 
-                <p>
-                    Tisha was completely dizzy after the party.
-                    Ritesh carefully picked her up, carried her to
-                    his bedroom and laid her down comfortably on the bed. 🌙
-                </p>
+    bgMusic.volume = 0.42;
 
-                <button
-                    id="bedroomBtn"
-                    class="primary-btn"
-                    type="button">
-                    Continue
-                </button>
+    bgMusic.play()
+        .then(() => {
 
-            </div>
+            musicStarted = true;
 
-        </section>
+            musicButton.classList.add("playing");
 
+        })
+        .catch(() => {
+            // Audio will start after another interaction.
+        });
+}
 
-        <!-- Bedroom -->
-        <section id="bedroom" class="scene hidden">
+musicButton.addEventListener("click", () => {
 
-            <div class="moon"></div>
+    if (bgMusic.paused) {
 
-            <div class="window">
-                <div class="window-frame vertical"></div>
-                <div class="window-frame horizontal"></div>
-            </div>
+        bgMusic.play().catch(() => {});
 
-            <div class="bedroom-caption">
-                A little later that night… 🌙
-            </div>
+        musicButton.classList.add("playing");
 
-            <div class="bed">
+    } else {
 
-                <div class="headboard"></div>
+        bgMusic.pause();
 
-                <div class="pillow pillow-one"></div>
-                <div class="pillow pillow-two"></div>
+        musicButton.classList.remove("playing");
+    }
+});
 
-                <div class="blanket"></div>
 
-            </div>
+/* =========================================================
+   SCENE SWITCHER
+========================================================= */
 
+function showScene(scene) {
 
-            <div id="tisha" class="person person-girl">
-                <div class="head">
-                    👩🏻
-                </div>
+    Object.values(scenes).forEach(currentScene => {
 
-                <div class="body"></div>
-            </div>
+        currentScene.classList.add("hidden");
+        currentScene.classList.remove("active");
 
+    });
 
-            <div id="ritesh" class="person person-boy">
-                <div class="head">
-                    👨🏻
-                </div>
+    scene.classList.remove("hidden");
+    scene.classList.add("active");
+}
 
-                <div class="body"></div>
-            </div>
 
-        </section>
+/* =========================================================
+   PARTICLES
+========================================================= */
 
+function createParticle() {
 
-        <!-- Midnight chat -->
-        <section id="chatSection" class="chat-section hidden">
+    const particle = document.createElement("div");
 
-            <div class="chat-top">
+    particle.className = "particle";
 
-                <div class="profile-dot">
-                    🌙
-                </div>
+    particle.style.left =
+        Math.random() * 100 + "%";
 
-                <div>
-                    <strong>
-                        Midnight
-                    </strong>
+    particle.style.bottom =
+        (-10 - Math.random() * 20) + "px";
 
-                    <span>
-                        just you two ✨
-                    </span>
-                </div>
+    particle.style.animationDuration =
+        (4 + Math.random() * 6) + "s";
 
-            </div>
+    particle.style.animationDelay =
+        Math.random() * 2 + "s";
 
+    particle.style.opacity =
+        0.3 + Math.random() * 0.7;
 
-            <div id="chatMessages" class="chat-messages"></div>
+    document.getElementById("particles")
+        .appendChild(particle);
 
-            <button
-                id="chatNext"
-                class="chat-next hidden"
-                type="button">
-                Continue
-            </button>
+    setTimeout(() => {
+        particle.remove();
+    }, 10000);
+}
 
-        </section>
+setInterval(createParticle, 450);
 
 
-        <!-- Kiss -->
-        <section id="kissScene" class="action-scene hidden">
+/* =========================================================
+   INTRO
+========================================================= */
 
-            <div class="scene-title">
-                He ran to her… 💗
-            </div>
+document
+    .getElementById("wakeButton")
+    .addEventListener("click", () => {
 
+        startMusic();
+        playSound(clickSound);
 
-            <div class="action-stage">
+        showScene(scenes.tease);
 
-                <div class="character boy-character">
+    });
 
-                    <div class="char-head">
-                        👨🏻
-                    </div>
 
-                    <div class="char-body boy-shirt"></div>
+/* =========================================================
+   TEASING POPUPS
+========================================================= */
 
-                </div>
+const teaseTitle =
+    document.getElementById("teaseTitle");
 
+const teaseText =
+    document.getElementById("teaseText");
 
-                <div class="character girl-character">
+const teaseNext =
+    document.getElementById("teaseNext");
 
-                    <div class="char-head">
-                        👩🏻
-                    </div>
 
-                    <div class="char-body girl-dress"></div>
+const teaseMessages = [
 
-                </div>
+    {
+        title: "There you are...",
+        text: "Come on sweetheart. I know you're awake."
+    },
 
+    {
+        title: "You're late.",
+        text: "To your own little party, of all things."
+    },
 
-                <div class="kiss-cloud"></div>
+    {
+        title: "But I'll forgive you.",
+        text: "Because I have something much more interesting planned."
+    },
 
-                <div class="kiss-lips">
-                    💋
-                </div>
+    {
+        title: "It's time.",
+        text: "Ready to find out how well you remember us?"
+    }
 
-            </div>
+];
 
+let teaseIndex = 0;
 
-            <p class="action-caption">
-                He ran to her and planted a sweet kiss. 💋
-            </p>
 
+teaseNext.addEventListener("click", () => {
 
-            <button
-                id="kissNext"
-                class="primary-btn"
-                type="button">
-                Come closer…
-            </button>
+    playSound(clickSound);
 
-        </section>
+    teaseIndex++;
 
+    if (teaseIndex < teaseMessages.length) {
 
-        <!-- Playful scene -->
-        <section id="teaseScene" class="action-scene hidden">
+        teaseTitle.style.opacity = "0";
+        teaseText.style.opacity = "0";
 
-            <div class="scene-title">
-                And then… 😏
-            </div>
+        setTimeout(() => {
 
+            teaseTitle.textContent =
+                teaseMessages[teaseIndex].title;
 
-            <div class="tease-stage">
+            teaseText.textContent =
+                teaseMessages[teaseIndex].text;
 
-                <div class="character tease-boy">
+            teaseTitle.style.opacity = "1";
+            teaseText.style.opacity = "1";
 
-                    <div class="char-head">
-                        👨🏻
-                    </div>
+        }, 250);
 
-                    <div class="char-body boy-shirt"></div>
+    } else {
 
-                </div>
+        showScene(scenes.ready);
 
+    }
 
-                <div class="character tease-girl">
+});
 
-                    <div class="char-head">
-                        👩🏻
-                    </div>
 
-                    <div class="char-body girl-dress"></div>
+/* =========================================================
+   READY
+========================================================= */
 
-                </div>
+document
+    .getElementById("readyButton")
+    .addEventListener("click", () => {
 
+        playSound(whooshSound);
 
-                <div id="teaseHand" class="tease-hand">
-                    🤚
-                </div>
+        showScene(scenes.wonderIntro);
 
+        const content =
+            document.querySelector(".wonder-intro-content");
 
-                <div id="teaseSparkles" class="tease-sparkles">
-                    ✨ ✦ ✨
-                </div>
+        content.classList.remove("show");
 
-            </div>
+        setTimeout(() => {
+            content.classList.add("show");
+        }, 150);
 
+        setTimeout(() => {
 
-            <p class="action-caption">
-                A playful little tap… and she couldn't stop laughing. 😂💗
-            </p>
+            startQuiz();
 
+        }, 5200);
 
-            <button
-                id="teaseNext"
-                class="primary-btn"
-                type="button">
-                Now cuddle… 🫶
-            </button>
+    });
 
-        </section>
 
+/* =========================================================
+   QUIZ DATA
+========================================================= */
 
-        <!-- Cuddling -->
-        <section id="cuddleScene" class="action-scene hidden">
+/*
+   IMPORTANT:
 
-            <div class="scene-title">
-                Come here, love… 🫶
-            </div>
+   These are the seven questions for now.
+   You can change the questions and answers
+   directly here without touching the HTML.
+*/
 
+const questions = [
 
-            <div id="cuddleStage" class="cuddle-stage">
+    {
+        wonder: "Great Wall",
+        icon: "✦",
+        question: "Who is more likely to remember a tiny detail from a conversation?",
+        answers: [
+            "Ritesh",
+            "Tisha"
+        ],
+        correct: "Tisha"
+    },
 
-                <div class="cuddle-person cuddle-boy">
+    {
+        wonder: "Petra",
+        icon: "◆",
+        question: "Who was more likely to start talking first?",
+        answers: [
+            "Ritesh",
+            "Tisha"
+        ],
+        correct: "Ritesh"
+    },
 
-                    <div class="char-head">
-                        👨🏻
-                    </div>
+    {
+        wonder: "Colosseum",
+        icon: "◇",
+        question: "Who is more dramatic when something doesn't go their way?",
+        answers: [
+            "Ritesh",
+            "Tisha"
+        ],
+        correct: "Tisha"
+    },
 
-                    <div class="char-body boy-shirt"></div>
+    {
+        wonder: "Machu Picchu",
+        icon: "✧",
+        question: "Who is more likely to say 'I'm fine' when they clearly aren't?",
+        answers: [
+            "Ritesh",
+            "Tisha"
+        ],
+        correct: "Tisha"
+    },
 
-                </div>
+    {
+        wonder: "Christ the Redeemer",
+        icon: "✦",
+        question: "Who would plan a surprise and then struggle to keep it secret?",
+        answers: [
+            "Ritesh",
+            "Tisha"
+        ],
+        correct: "Ritesh"
+    },
 
+    {
+        wonder: "Chichén Itzá",
+        icon: "◆",
+        question: "Who would fall asleep first during a movie?",
+        answers: [
+            "Ritesh",
+            "Tisha"
+        ],
+        correct: "Tisha"
+    },
 
-                <div class="cuddle-person cuddle-girl">
+    {
+        wonder: "Taj Mahal",
+        icon: "♥",
+        question: "Who has the more special place in the other's heart?",
+        answers: [
+            "Ritesh",
+            "Tisha"
+        ],
+        correct: "Tisha"
+    }
 
-                    <div class="char-head">
-                        👩🏻
-                    </div>
+];
 
-                    <div class="char-body girl-dress"></div>
 
-                </div>
+let currentQuestion = 0;
+let score = 0;
 
 
-                <div class="cuddle-heart">
-                    ♡
-                </div>
+/* =========================================================
+   START QUIZ
+========================================================= */
 
-            </div>
+function startQuiz() {
 
+    currentQuestion = 0;
+    score = 0;
 
-            <p id="cuddleText" class="action-caption">
-                She moves a little closer… 💗
-            </p>
+    showScene(scenes.quiz);
 
+    loadQuestion();
 
-            <button
-                id="cuddleBtn"
-                class="primary-btn"
-                type="button">
-                Cuddle closer 🫶
-            </button>
+}
 
-        </section>
 
+/* =========================================================
+   LOAD QUESTION
+========================================================= */
 
-        <!-- Final question -->
-        <section id="loveScene" class="love-scene hidden">
+function loadQuestion() {
 
-            <div class="love-glow">
-                ♥
-            </div>
+    const question =
+        questions[currentQuestion];
 
+    const questionText =
+        document.getElementById("questionText");
 
-            <div class="love-card">
+    const answersContainer =
+        document.getElementById("answers");
 
-                <div class="tiny-label">
-                    JUST US
-                </div>
+    const wonderIcon =
+        document.getElementById("wonderIcon");
 
+    const wonderNumber =
+        document.getElementById("wonderNumber");
 
-                <h1>
-                    Do you love me?
-                </h1>
+    const counter =
+        document.getElementById("questionCounter");
 
+    const progress =
+        document.getElementById("progressBar");
 
-                <p>
-                    Look me in the eyes and answer honestly. 🥺💗
-                </p>
+    const feedback =
+        document.getElementById("answerFeedback");
 
+    const nextButton =
+        document.getElementById("nextQuestion");
 
-                <div class="love-buttons">
 
-                    <button
-                        id="yesBtn"
-                        class="primary-btn"
-                        type="button">
-                        Yes, Ritesh. 💗
-                    </button>
+    wonderIcon.textContent =
+        question.icon;
 
+    wonderNumber.textContent =
+        String(currentQuestion + 1).padStart(2, "0");
 
-                    <button
-                        id="moreBtn"
-                        class="secondary-btn"
-                        type="button">
-                        Ask me how much… ✨
-                    </button>
+    counter.textContent =
+        `${String(currentQuestion + 1).padStart(2, "0")} / 07`;
 
-                </div>
+    questionText.textContent =
+        question.question;
 
+    progress.style.width =
+        `${((currentQuestion + 1) / questions.length) * 100}%`;
 
-                <div
-                    id="loveAnswer"
-                    class="love-answer hidden">
+    feedback.textContent = "";
 
-                    <strong>
-                        How much?
-                    </strong>
+    nextButton.classList.remove("show");
 
-                    <p>
-                        More than all the stars outside this window. 🌌
-                        More than I could ever put into words. ❤️
-                    </p>
+    answersContainer.innerHTML = "";
 
 
-                    <button
-                        id="finishBtn"
-                        class="primary-btn"
-                        type="button">
-                        Keep this moment… 🌙
-                    </button>
+    question.answers.forEach(answer => {
 
-                </div>
+        const button =
+            document.createElement("button");
 
-            </div>
+        button.className =
+            "answer-button";
 
-        </section>
+        button.textContent =
+            answer;
 
-    </main>
+        button.addEventListener("click", () => {
 
+            selectAnswer(button, answer);
 
-    <script src="page4.js"></script>
+        });
 
-</body>
-</html>
+        answersContainer.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================================
+   ANSWER
+========================================================= */
+
+function selectAnswer(button, answer) {
+
+    const question =
+        questions[currentQuestion];
+
+    const buttons =
+        document.querySelectorAll(".answer-button");
+
+    buttons.forEach(btn => {
+
+        btn.classList.add("disabled");
+
+    });
+
+    playSound(clickSound);
+
+
+    if (answer === question.correct) {
+
+        button.classList.add("correct");
+
+        score++;
+
+        document.getElementById("answerFeedback")
+            .textContent =
+            "I knew you'd remember that. ♥";
+
+    } else {
+
+        button.classList.add("wrong");
+
+        document.getElementById("answerFeedback")
+            .textContent =
+            `Hmm... the answer was ${question.correct}.`;
+
+        buttons.forEach(btn => {
+
+            if (btn.textContent === question.correct) {
+                btn.classList.add("correct");
+            }
+
+        });
+
+    }
+
+    document
+        .getElementById("nextQuestion")
+        .classList.add("show");
+
+}
+
+
+/* =========================================================
+   NEXT QUESTION
+========================================================= */
+
+document
+    .getElementById("nextQuestion")
+    .addEventListener("click", () => {
+
+        playSound(clickSound);
+
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+
+            loadQuestion();
+
+        } else {
+
+            finishQuiz();
+
+        }
+
+    });
+
+
+/* =========================================================
+   FINISH QUIZ
+========================================================= */
+
+function finishQuiz() {
+
+    showScene(scenes.taj);
+
+    playSound(sparkleSound);
+
+}
+
+
+/* =========================================================
+   TAJ CONTINUE
+========================================================= */
+
+document
+    .getElementById("tajContinue")
+    .addEventListener("click", () => {
+
+        playSound(whooshSound);
+
+        showScene(scenes.find);
+
+    });
+
+
+/* =========================================================
+   FIND RITESH
+========================================================= */
+
+const hiddenStars =
+    document.querySelectorAll(".hidden-star");
+
+const foundMessage =
+    document.getElementById("foundMessage");
+
+
+hiddenStars.forEach(star => {
+
+    star.addEventListener("click", () => {
+
+        playSound(clickSound);
+
+        const isCorrect =
+            star.dataset.correct === "true";
+
+        if (isCorrect) {
+
+            playSound(sparkleSound);
+
+            foundMessage.classList.add("show");
+
+            star.style.opacity = "0";
+
+            setTimeout(() => {
+
+                showScene(scenes.dinnerIntro);
+
+            }, 2500);
+
+        } else {
+
+            star.animate(
+                [
+                    {
+                        transform:
+                            "translate(-50%, -50%) scale(1)"
+                    },
+                    {
+                        transform:
+                            "translate(-50%, -50%) scale(1.5)"
+                    },
+                    {
+                        transform:
+                            "translate(-50%, -50%) scale(1)"
+                    }
+                ],
+                {
+                    duration: 350
+                }
+            );
+
+        }
+
+    });
+
+});
+
+
+/* =========================================================
+   DINNER START
+========================================================= */
+
+document
+    .getElementById("dinnerStart")
+    .addEventListener("click", () => {
+
+        playSound(clickSound);
+
+        showScene(scenes.dinner);
+
+    });
+
+
+/* =========================================================
+   DINNER FOOD
+========================================================= */
+
+const foodData = {
+
+    starter: {
+        title: "The first bite",
+        text: "For the beginning of every little adventure we've had."
+    },
+
+    main: {
+        title: "For my beautiful lady",
+        text: "Because ordinary dinners are boring when I can make one special for you."
+    },
+
+    dessert: {
+        title: "Something sweet",
+        text: "Although honestly... you're still sweeter."
+    },
+
+    drink: {
+        title: "A little toast",
+        text: "To everything we've already lived through — and everything still waiting for us."
+    },
+
+    secret: {
+        title: "One last compliment",
+        text: "I love how charismatic, interactive and full of life you are. You have a very special place in my life."
+    }
+
+};
+
+
+const foodButtons =
+    document.querySelectorAll(".food-bite");
+
+const foodTitle =
+    document.getElementById("foodTitle");
+
+const foodText =
+    document.getElementById("foodText");
+
+
+foodButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        playSound(clickSound);
+
+        const food =
+            button.dataset.food;
+
+        const data =
+            foodData[food];
+
+        foodTitle.textContent =
+            data.title;
+
+        foodText.textContent =
+            data.text;
+
+        button.style.transform =
+            "scale(0.7)";
+
+        setTimeout(() => {
+
+            button.style.transform =
+                "scale(1)";
+
+        }, 250);
+
+    });
+
+});
+
+
+/* =========================================================
+   DINNER COMPLETION
+========================================================= */
+
+let dinnerItemsClicked = new Set();
+
+foodButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        dinnerItemsClicked.add(
+            button.dataset.food
+        );
+
+        if (dinnerItemsClicked.size === 5) {
+
+            setTimeout(() => {
+
+                startCurtainSequence();
+
+            }, 1400);
+
+        }
+
+    });
+
+});
+
+
+/* =========================================================
+   CURTAIN SEQUENCE
+========================================================= */
+
+function startCurtainSequence() {
+
+    playSound(whooshSound);
+
+    showScene(scenes.curtain);
+
+    /*
+        Curtains close for 2.5 seconds.
+        Then the center goes black.
+        Then Page 4's final transition begins.
+    */
+
+    setTimeout(() => {
+
+        startMemoryTransition();
+
+    }, 5800);
+
+}
+
+
+/* =========================================================
+   TIME TO LOOK AT US
+========================================================= */
+
+function startMemoryTransition() {
+
+    bgMusic.volume = 0.15;
+
+    showScene(scenes.memory);
+
+    setTimeout(() => {
+
+        bgMusic.volume = 0.05;
+
+    }, 1200);
+
+}
+
+
+/* =========================================================
+   GO TO PAGE 5
+========================================================= */
+
+document
+    .getElementById("memoryGo")
+    .addEventListener("click", () => {
+
+        playSound(whooshSound);
+
+        /*
+            CHANGE THIS FILE NAME IF YOUR PAGE 5
+            FILE HAS A DIFFERENT NAME.
+        */
+
+        window.location.href = "page5.html";
+
+    });
+
+
+/* =========================================================
+   INITIAL SETUP
+========================================================= */
+
+document.addEventListener("click", () => {
+
+    startMusic();
+
+}, {
+    once: true
+});
+
+
+/* =========================================================
+   PAGE VISIBILITY
+========================================================= */
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        if (document.hidden) {
+
+            bgMusic.pause();
+
+            musicButton.classList.remove("playing");
+
+        }
+
+    }
+);
