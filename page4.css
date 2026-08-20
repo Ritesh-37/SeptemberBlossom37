@@ -1,7 +1,3 @@
-/* =====================================================
-   PAGE 4 — MIDNIGHT
-   ===================================================== */
-
 * {
     margin: 0;
     padding: 0;
@@ -16,8 +12,8 @@ body {
 }
 
 body {
-    background: #070914;
-    color: #ffffff;
+    background: #080914;
+    color: white;
     font-family: Georgia, "Times New Roman", serif;
 }
 
@@ -25,7 +21,7 @@ button {
     font-family: inherit;
 }
 
-#page4 {
+#app {
     width: 100%;
     height: 100vh;
     position: relative;
@@ -35,7 +31,7 @@ button {
 
 /* =====================================================
    SCENES
-   ===================================================== */
+===================================================== */
 
 .scene {
     position: absolute;
@@ -56,388 +52,334 @@ button {
 
 
 /* =====================================================
-   PARTICLES
-   ===================================================== */
+   STARS
+===================================================== */
 
-#particles {
+#stars {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 50;
+    z-index: 20;
 }
 
-.particle {
+.star {
     position: absolute;
+
     width: 2px;
     height: 2px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.65);
 
-    animation: floatParticle linear infinite;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.7);
+
+    animation: starFloat 5s ease-in-out infinite;
 }
 
 
 /* =====================================================
-   PARTY SCENE
-   ===================================================== */
+   PARTY
+===================================================== */
 
 #partyScene {
+
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     background:
         radial-gradient(
             circle at center,
-            rgba(177, 42, 88, 0.25),
+            rgba(192,66,115,.22),
             transparent 55%
         ),
         linear-gradient(
             135deg,
-            #2a0a21,
-            #160a1b,
-            #080a17
+            #290a22,
+            #150b1d,
+            #080914
         );
 }
 
-.fading-party-glow {
-    position: absolute;
-    width: 60vw;
-    height: 60vw;
-    max-width: 600px;
-    max-height: 600px;
+.partyGlow {
 
-    background: rgba(206, 70, 122, 0.08);
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
 
     border-radius: 50%;
+
+    background:
+        rgba(211,70,120,.08);
 
     filter: blur(80px);
 }
 
-.tap-story {
-    position: relative;
-    z-index: 10;
+.storyText {
 
-    width: min(90%, 560px);
+    width: min(90%, 650px);
 
     text-align: center;
+
+    position: relative;
+
+    z-index: 5;
+
+    padding: 30px;
 }
 
-.story-card {
-    padding: 30px 25px;
+#partyText {
 
-    border-radius: 25px;
+    font-size:
+        clamp(23px,5vw,34px);
 
-    background: rgba(255,255,255,0.07);
-
-    border: 1px solid rgba(255,255,255,0.15);
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-
-    box-shadow:
-        0 30px 80px rgba(0,0,0,0.4);
-
-    animation: storyAppear .7s ease;
-}
-
-.story-card p {
-    font-size: clamp(21px, 4.5vw, 30px);
     line-height: 1.5;
-    color: #fff4f8;
+
+    color: #fff3f7;
+
+    animation: textAppear .8s ease;
 }
 
-.tap-hint {
-    margin-top: 28px;
+.partyBalloon {
+
+    position: absolute;
+
+    font-size: 60px;
+
+    opacity: .45;
+
+    animation:
+        balloonMove
+        10s
+        linear
+        infinite;
+}
+
+.b1 {
+    left: 8%;
+    bottom: -80px;
+}
+
+.b2 {
+    right: 10%;
+    bottom: -120px;
+
+    animation-delay: 3s;
+}
+
+.b3 {
+    left: 48%;
+    bottom: -150px;
+
+    animation-delay: 6s;
+}
+
+
+/* =====================================================
+   BLACK STORY
+===================================================== */
+
+#blackScene {
+
+    background: black;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 30px;
+}
+
+.blackTime {
+
+    position: absolute;
+
+    top: 15%;
 
     font-family: Arial, sans-serif;
 
     font-size: 10px;
-    letter-spacing: 3px;
-
-    color: rgba(255,255,255,0.38);
-
-    animation: hintPulse 2s ease-in-out infinite;
-}
-
-
-/* =====================================================
-   BALLOONS
-   ===================================================== */
-
-.balloon {
-    position: absolute;
-
-    width: 60px;
-    height: 78px;
-
-    border-radius: 50%;
-
-    opacity: .45;
-
-    animation: balloonRise 9s linear infinite;
-}
-
-.balloon::after {
-    content: "";
-
-    position: absolute;
-
-    width: 1px;
-    height: 100px;
-
-    background: rgba(255,255,255,.25);
-
-    top: 75px;
-    left: 50%;
-}
-
-.balloon1 {
-    background: #b9386c;
-    left: 12%;
-    bottom: -100px;
-}
-
-.balloon2 {
-    background: #76528f;
-    right: 14%;
-    bottom: -130px;
-    animation-delay: 2s;
-}
-
-.balloon3 {
-    background: #b47753;
-    left: 48%;
-    bottom: -160px;
-    animation-delay: 4s;
-}
-
-
-/* =====================================================
-   SPARKLES
-   ===================================================== */
-
-.party-sparkles span {
-    position: absolute;
-
-    color: rgba(255,255,255,.7);
-
-    animation: sparkle 3s ease-in-out infinite;
-}
-
-.party-sparkles span:nth-child(1) {
-    top: 20%;
-    left: 20%;
-}
-
-.party-sparkles span:nth-child(2) {
-    top: 25%;
-    right: 20%;
-    animation-delay: .8s;
-}
-
-.party-sparkles span:nth-child(3) {
-    bottom: 20%;
-    left: 17%;
-    animation-delay: 1.5s;
-}
-
-.party-sparkles span:nth-child(4) {
-    bottom: 25%;
-    right: 15%;
-    animation-delay: 2s;
-}
-
-.party-sparkles span:nth-child(5) {
-    top: 15%;
-    left: 60%;
-    animation-delay: 2.5s;
-}
-
-
-/* =====================================================
-   BLACK SCENE
-   ===================================================== */
-
-#blackScene {
-    background: #000;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-}
-
-.black-story {
-    width: min(90%, 700px);
-}
-
-.story-time {
-    font-family: Arial, sans-serif;
-
-    font-size: 11px;
 
     letter-spacing: 5px;
 
     color: rgba(255,255,255,.35);
-
-    margin-bottom: 35px;
 }
 
-#blackStoryText {
-    min-height: 100px;
+.blackText {
 
-    font-size: clamp(20px,4vw,29px);
+    max-width: 750px;
+
+    font-size:
+        clamp(21px,4.5vw,31px);
 
     line-height: 1.8;
 
     color: rgba(255,255,255,.9);
+
+    animation: textAppear .8s ease;
 }
 
 
 /* =====================================================
-   BEDROOM INTRO
-   ===================================================== */
+   BEDROOM
+===================================================== */
 
-#bedroomIntro {
+#bedroomScene {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
     background:
         radial-gradient(
-            circle at 75% 20%,
-            rgba(98,116,170,.18),
+            circle at 80% 15%,
+            rgba(92,111,168,.22),
             transparent 35%
         ),
         linear-gradient(
             180deg,
-            #080b18,
-            #101429,
-            #15182b
+            #070a17,
+            #11162d,
+            #171a2c
         );
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .moon {
+
     position: absolute;
 
-    width: 80px;
-    height: 80px;
+    width: 85px;
+    height: 85px;
 
     border-radius: 50%;
 
-    background: #fff9df;
-
-    top: 8%;
     right: 9%;
+    top: 8%;
+
+    background: #fff9dc;
 
     box-shadow:
-        0 0 30px rgba(255,249,223,.45),
-        0 0 100px rgba(255,249,223,.12);
+        0 0 35px rgba(255,249,220,.4),
+        0 0 100px rgba(255,249,220,.12);
 }
 
-.bedroom-window {
+.window {
+
     position: absolute;
 
     width: 190px;
     height: 240px;
 
+    left: 7%;
     top: 8%;
-    left: 8%;
-
-    border: 7px solid rgba(255,255,255,.07);
 
     background:
         linear-gradient(
             180deg,
-            #050816,
-            #101836
+            #050817,
+            #101a3b
         );
+
+    border:
+        6px solid rgba(255,255,255,.07);
 }
 
-.window-cross {
+.windowBar {
     position: absolute;
+
     background: rgba(255,255,255,.07);
 }
 
-.window-cross.vertical {
+.windowBar.vertical {
+
     width: 3px;
     height: 100%;
+
     left: 50%;
 }
 
-.window-cross.horizontal {
-    width: 100%;
+.windowBar.horizontal {
+
     height: 3px;
+    width: 100%;
+
     top: 50%;
 }
 
-.bedroom-window span {
+.window span {
+
     position: absolute;
 
-    font-size: 9px;
+    font-size: 10px;
 
-    color: rgba(255,255,255,.8);
+    color: white;
 
     animation: twinkle 3s infinite;
 }
 
-.bedroom-window span:nth-child(3) {
+.window span:nth-child(3) {
     top: 20%;
     left: 20%;
 }
 
-.bedroom-window span:nth-child(4) {
+.window span:nth-child(4) {
     top: 35%;
     right: 20%;
 }
 
-.bedroom-window span:nth-child(5) {
+.window span:nth-child(5) {
     bottom: 25%;
     left: 25%;
 }
 
-.bedroom-window span:nth-child(6) {
+.window span:nth-child(6) {
     bottom: 15%;
     right: 25%;
 }
 
-.bedroom-window span:nth-child(7) {
-    top: 15%;
-    left: 65%;
-}
+.bedroomContent {
 
-.bedroom-intro-content {
     text-align: center;
 
     position: relative;
+
     z-index: 5;
 }
 
-.midnight-time {
+.time {
+
     font-family: Arial, sans-serif;
 
-    font-size: 11px;
+    font-size: 10px;
 
     letter-spacing: 5px;
 
-    color: rgba(255,255,255,.45);
+    color: rgba(255,255,255,.4);
 
     margin-bottom: 20px;
 }
 
-.bedroom-intro-content h1 {
-    font-size: clamp(42px,9vw,70px);
+.bedroomContent h1 {
+
+    font-size:
+        clamp(45px,10vw,75px);
 
     font-weight: normal;
 
-    letter-spacing: 3px;
+    letter-spacing: 4px;
 
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
-.bedroom-intro-content p {
+.bedroomContent p {
+
     color: rgba(255,255,255,.6);
 
     line-height: 1.8;
@@ -447,80 +389,95 @@ button {
 
 
 /* =====================================================
-   CHAT SCENE
-   ===================================================== */
+   CHAT
+===================================================== */
 
 #chatScene {
+
     background:
         radial-gradient(
             circle at 70% 10%,
-            rgba(80,100,160,.18),
+            rgba(85,104,161,.2),
             transparent 35%
         ),
-        linear-gradient(
-            180deg,
-            #080b18,
-            #11152a
-        );
+        #090b18;
 
     overflow-y: auto;
 }
 
-.chat-page {
+.chatWrapper {
+
     width: min(94%, 650px);
 
     margin: auto;
 
-    padding:
-        7vh
-        0
-        60px;
+    padding-top: 6vh;
 }
 
-.chat-clock {
+.chatTime {
+
     text-align: center;
 
     font-family: Arial, sans-serif;
 
-    font-size: 11px;
+    font-size: 10px;
 
     letter-spacing: 4px;
 
     color: rgba(255,255,255,.4);
-
-    margin-bottom: 10px;
 }
 
-.chat-status {
+.chatStatus {
+
     text-align: center;
 
-    color: rgba(255,255,255,.55);
+    margin: 10px 0 20px;
 
-    font-size: 14px;
+    color: rgba(255,255,255,.5);
 
-    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
 }
 
-.chat-box {
+.onlineDot {
+
+    display: inline-block;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #80d69a;
+
+    margin-left: 3px;
+}
+
+.chatBox {
+
     border-radius: 25px;
 
-    background: rgba(9,12,27,.8);
+    background:
+        rgba(12,15,31,.85);
 
     border:
-        1px solid rgba(255,255,255,.09);
+        1px solid rgba(255,255,255,.1);
 
     box-shadow:
-        0 30px 90px rgba(0,0,0,.45);
+        0 30px 80px rgba(0,0,0,.5);
 
     overflow: hidden;
 
-    backdrop-filter: blur(18px);
+    backdrop-filter: blur(20px);
 }
 
-.chat-header {
-    height: 68px;
+.chatHeader {
+
+    height: 70px;
 
     display: flex;
+
     align-items: center;
 
     padding: 12px 18px;
@@ -529,22 +486,30 @@ button {
         1px solid rgba(255,255,255,.07);
 }
 
-.profile-picture {
-    width: 43px;
-    height: 43px;
+.profileHeart {
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 44px;
+    height: 44px;
 
     border-radius: 50%;
 
-    background: rgba(205,71,116,.15);
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
 
     margin-right: 12px;
+
+    background:
+        rgba(205,70,116,.15);
+
+    color: #ffb3c9;
+
+    font-size: 20px;
 }
 
-.chat-header strong {
+.chatHeader strong {
+
     display: block;
 
     font-family: Arial, sans-serif;
@@ -552,42 +517,44 @@ button {
     font-size: 14px;
 }
 
-.chat-header small {
-    display: block;
+.chatHeader small {
 
     font-family: Arial, sans-serif;
 
     font-size: 10px;
 
     color: rgba(255,255,255,.4);
-
-    margin-top: 3px;
 }
 
-.header-moon {
+.headerMoon {
+
     margin-left: auto;
+
+    font-size: 23px;
+
+    color: #dce5ff;
 }
 
-.messages {
-    min-height: 410px;
-    max-height: 55vh;
+#messages {
 
-    overflow-y: auto;
+    min-height: 430px;
 
     padding: 25px 18px;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 13px;
-
-    scrollbar-width: thin;
 }
 
 .message {
-    max-width: 78%;
 
-    padding: 12px 16px;
+    max-width: 82%;
+
+    padding:
+        12px
+        16px;
 
     border-radius: 18px;
 
@@ -595,52 +562,51 @@ button {
 
     font-size: 14px;
 
-    line-height: 1.45;
+    line-height: 1.5;
 
-    animation: messageIn .4s ease;
+    animation:
+        messageIn
+        .45s
+        ease;
 }
 
 .message.tisha {
+
     align-self: flex-start;
 
     background:
-        rgba(195,67,112,.17);
-
-    border:
-        1px solid rgba(225,110,150,.12);
+        rgba(201,69,117,.17);
 
     border-bottom-left-radius: 5px;
 }
 
 .message.ritesh {
+
     align-self: flex-end;
 
     background:
         rgba(255,255,255,.08);
 
-    border:
-        1px solid rgba(255,255,255,.08);
-
     border-bottom-right-radius: 5px;
 }
 
 .message.system {
-    align-self: center;
 
-    max-width: 90%;
+    align-self: center;
 
     background: transparent;
 
-    color: rgba(255,255,255,.45);
+    color: rgba(255,255,255,.4);
 
     font-size: 12px;
 
-    font-style: italic;
-
     text-align: center;
+
+    font-style: italic;
 }
 
-.message-name {
+.name {
+
     display: block;
 
     font-size: 9px;
@@ -650,81 +616,93 @@ button {
     color: rgba(255,255,255,.4);
 
     margin-bottom: 4px;
-
-    text-transform: uppercase;
 }
 
-.typing {
+#typing {
+
     display: none;
 
     padding:
         0
         20px
-        15px;
+        16px;
 
     gap: 4px;
 }
 
-.typing.active {
+#typing.active {
     display: flex;
 }
 
-.typing span {
+#typing i {
+
     width: 6px;
     height: 6px;
 
     border-radius: 50%;
 
-    background: rgba(255,255,255,.5);
+    background: rgba(255,255,255,.45);
 
-    animation: typing 1.2s infinite;
+    animation:
+        typingDot
+        1.2s
+        infinite;
 }
 
-.typing span:nth-child(2) {
+#typing i:nth-child(2) {
     animation-delay: .15s;
 }
 
-.typing span:nth-child(3) {
+#typing i:nth-child(3) {
     animation-delay: .3s;
 }
 
 
 /* =====================================================
    KISS SCENE
-   ===================================================== */
+===================================================== */
 
 #kissScene {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
     background:
         radial-gradient(
             circle at center,
-            rgba(180,67,111,.18),
+            rgba(190,68,116,.18),
             transparent 45%
         ),
         linear-gradient(
             180deg,
-            #080a17,
-            #141528,
-            #0a0c18
+            #070a17,
+            #15162c,
+            #090b17
         );
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.kiss-content {
-    width: 100%;
-    height: 100%;
+.romanticMoon {
 
-    position: relative;
+    position: absolute;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    width: 75px;
+    height: 75px;
+
+    border-radius: 50%;
+
+    background: #fff9df;
+
+    right: 10%;
+    top: 9%;
+
+    box-shadow:
+        0 0 30px rgba(255,249,223,.35);
 }
 
-.scene-caption {
+.kissCaption {
+
     position: absolute;
 
     top: 13%;
@@ -733,142 +711,264 @@ button {
 
     text-align: center;
 
-    font-size: clamp(17px,4vw,25px);
+    font-size:
+        clamp(18px,4vw,26px);
 
-    color: #fff3f7;
-
-    opacity: 0;
-
-    animation: captionIn 1s ease forwards;
+    color: #fff2f7;
 }
 
-.couple {
-    width: 250px;
-    height: 250px;
+#kissCouple {
+
+    width: 330px;
+    height: 280px;
 
     position: relative;
 
-    margin-top: 40px;
+    margin-top: 60px;
 }
 
-.character {
+
+/* =====================================================
+   BOY + GIRL
+===================================================== */
+
+.person {
+
     position: absolute;
 
-    bottom: 35px;
+    bottom: 25px;
 
-    width: 85px;
-    height: 150px;
+    width: 110px;
+    height: 190px;
 
     transition:
-        transform 1.2s
-        cubic-bezier(.2,.8,.2,1);
+        left 1.2s cubic-bezier(.2,.8,.2,1),
+        right 1.2s cubic-bezier(.2,.8,.2,1),
+        transform 1.2s ease;
 }
 
-.character .head {
+.boy {
+
+    left: 0;
+
+    transform: rotate(-2deg);
+}
+
+.girl {
+
+    right: 0;
+
+    transform: rotate(2deg);
+}
+
+.personHead {
+
     position: absolute;
-
-    width: 55px;
-    height: 55px;
-
-    border-radius: 50%;
 
     top: 0;
 
-    background: #d69b7b;
+    width: 65px;
+    height: 65px;
+
+    border-radius: 50%;
+
+    background: #d49a7b;
+
+    z-index: 3;
 }
 
-.character .body {
-    position: absolute;
-
-    width: 70px;
-    height: 90px;
-
-    border-radius: 35px 35px 10px 10px;
-
-    top: 55px;
-
-    background: #2d314d;
+.boyHead {
+    right: 0;
 }
 
-.character .hair {
+.girlHead {
+    left: 0;
+}
+
+
+/* boy hair */
+
+.boyHair {
+
     position: absolute;
 
-    width: 60px;
-    height: 30px;
+    top: -4px;
+    right: -4px;
 
-    top: -3px;
-    left: -3px;
+    width: 72px;
+    height: 34px;
 
     border-radius:
-        50% 50% 30% 30%;
+        55%
+        55%
+        30%
+        30%;
 
-    background: #171522;
+    background: #181721;
+
+    z-index: 5;
+}
+
+
+/* girl hair */
+
+.girlHair {
+
+    position: absolute;
+
+    top: -12px;
+    left: -8px;
+
+    width: 78px;
+    height: 88px;
+
+    border-radius:
+        50%
+        50%
+        45%
+        45%;
+
+    background: #17151f;
 
     z-index: 2;
 }
 
-.boy {
-    left: 5px;
+.eye {
 
-    transform: translateX(-70px);
-}
-
-.girl {
-    right: 5px;
-
-    transform: translateX(70px);
-}
-
-.boy .head {
-    right: 0;
-}
-
-.boy .body {
-    right: 0;
-}
-
-.girl .head {
-    left: 0;
-}
-
-.girl .body {
-    left: 0;
-}
-
-.kiss-scene-active .boy {
-    transform:
-        translateX(18px)
-        rotate(-3deg);
-}
-
-.kiss-scene-active .girl {
-    transform:
-        translateX(-18px)
-        rotate(3deg);
-}
-
-.kiss-mark {
     position: absolute;
 
-    font-size: 38px;
+    width: 5px;
+    height: 5px;
 
-    opacity: 0;
+    border-radius: 50%;
 
-    transform: scale(.2);
+    background: #17131b;
 
-    z-index: 20;
+    top: 30px;
+
+    z-index: 8;
 }
 
-.kiss-scene-active .kiss-mark {
+.boyHead .leftEye {
+    left: 16px;
+}
+
+.boyHead .rightEye {
+    left: 33px;
+}
+
+.girlHead .leftEye {
+    left: 16px;
+}
+
+.girlHead .rightEye {
+    left: 33px;
+}
+
+.personBody {
+
+    position: absolute;
+
+    top: 62px;
+
+    width: 90px;
+    height: 125px;
+
+    border-radius:
+        40px
+        40px
+        12px
+        12px;
+}
+
+.boyBody {
+
+    right: 0;
+
+    background: #30354d;
+}
+
+.girlBody {
+
+    left: 0;
+
+    background: #71475a;
+}
+
+.personArm {
+
+    position: absolute;
+
+    width: 75px;
+    height: 17px;
+
+    border-radius: 20px;
+
+    top: 90px;
+
+    background: #d49a7b;
+
+    z-index: 4;
+}
+
+.boyArm {
+
+    right: 5px;
+
+    transform: rotate(-20deg);
+}
+
+.girlArm {
+
+    left: 5px;
+
+    transform: rotate(20deg);
+}
+
+
+/* Kiss movement */
+
+.kissApproach .boy {
+
+    left: 65px;
+
+    transform:
+        rotate(-4deg)
+        scale(1.02);
+}
+
+.kissApproach .girl {
+
+    right: 65px;
+
+    transform:
+        rotate(4deg)
+        scale(1.02);
+}
+
+
+/* =====================================================
+   KISS PARTICLES
+===================================================== */
+
+.kissEmoji {
+
+    position: absolute;
+
+    font-size:
+        clamp(20px,5vw,32px);
+
+    pointer-events: none;
+
     animation:
-        kissAppear
-        .8s
-        ease
-        1.2s
+        kissFloat
+        3s
+        ease-out
         forwards;
 }
 
-.tease-text {
+#teaseCaption {
+
     position: absolute;
 
     bottom: 17%;
@@ -880,81 +980,148 @@ button {
     opacity: 0;
 }
 
-.tease-visible .tease-text {
+.teaseVisible #teaseCaption {
+
+    opacity: 1;
+
     animation:
-        captionIn
+        textAppear
         .8s
-        ease
-        forwards;
+        ease;
 }
 
-.reaction-text {
+#tishaReaction {
+
     position: absolute;
 
-    bottom: 11%;
+    bottom: 10%;
 
-    font-size: 17px;
+    font-size: 18px;
 
-    color: #ffd8e4;
+    color: #ffd8e6;
 
     opacity: 0;
 }
 
-.reaction-visible .reaction-text {
+.reactionVisible #tishaReaction {
+
+    opacity: 1;
+
     animation:
-        captionIn
+        textAppear
         .7s
-        ease
-        forwards;
+        ease;
 }
 
 
 /* =====================================================
-   CUDDLE SCENE
-   ===================================================== */
+   CUDDLE
+===================================================== */
 
 #cuddleScene {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
     background:
         radial-gradient(
-            circle at 70% 15%,
-            rgba(97,112,160,.18),
-            transparent 40%
+            circle at 70% 10%,
+            rgba(85,104,160,.2),
+            transparent 35%
         ),
         linear-gradient(
             180deg,
-            #080a17,
+            #070a17,
             #12152a
         );
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.cuddle-content {
-    width: min(95%, 650px);
+.cuddleMoon {
+
+    position: absolute;
+
+    width: 65px;
+    height: 65px;
+
+    border-radius: 50%;
+
+    background: #fff9df;
+
+    top: 8%;
+    right: 9%;
+
+    box-shadow:
+        0 0 30px rgba(255,249,223,.3);
+}
+
+.cuddleWindow {
+
+    position: absolute;
+
+    left: 7%;
+    top: 8%;
+
+    width: 150px;
+    height: 190px;
+
+    border:
+        5px solid rgba(255,255,255,.06);
+
+    background: #08102a;
+}
+
+.cuddleWindow span {
+
+    position: absolute;
+
+    color: white;
+
+    font-size: 10px;
+}
+
+.cuddleWindow span:nth-child(1) {
+    top: 20%;
+    left: 25%;
+}
+
+.cuddleWindow span:nth-child(2) {
+    top: 40%;
+    right: 25%;
+}
+
+.cuddleWindow span:nth-child(3) {
+    bottom: 20%;
+    left: 40%;
+}
+
+.cuddleTitle {
+
+    position: absolute;
+
+    top: 15%;
+
+    width: 90%;
 
     text-align: center;
 
-    position: relative;
-    z-index: 5;
+    font-size:
+        clamp(17px,4vw,25px);
+
+    color: #fff2f7;
 }
 
-.cuddle-title {
-    font-size: clamp(17px,4vw,24px);
-
-    color: #fff3f7;
-
-    margin-bottom: 35px;
-}
-
-.cuddle-bed {
-    width: min(90vw, 450px);
-    height: 220px;
-
-    margin: auto;
+#cuddleBed {
 
     position: relative;
+
+    width: min(90vw,480px);
+    height: 230px;
+
+    margin-top: 70px;
 
     border-radius:
         100px
@@ -965,298 +1132,226 @@ button {
     background:
         linear-gradient(
             180deg,
-            #6b5364,
-            #302c43
+            #695366,
+            #302b42
         );
 
     box-shadow:
-        0 30px 60px rgba(0,0,0,.4);
+        0 35px 70px rgba(0,0,0,.45);
 }
 
-.cuddle-pillow {
+.pillow {
+
     position: absolute;
 
     width: 150px;
     height: 65px;
 
-    top: 25px;
     left: 50%;
+    top: 22px;
 
     transform: translateX(-50%);
 
     border-radius: 40px;
 
-    background: #8b7887;
-
-    opacity: .75;
+    background: #8c7888;
 }
 
-.cuddle-person {
-    position: absolute;
+.cuddlePerson {
 
-    width: 160px;
-    height: 150px;
+    position: absolute;
 
     bottom: 30px;
+
+    width: 180px;
+    height: 150px;
+
+    transition:
+        left 1s cubic-bezier(.2,.8,.2,1),
+        right 1s cubic-bezier(.2,.8,.2,1),
+        transform 1s ease;
 }
 
-.person-back {
-    left: 25px;
+.cuddleBoy {
+    left: 5px;
 }
 
-.person-front {
-    right: 25px;
+.cuddleGirl {
+    right: 5px;
 }
 
-.cuddle-head {
+.cuddleHead {
+
     position: absolute;
 
-    width: 52px;
-    height: 52px;
+    top: 10px;
+
+    width: 55px;
+    height: 55px;
 
     border-radius: 50%;
 
-    background: #d69b7b;
+    background: #d49a7b;
 
-    top: 15px;
+    z-index: 3;
 }
 
-.person-back .cuddle-head {
-    left: 25px;
+.cuddleBoy .cuddleHead {
+    left: 35px;
 }
 
-.person-front .cuddle-head {
-    right: 25px;
+.cuddleGirl .cuddleHead {
+    right: 35px;
 }
 
-.cuddle-body {
+.cuddleBody {
+
     position: absolute;
-
-    width: 105px;
-    height: 85px;
-
-    border-radius: 50px 50px 15px 15px;
 
     top: 55px;
 
-    background: #31364f;
+    width: 115px;
+    height: 90px;
+
+    border-radius: 50px 50px 15px 15px;
 }
 
-.person-back .cuddle-body {
-    left: 0;
+.boyClothes {
+
+    left: 5px;
+
+    background: #30354d;
 }
 
-.person-front .cuddle-body {
-    right: 0;
+.girlClothes {
 
-    background: #694558;
+    right: 5px;
+
+    background: #71475a;
 }
 
-.arm {
+.cuddleArm {
+
     position: absolute;
 
-    width: 120px;
+    width: 130px;
     height: 20px;
 
     border-radius: 20px;
 
-    background: #d69b7b;
+    top: 70px;
+    left: 55px;
 
-    top: 65px;
-    left: 50px;
+    background: #d49a7b;
 
-    transform:
-        rotate(10deg);
+    transform: rotate(8deg);
 
     transform-origin: left center;
 }
 
-.cuddle-bed {
+
+/* Cuddle stages */
+
+.cuddleStage1 .cuddleBoy {
+    left: 25px;
+}
+
+.cuddleStage1 .cuddleGirl {
+    right: 25px;
+}
+
+.cuddleStage2 .cuddleBoy {
+    left: 45px;
+}
+
+.cuddleStage2 .cuddleGirl {
+    right: 45px;
+}
+
+.cuddleStage3 .cuddleBoy {
+    left: 65px;
+}
+
+.cuddleStage3 .cuddleGirl {
+    right: 65px;
+}
+
+.cuddleStage4 .cuddleBoy {
+
+    left: 85px;
+
+    transform: translateX(-10px);
+}
+
+.cuddleStage4 .cuddleGirl {
+
+    right: 85px;
+
+    transform: translateX(10px);
+}
+
+.cuddleStage4 .cuddleArm {
+
     animation:
-        gentleCuddle
-        4s
-        ease-in-out
-        infinite;
+        armCuddle
+        1.2s
+        ease
+        forwards;
 }
 
-.cuddle-choices {
-    display: flex;
+#cuddleMessage {
 
-    justify-content: center;
-
-    flex-wrap: wrap;
-
-    gap: 10px;
-
-    margin-top: 30px;
-}
-
-.cuddle-choices button {
-    border: 1px solid rgba(255,255,255,.13);
-
-    background:
-        rgba(255,255,255,.06);
-
-    color: white;
-
-    padding:
-        11px
-        15px;
-
-    border-radius: 50px;
-
-    cursor: pointer;
-
-    font-size: 12px;
-
-    transition:
-        transform .25s,
-        background .25s;
-}
-
-.cuddle-choices button:hover {
-    transform: translateY(-2px);
-
-    background:
-        rgba(255,255,255,.11);
-}
-
-#cuddleResponse {
-    min-height: 25px;
-
-    margin-top: 20px;
-
-    color: rgba(255,255,255,.65);
-
-    font-size: 14px;
-}
-
-.continue-love {
-    display: none;
-
-    margin: 20px auto 0;
-
-    padding: 12px 25px;
-
-    border-radius: 50px;
-
-    border:
-        1px solid rgba(255,255,255,.18);
-
-    background:
-        rgba(190,66,112,.18);
-
-    color: white;
-
-    cursor: pointer;
-}
-
-
-/* =====================================================
-   PHONE EASTER EGG
-   ===================================================== */
-
-#hiddenPhone {
-    position: fixed;
-
-    bottom: 15px;
-    right: 15px;
-
-    width: 35px;
-    height: 35px;
-
-    border: none;
-
-    background: transparent;
-
-    opacity: .05;
-
-    cursor: pointer;
-
-    z-index: 100;
-}
-
-.overlay-popup {
-    position: fixed;
-
-    inset: 0;
-
-    display: none;
-
-    align-items: center;
-    justify-content: center;
-
-    background: rgba(0,0,0,.7);
-
-    z-index: 200;
-
-    backdrop-filter: blur(8px);
-}
-
-.overlay-popup.show {
-    display: flex;
-}
-
-.phone-card {
-    width: min(88%, 350px);
-
-    padding: 35px 25px;
-
-    border-radius: 25px;
-
-    text-align: center;
-
-    background:
-        #111426;
-
-    border:
-        1px solid rgba(255,255,255,.12);
-
-    box-shadow:
-        0 30px 80px rgba(0,0,0,.6);
-
-    position: relative;
-}
-
-.phone-card h3 {
-    margin: 10px 0;
+    margin-top: 25px;
 
     font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255,255,255,.4);
+
+    transition:
+        opacity .5s;
 }
 
-.phone-card p {
-    color: rgba(255,255,255,.6);
+#cuddleProgress {
 
-    line-height: 1.6;
+    display: flex;
+
+    gap: 7px;
+
+    margin-top: 15px;
 }
 
-.phone-icon {
-    font-size: 35px;
+#cuddleProgress span {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.2);
+
+    transition:
+        background .4s,
+        transform .4s;
 }
 
-#closePhone {
-    position: absolute;
+#cuddleProgress span.active {
 
-    right: 15px;
-    top: 10px;
+    background: #f1a9c2;
 
-    border: none;
-
-    background: none;
-
-    color: white;
-
-    font-size: 25px;
-
-    cursor: pointer;
+    transform: scale(1.3);
 }
 
 
 /* =====================================================
-   FINAL LOVE QUESTION
-   ===================================================== */
+   LOVE
+===================================================== */
 
-#loveQuestionScene {
+#loveScene {
+
     display: flex;
 
     align-items: center;
@@ -1267,63 +1362,73 @@ button {
     background:
         radial-gradient(
             circle at center,
-            rgba(184,69,111,.12),
+            rgba(190,68,116,.13),
             transparent 50%
         ),
-        #080a17;
+        #080914;
 }
 
-.love-question {
-    width: min(90%, 600px);
-}
+.loveMoon {
 
-.final-moon {
-    font-size: 40px;
+    font-size: 45px;
 
     margin-bottom: 25px;
 
     animation:
-        gentleFloat
+        moonFloat
         4s
         ease-in-out
         infinite;
 }
 
-.love-question p {
-    color: rgba(255,255,255,.5);
+.loveContent {
+
+    width: min(90%,600px);
+}
+
+.loveContent p {
+
+    color: rgba(255,255,255,.45);
 
     font-size: 14px;
 }
 
-.love-question h1 {
+.loveContent h1 {
+
+    font-size: 40px;
+
+    font-weight: normal;
+
     margin:
         18px
         0
         10px;
-
-    font-size: 38px;
-
-    font-weight: normal;
 }
 
-.love-question span {
-    color: rgba(255,255,255,.55);
+.loveContent > span {
+
+    color: rgba(255,255,255,.5);
 }
 
-.love-question h2 {
+.loveContent h2 {
+
     margin-top: 30px;
 
-    font-size: clamp(28px,7vw,45px);
+    font-size:
+        clamp(29px,7vw,48px);
 
     font-weight: normal;
 
-    color: #fff1f6;
+    color: #fff0f6;
 }
 
-#nextPage {
+#page5Button {
+
     margin-top: 35px;
 
-    padding: 13px 27px;
+    padding:
+        13px
+        28px;
 
     border-radius: 50px;
 
@@ -1331,78 +1436,69 @@ button {
         1px solid rgba(255,255,255,.17);
 
     background:
-        rgba(190,66,112,.18);
+        rgba(190,68,116,.18);
 
     color: white;
 
     cursor: pointer;
 
+    font-size: 14px;
+
     transition:
         transform .25s;
 }
 
-#nextPage:hover {
-    transform: translateY(-2px);
+#page5Button:hover {
+
+    transform:
+        translateY(-2px);
 }
 
 
 /* =====================================================
    ANIMATIONS
-   ===================================================== */
+===================================================== */
 
-@keyframes storyAppear {
+@keyframes textAppear {
+
     from {
+
         opacity: 0;
+
         transform:
-            translateY(20px)
-            scale(.97);
+            translateY(15px)
+            scale(.98);
     }
 
     to {
+
         opacity: 1;
+
         transform:
             translateY(0)
             scale(1);
     }
 }
 
-@keyframes hintPulse {
-    0%,100% {
-        opacity: .35;
-    }
+@keyframes balloonMove {
 
-    50% {
-        opacity: .8;
-    }
-}
-
-@keyframes balloonRise {
     from {
+
         transform:
             translateY(0)
-            rotate(-4deg);
+            rotate(-5deg);
     }
 
     to {
+
         transform:
-            translateY(-130vh)
+            translateY(-120vh)
             rotate(5deg);
     }
 }
 
-@keyframes sparkle {
-    0%,100% {
-        opacity: .15;
-        transform: scale(.6);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.2);
-    }
-}
-
 @keyframes twinkle {
+
     0%,100% {
         opacity: .2;
     }
@@ -1412,128 +1508,123 @@ button {
     }
 }
 
-@keyframes floatParticle {
-    from {
-        transform:
-            translateY(100vh);
-        opacity: 0;
+@keyframes starFloat {
+
+    0%,100% {
+        opacity: .2;
     }
 
-    20% {
-        opacity: .7;
-    }
-
-    80% {
-        opacity: .7;
-    }
-
-    to {
-        transform:
-            translateY(-20vh);
-        opacity: 0;
+    50% {
+        opacity: .9;
     }
 }
 
 @keyframes messageIn {
+
     from {
+
         opacity: 0;
-        transform:
-            translateY(10px);
-    }
 
-    to {
-        opacity: 1;
-        transform:
-            translateY(0);
-    }
-}
-
-@keyframes typing {
-    0%,60%,100% {
-        transform: translateY(0);
-        opacity: .4;
-    }
-
-    30% {
-        transform: translateY(-4px);
-        opacity: 1;
-    }
-}
-
-@keyframes captionIn {
-    from {
-        opacity: 0;
         transform:
             translateY(12px);
     }
 
     to {
+
         opacity: 1;
+
         transform:
             translateY(0);
     }
 }
 
-@keyframes kissAppear {
-    0% {
-        opacity: 0;
+@keyframes typingDot {
+
+    0%,60%,100% {
+
         transform:
-            translate(-50%, -50%)
-            scale(.2);
+            translateY(0);
+
+        opacity: .4;
     }
 
-    40% {
-        opacity: 1;
+    30% {
+
         transform:
-            translate(-50%, -50%)
-            scale(1.15);
+            translateY(-5px);
+
+        opacity: 1;
+    }
+}
+
+@keyframes kissFloat {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translate(0,0)
+            scale(.3)
+            rotate(-15deg);
+    }
+
+    20% {
+        opacity: 1;
     }
 
     100% {
+
         opacity: 0;
+
         transform:
-            translate(-50%, -50%)
-            scale(.9);
+            translate(
+                calc((var(--x)) * 1px),
+                -130px
+            )
+            scale(1.15)
+            rotate(15deg);
     }
 }
 
-@keyframes gentleCuddle {
+@keyframes armCuddle {
+
+    from {
+
+        transform:
+            rotate(8deg);
+    }
+
+    to {
+
+        transform:
+            rotate(-8deg)
+            scaleX(1.08);
+    }
+}
+
+@keyframes moonFloat {
+
     0%,100% {
         transform:
-            translateY(0)
-            rotate(0);
+            translateY(0);
     }
 
     50% {
         transform:
-            translateY(-3px)
-            rotate(.4deg);
-    }
-}
-
-@keyframes gentleFloat {
-    0%,100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-8px);
+            translateY(-8px);
     }
 }
 
 
 /* =====================================================
    MOBILE
-   ===================================================== */
+===================================================== */
 
-@media (max-width: 600px) {
+@media(max-width:600px) {
 
-    .balloon {
-        width: 45px;
-        height: 62px;
-    }
+    .window {
 
-    .bedroom-window {
         width: 125px;
         height: 165px;
 
@@ -1542,51 +1633,87 @@ button {
     }
 
     .moon {
+
         width: 58px;
         height: 58px;
-
-        right: 7%;
-        top: 7%;
     }
 
-    .chat-page {
-        padding-top: 5vh;
+    .chatWrapper {
+
+        padding-top: 4vh;
     }
 
-    .messages {
-        min-height: 400px;
-        max-height: 58vh;
+    #messages {
+
+        min-height: 420px;
+
+        padding:
+            20px
+            14px;
     }
 
     .message {
-        max-width: 84%;
+
+        max-width: 86%;
+
         font-size: 13px;
     }
 
-    .couple {
-        transform: scale(.85);
+    #kissCouple {
+
+        transform:
+            scale(.85);
     }
 
-    .cuddle-bed {
-        width: 92vw;
-        height: 190px;
+    .cuddleWindow {
+
+        width: 100px;
+        height: 140px;
+
+        left: 3%;
     }
 
-    .cuddle-person {
-        transform: scale(.82);
+    #cuddleBed {
+
+        width: 94vw;
+        height: 205px;
     }
 
-    .person-back {
-        left: 0;
+    .cuddlePerson {
+
+        transform:
+            scale(.82);
     }
 
-    .person-front {
-        right: 0;
+    .cuddleStage1 .cuddleBoy {
+        left: 15px;
     }
 
-    .cuddle-choices {
-        padding:
-            0
-            10px;
+    .cuddleStage1 .cuddleGirl {
+        right: 15px;
+    }
+
+    .cuddleStage2 .cuddleBoy {
+        left: 30px;
+    }
+
+    .cuddleStage2 .cuddleGirl {
+        right: 30px;
+    }
+
+    .cuddleStage3 .cuddleBoy {
+        left: 45px;
+    }
+
+    .cuddleStage3 .cuddleGirl {
+        right: 45px;
+    }
+
+    .cuddleStage4 .cuddleBoy {
+        left: 58px;
+    }
+
+    .cuddleStage4 .cuddleGirl {
+        right: 58px;
     }
 }
