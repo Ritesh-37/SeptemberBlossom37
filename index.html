@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -14,9 +15,9 @@
 
 <body>
 
-    <!-- =========================================================
+    <!-- =====================================================
          AUDIO
-    ========================================================== -->
+    ====================================================== -->
 
     <audio id="bgMusic" loop preload="auto">
         <source src="audio/page4-bgm.mp3" type="audio/mpeg">
@@ -34,37 +35,47 @@
         <source src="audio/sparkle.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- =========================================================
-         MUSIC BUTTON
-    ========================================================== -->
 
-    <button id="musicButton" class="music-button" aria-label="Toggle music">
+    <!-- MUSIC BUTTON -->
+
+    <button
+        id="musicButton"
+        class="music-button"
+        type="button"
+        aria-label="Toggle music"
+    >
         ♪
     </button>
 
-    <!-- =========================================================
-         GLOBAL PARTICLES
-    ========================================================== -->
+
+    <!-- PARTICLES -->
 
     <div id="particles"></div>
 
-    <!-- =========================================================
-         MAIN APP
-    ========================================================== -->
+
+    <!-- =====================================================
+         APP
+    ====================================================== -->
 
     <main id="app">
 
-        <!-- =====================================================
-             INTRO / WAKE UP
-        ====================================================== -->
 
-        <section id="introScene" class="scene active">
+        <!-- =================================================
+             1. WAKE UP
+        ================================================== -->
+
+        <section
+            id="introScene"
+            class="scene active"
+        >
 
             <div class="ambient-glow"></div>
 
             <div class="bedroom-content">
 
-                <div class="sleeping-symbol">z</div>
+                <div class="sleeping-symbol">
+                    z
+                </div>
 
                 <div class="intro-title">
                     <span>Good morning...</span>
@@ -78,6 +89,7 @@
                 <button
                     id="wakeButton"
                     class="premium-button"
+                    type="button"
                 >
                     Wake up →
                 </button>
@@ -87,31 +99,40 @@
         </section>
 
 
-        <!-- =====================================================
-             TEASING POPUPS
-        ====================================================== -->
+        <!-- =================================================
+             2. TEASING POPUPS
+        ================================================== -->
 
-        <section id="teaseScene" class="scene hidden">
+        <section
+            id="teaseScene"
+            class="scene"
+        >
 
             <div class="tease-background"></div>
 
             <div class="popup-container">
 
-                <div id="teasePopup" class="story-popup">
+                <div
+                    id="teasePopup"
+                    class="story-popup"
+                >
 
-                    <div class="popup-small">HEY YOU</div>
+                    <div class="popup-small">
+                        HEY YOU
+                    </div>
 
                     <h2 id="teaseTitle">
-                        Welcome back...
+                        There you are...
                     </h2>
 
                     <p id="teaseText">
-                        I have something planned for you.
+                        Come on sweetheart. I know you're awake.
                     </p>
 
                     <button
                         id="teaseNext"
                         class="premium-button"
+                        type="button"
                     >
                         Continue →
                     </button>
@@ -123,19 +144,26 @@
         </section>
 
 
-        <!-- =====================================================
-             READY SCREEN
-        ====================================================== -->
+        <!-- =================================================
+             3. READY
+        ================================================== -->
 
-        <section id="readyScene" class="scene hidden">
+        <section
+            id="readyScene"
+            class="scene"
+        >
 
             <div class="ready-glow"></div>
 
             <div class="ready-content">
 
-                <div class="tiny-star">✦</div>
+                <div class="tiny-star">
+                    ✦
+                </div>
 
-                <h1>Ready?</h1>
+                <h1>
+                    Ready?
+                </h1>
 
                 <p>
                     Let's see how well<br>
@@ -145,6 +173,7 @@
                 <button
                     id="readyButton"
                     class="premium-button"
+                    type="button"
                 >
                     I'm ready →
                 </button>
@@ -154,35 +183,40 @@
         </section>
 
 
-        <!-- =====================================================
-             BLACK TRANSITION
-        ====================================================== -->
+        <!-- =================================================
+             4. SEVEN WONDERS INTRO
+        ================================================== -->
 
-        <section id="wonderIntro" class="scene black-scene hidden">
+        <section
+            id="wonderIntro"
+            class="scene"
+        >
 
             <div class="wonder-intro-content">
 
-                <p class="fade-line line-one">
+                <p class="fade-line">
                     Let's see how well you remember us...
                 </p>
 
-                <div class="wonder-star">✦</div>
+                <div class="wonder-star">
+                    ✦
+                </div>
 
-                <h1 class="wonder-number">
+                <div class="wonder-number">
                     7
-                </h1>
+                </div>
 
-                <p class="wonder-word">
+                <div class="wonder-word">
                     memories.
-                </p>
+                </div>
 
-                <h1 class="wonder-number second-number">
+                <div class="wonder-number second-number">
                     7
-                </h1>
+                </div>
 
-                <p class="wonder-word">
+                <div class="wonder-word">
                     wonders.
-                </p>
+                </div>
 
                 <p class="final-line">
                     1 way to reach me.
@@ -193,11 +227,14 @@
         </section>
 
 
-        <!-- =====================================================
-             SEVEN WONDERS QUIZ
-        ====================================================== -->
+        <!-- =================================================
+             5. QUIZ
+        ================================================== -->
 
-        <section id="quizScene" class="scene hidden">
+        <section
+            id="quizScene"
+            class="scene"
+        >
 
             <div class="quiz-background"></div>
 
@@ -213,24 +250,26 @@
 
             </div>
 
+
             <div class="wonder-card">
 
-                <div class="wonder-icon" id="wonderIcon">
+                <div
+                    id="wonderIcon"
+                    class="wonder-icon"
+                >
                     ✦
                 </div>
 
                 <div class="wonder-label">
-                    WONDER <span id="wonderNumber">01</span>
+                    WONDER
+                    <span id="wonderNumber">01</span>
                 </div>
 
                 <h2 id="questionText">
-                    Question goes here
+                    Question
                 </h2>
 
-                <div
-                    id="answers"
-                    class="answers"
-                ></div>
+                <div id="answers"></div>
 
                 <p
                     id="answerFeedback"
@@ -239,7 +278,8 @@
 
                 <button
                     id="nextQuestion"
-                    class="premium-button hidden-button"
+                    class="premium-button next-button"
+                    type="button"
                 >
                     Next wonder →
                 </button>
@@ -249,11 +289,14 @@
         </section>
 
 
-        <!-- =====================================================
-             TAJ MAHAL REVEAL
-        ====================================================== -->
+        <!-- =================================================
+             6. TAJ MAHAL
+        ================================================== -->
 
-        <section id="tajScene" class="scene hidden">
+        <section
+            id="tajScene"
+            class="scene"
+        >
 
             <div class="taj-sky"></div>
 
@@ -262,17 +305,22 @@
             <div class="taj-content">
 
                 <div class="taj-silhouette">
+
                     <div class="taj-dome"></div>
 
                     <div class="taj-building">
+
                         <span></span>
                         <span></span>
                         <span></span>
+
                     </div>
 
                     <div class="taj-minaret left"></div>
                     <div class="taj-minaret right"></div>
+
                 </div>
+
 
                 <div class="taj-message">
 
@@ -296,6 +344,7 @@
                     <button
                         id="tajContinue"
                         class="premium-button"
+                        type="button"
                     >
                         Continue →
                     </button>
@@ -307,13 +356,14 @@
         </section>
 
 
-        <!-- =====================================================
-             FIND RITESH
-        ====================================================== -->
+        <!-- =================================================
+             7. FIND RITESH
+        ================================================== -->
 
-        <section id="findScene" class="scene hidden">
-
-            <div class="find-stars"></div>
+        <section
+            id="findScene"
+            class="scene"
+        >
 
             <div class="find-content">
 
@@ -329,12 +379,17 @@
                     Somewhere in this little universe...
                 </p>
 
-                <div id="findUniverse" class="find-universe">
+
+                <div
+                    id="findUniverse"
+                    class="find-universe"
+                >
 
                     <button
                         class="hidden-star"
                         data-correct="false"
                         style="--x:18%; --y:27%;"
+                        type="button"
                     >
                         ✦
                     </button>
@@ -343,6 +398,7 @@
                         class="hidden-star"
                         data-correct="false"
                         style="--x:72%; --y:20%;"
+                        type="button"
                     >
                         ✦
                     </button>
@@ -351,6 +407,7 @@
                         class="hidden-star"
                         data-correct="false"
                         style="--x:38%; --y:68%;"
+                        type="button"
                     >
                         ✦
                     </button>
@@ -359,6 +416,7 @@
                         class="hidden-star"
                         data-correct="false"
                         style="--x:82%; --y:72%;"
+                        type="button"
                     >
                         ✦
                     </button>
@@ -367,15 +425,17 @@
                         class="hidden-star"
                         data-correct="true"
                         style="--x:58%; --y:43%;"
+                        type="button"
                     >
                         ✦
                     </button>
+
 
                     <div
                         id="foundMessage"
                         class="found-message"
                     >
-                        You found me.
+                        You found me. ♥
                     </div>
 
                 </div>
@@ -385,71 +445,73 @@
         </section>
 
 
-        <!-- =====================================================
-             DINNER INTRO
-        ====================================================== -->
+        <!-- =================================================
+             8. DINNER INTRO
+        ================================================== -->
 
-        <section id="dinnerIntro" class="scene hidden">
+        <section
+            id="dinnerIntro"
+            class="scene"
+        >
 
-            <div class="dinner-room">
+            <div class="dinner-content">
 
-                <div class="dinner-lamp"></div>
-
-                <div class="dinner-content">
-
-                    <div class="dinner-caption">
-                        SOMEWHERE QUIET
-                    </div>
-
-                    <h1>
-                        Just you & me.
-                    </h1>
-
-                    <p>
-                        No party.<br>
-                        No crowd.<br>
-                        Just one little dinner.
-                    </p>
-
-                    <button
-                        id="dinnerStart"
-                        class="premium-button"
-                    >
-                        Sit with me →
-                    </button>
-
+                <div class="dinner-caption">
+                    SOMEWHERE QUIET
                 </div>
+
+                <h1>
+                    Just you & me.
+                </h1>
+
+                <p>
+                    No party.<br>
+                    No crowd.<br>
+                    Just one little dinner.
+                </p>
+
+                <button
+                    id="dinnerStart"
+                    class="premium-button"
+                    type="button"
+                >
+                    Sit with me →
+                </button>
 
             </div>
 
         </section>
 
 
-        <!-- =====================================================
-             INTERACTIVE DINNER
-        ====================================================== -->
+        <!-- =================================================
+             9. INTERACTIVE DINNER
+        ================================================== -->
 
-        <section id="dinnerScene" class="scene hidden">
+        <section
+            id="dinnerScene"
+            class="scene"
+        >
 
             <div class="dinner-background">
+
+                <div class="dinner-lamp"></div>
 
                 <div class="table">
 
                     <div class="table-cloth"></div>
 
-                    <!-- Candle -->
                     <div class="candle">
 
                         <div class="flame"></div>
 
                     </div>
 
-                    <!-- Plate -->
                     <div class="plate">
 
                         <button
                             class="food-bite"
                             data-food="starter"
+                            type="button"
                         >
                             ◉
                         </button>
@@ -457,6 +519,7 @@
                         <button
                             class="food-bite"
                             data-food="main"
+                            type="button"
                         >
                             ◉
                         </button>
@@ -464,6 +527,7 @@
                         <button
                             class="food-bite"
                             data-food="dessert"
+                            type="button"
                         >
                             ◉
                         </button>
@@ -471,6 +535,7 @@
                         <button
                             class="food-bite"
                             data-food="drink"
+                            type="button"
                         >
                             ◉
                         </button>
@@ -478,6 +543,7 @@
                         <button
                             class="food-bite"
                             data-food="secret"
+                            type="button"
                         >
                             ◉
                         </button>
@@ -485,6 +551,7 @@
                     </div>
 
                 </div>
+
 
                 <div
                     id="foodPopup"
@@ -500,8 +567,7 @@
                     </h2>
 
                     <p id="foodText">
-                        There are five little things
-                        waiting for you.
+                        Five little things are waiting for you.
                     </p>
 
                 </div>
@@ -511,29 +577,32 @@
         </section>
 
 
-        <!-- =====================================================
-             CURTAIN TRANSITION
-        ====================================================== -->
+        <!-- =================================================
+             10. CURTAINS
+        ================================================== -->
 
-        <section id="curtainScene" class="scene hidden">
+        <section
+            id="curtainScene"
+            class="scene"
+        >
 
             <div class="curtain left-curtain"></div>
 
             <div class="curtain right-curtain"></div>
 
-            <div
-                id="curtainCenter"
-                class="curtain-center"
-            ></div>
+            <div class="curtain-center"></div>
 
         </section>
 
 
-        <!-- =====================================================
-             FINAL "TIME TO LOOK AT US"
-        ====================================================== -->
+        <!-- =================================================
+             11. TIME TO LOOK AT US
+        ================================================== -->
 
-        <section id="memoryTransition" class="scene hidden">
+        <section
+            id="memoryTransition"
+            class="scene"
+        >
 
             <div class="memory-darkness"></div>
 
@@ -541,10 +610,7 @@
                 ♥
             </div>
 
-            <div
-                id="memoryPopup"
-                class="memory-popup"
-            >
+            <div class="memory-popup">
 
                 <div class="memory-popup-sparkle">
                     ✦
@@ -562,6 +628,7 @@
                 <button
                     id="memoryGo"
                     class="premium-button"
+                    type="button"
                 >
                     Let's go →
                 </button>
