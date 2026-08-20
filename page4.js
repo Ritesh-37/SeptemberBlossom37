@@ -1,492 +1,427 @@
 /* =====================================================
-   PAGE 4 — MIDNIGHT
-   AUDIO + STORY + INTERACTIONS
-   ===================================================== */
+   PAGE 4
+   MIDNIGHT STORY ENGINE
+===================================================== */
 
 
 /* =====================================================
-   BASIC HELPERS
-   ===================================================== */
+   HELPERS
+===================================================== */
+
+const $ = id => document.getElementById(id);
 
 const wait = ms =>
     new Promise(resolve => setTimeout(resolve, ms));
-
-
-const $ = id =>
-    document.getElementById(id);
 
 
 let currentScene = "partyScene";
 
 function showScene(id) {
 
-    document.querySelectorAll(".scene").forEach(scene => {
-        scene.classList.remove("active");
-    });
+    document.querySelectorAll(".scene")
+        .forEach(scene =>
+            scene.classList.remove("active")
+        );
 
-    const target = $(id);
+    $(id).classList.add("active");
 
-    if (target) {
-        target.classList.add("active");
-        currentScene = id;
-    }
+    currentScene = id;
 }
 
 
 /* =====================================================
-   WEB AUDIO ENGINE
-   No audio files required.
-   ===================================================== */
+   AUDIO ENGINE
+===================================================== */
 
-let audioContext = null;
-let masterGain = null;
-let musicGain = null;
-let musicStarted = false;
+let audio = null;
+let master = null;
+let music = null;
+
+let audioReady = false;
 
 
-function initializeAudio() {
+function initAudio() {
 
-    if (audioContext) return;
+    if (audioReady) return;
 
-    audioContext =
-        new (window.AudioContext ||
-             window.webkitAudioContext)();
+    audio =
+        new (
+            window.AudioContext ||
+            window.webkitAudioContext
+        )();
 
-    masterGain =
-        audioContext.createGain();
+    master =
+        audio.createGain();
 
-    musicGain =
-        audioContext.createGain();
+    music =
+        audio.createGain();
 
-    masterGain.gain.value = 0.45;
-    musicGain.gain.value = 0.055;
+    master.gain.value = 0.65;
 
-    musicGain.connect(masterGain);
-    masterGain.connect(audioContext.destination);
+    music.gain.value = 0.13;
 
-    if (audioContext.state === "suspended") {
-        audioContext.resume();
-    }
+    music.connect(master);
 
-    startMidnightMusic();
+    master.connect(
+        audio.destination
+    );
+
+    audio.resume();
+
+    audioReady = true;
+
+    startMusic();
 }
 
 
 /* =====================================================
-   SIMPLE SYNTH
-   ===================================================== */
+   MUSIC
+===================================================== */
 
-function playTone(
+function createMusicNote(
     frequency,
-    duration = 0.2,
-    type = "sine",
-    volume = 0.06,
-    delay = 0
+    duration,
+    volume
 ) {
 
-    if (!audioContext) return;
+    if (!audio) return;
 
     const oscillator =
-        audioContext.createOscillator();
+        audio.createOscillator();
 
     const gain =
-        audioContext.createGain();
+        audio.createGain();
 
-    oscillator.type = type;
+    oscillator.type = "sine";
 
-    oscillator.frequency.setValueAtTime(
-        frequency,
-        audioContext.currentTime + delay
-    );
+    oscillator.frequency.value =
+        frequency;
 
     gain.gain.setValueAtTime(
         0.0001,
-        audioContext.currentTime + delay
+        audio.currentTime
     );
 
     gain.gain.exponentialRampToValueAtTime(
         volume,
-        audioContext.currentTime + delay + 0.025
+        audio.currentTime + .5
     );
 
     gain.gain.exponentialRampToValueAtTime(
         0.0001,
-        audioContext.currentTime + delay + duration
+        audio.currentTime + duration
     );
 
     oscillator.connect(gain);
-    gain.connect(masterGain);
 
-    oscillator.start(
-        audioContext.currentTime + delay
-    );
-
-    oscillator.stop(
-        audioContext.currentTime + delay + duration + 0.05
-    );
-}
-
-
-/* =====================================================
-   SOFT CLICK
-   ===================================================== */
-
-function clickSound() {
-
-    playTone(
-        620,
-        0.07,
-        "sine",
-        0.025
-    );
-
-    playTone(
-        920,
-        0.05,
-        "sine",
-        0.015,
-        0.025
-    );
-}
-
-
-/* =====================================================
-   MESSAGE SOUND
-   ===================================================== */
-
-function messageSound(isTisha) {
-
-    if (isTisha) {
-
-        playTone(
-            500,
-            0.12,
-            "sine",
-            0.035
-        );
-
-    } else {
-
-        playTone(
-            650,
-            0.12,
-            "sine",
-            0.035
-        );
-
-    }
-}
-
-
-/* =====================================================
-   WHOOSH
-   ===================================================== */
-
-function whooshSound() {
-
-    if (!audioContext) return;
-
-    const oscillator =
-        audioContext.createOscillator();
-
-    const gain =
-        audioContext.createGain();
-
-    oscillator.type = "sine";
-
-    oscillator.frequency.setValueAtTime(
-        220,
-        audioContext.currentTime
-    );
-
-    oscillator.frequency.exponentialRampToValueAtTime(
-        700,
-        audioContext.currentTime + 0.35
-    );
-
-    gain.gain.setValueAtTime(
-        0.0001,
-        audioContext.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        0.045,
-        audioContext.currentTime + 0.08
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        audioContext.currentTime + 0.4
-    );
-
-    oscillator.connect(gain);
-    gain.connect(masterGain);
+    gain.connect(music);
 
     oscillator.start();
 
     oscillator.stop(
-        audioContext.currentTime + 0.45
+        audio.currentTime + duration
+    );
+}
+
+
+/*
+   Romantic progression:
+
+   Am → F → C → G
+*/
+
+const musicChords = [
+
+    [220, 261.63, 329.63],
+
+    [174.61, 220, 261.63],
+
+    [130.81, 164.81, 196],
+
+    [196, 246.94, 293.66]
+
+];
+
+let musicIndex = 0;
+
+
+function startMusic() {
+
+    function chord() {
+
+        const current =
+            musicChords[musicIndex];
+
+        current.forEach(
+            (note, index) => {
+
+                createMusicNote(
+                    note,
+                    4.2,
+                    index === 0
+                        ? .055
+                        : .035
+                );
+
+            }
+        );
+
+        musicIndex =
+            (musicIndex + 1)
+            % musicChords.length;
+
+        setTimeout(
+            chord,
+            4000
+        );
+    }
+
+    chord();
+}
+
+
+/* =====================================================
+   EFFECT SOUNDS
+===================================================== */
+
+function tone(
+    frequency,
+    duration,
+    volume,
+    type = "sine"
+) {
+
+    if (!audio) return;
+
+    const osc =
+        audio.createOscillator();
+
+    const gain =
+        audio.createGain();
+
+    osc.type = type;
+
+    osc.frequency.value =
+        frequency;
+
+    gain.gain.setValueAtTime(
+        0.0001,
+        audio.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        volume,
+        audio.currentTime + .02
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        audio.currentTime + duration
+    );
+
+    osc.connect(gain);
+
+    gain.connect(master);
+
+    osc.start();
+
+    osc.stop(
+        audio.currentTime +
+        duration +
+        .05
+    );
+}
+
+
+function tapSound() {
+
+    tone(
+        650,
+        .08,
+        .035
+    );
+
+    setTimeout(
+        () =>
+            tone(
+                900,
+                .06,
+                .018
+            ),
+        35
+    );
+}
+
+
+function messageSound() {
+
+    tone(
+        520,
+        .12,
+        .035
+    );
+
+    setTimeout(
+        () =>
+            tone(
+                760,
+                .1,
+                .025
+            ),
+        70
+    );
+}
+
+
+function transitionSound() {
+
+    if (!audio) return;
+
+    tone(
+        180,
+        .3,
+        .03
+    );
+
+    setTimeout(
+        () =>
+            tone(
+                420,
+                .4,
+                .025
+            ),
+        100
     );
 }
 
 
 /* =====================================================
    KISS SOUND
-   ===================================================== */
+===================================================== */
 
 function kissSound() {
 
-    if (!audioContext) return;
+    if (!audio) return;
 
-    const bufferSize =
-        audioContext.sampleRate * 0.18;
+    const length =
+        audio.sampleRate * .2;
 
     const buffer =
-        audioContext.createBuffer(
+        audio.createBuffer(
             1,
-            bufferSize,
-            audioContext.sampleRate
+            length,
+            audio.sampleRate
         );
 
     const data =
         buffer.getChannelData(0);
 
-    for (let i = 0; i < bufferSize; i++) {
+    for (
+        let i = 0;
+        i < length;
+        i++
+    ) {
 
         data[i] =
-            (Math.random() * 2 - 1) *
-            Math.exp(-i / (bufferSize * 0.16));
+            (
+                Math.random() * 2 - 1
+            )
+            *
+            Math.exp(
+                -i / (length * .13)
+            );
     }
 
     const source =
-        audioContext.createBufferSource();
+        audio.createBufferSource();
 
     const filter =
-        audioContext.createBiquadFilter();
+        audio.createBiquadFilter();
 
     const gain =
-        audioContext.createGain();
+        audio.createGain();
 
     filter.type = "bandpass";
-    filter.frequency.value = 1200;
-    filter.Q.value = 0.7;
 
-    gain.gain.value = 0.025;
+    filter.frequency.value =
+        1400;
 
-    source.buffer = buffer;
+    filter.Q.value =
+        .8;
 
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(masterGain);
+    gain.gain.value =
+        .055;
+
+    source.buffer =
+        buffer;
+
+    source
+        .connect(filter)
+        .connect(gain)
+        .connect(master);
 
     source.start();
 }
 
 
 /* =====================================================
-   PLAYFUL TAP / PAT SOUND
-   ===================================================== */
+   PLAYFUL PAT SOUND
+===================================================== */
 
-function playfulPatSound() {
+function playfulSound() {
 
-    playTone(
-        170,
-        0.07,
-        "triangle",
-        0.055
+    tone(
+        140,
+        .09,
+        .06,
+        "triangle"
     );
 
-    playTone(
-        105,
-        0.09,
-        "sine",
-        0.035,
-        0.035
+    setTimeout(
+        () =>
+            tone(
+                100,
+                .12,
+                .035
+            ),
+        40
     );
 }
 
 
 /* =====================================================
-   SOFT BED SOUND
-   ===================================================== */
+   BED / CUDDLE SOUND
+===================================================== */
 
 function bedSound() {
 
-    playTone(
-        90,
-        0.18,
-        "sine",
-        0.035
+    tone(
+        75,
+        .25,
+        .035
     );
 
-    playTone(
-        65,
-        0.2,
-        "sine",
-        0.025,
-        0.08
-    );
-}
-
-
-/* =====================================================
-   CUDDLE SOUND
-   ===================================================== */
-
-function cuddleSound() {
-
-    playTone(
-        330,
-        0.35,
-        "sine",
-        0.025
-    );
-
-    playTone(
-        440,
-        0.45,
-        "sine",
-        0.018,
-        0.1
+    setTimeout(
+        () =>
+            tone(
+                110,
+                .25,
+                .02
+            ),
+        80
     );
 }
 
 
 /* =====================================================
-   ROMANTIC MIDNIGHT BGM
-   Generated entirely in JS
-   ===================================================== */
-
-function startMidnightMusic() {
-
-    if (musicStarted || !audioContext) return;
-
-    musicStarted = true;
-
-    const notes = [
-        261.63,
-        329.63,
-        392.00,
-        329.63,
-        293.66,
-        349.23,
-        440.00,
-        349.23
-    ];
-
-    let index = 0;
-
-    function playNextNote() {
-
-        if (!audioContext) return;
-
-        const oscillator =
-            audioContext.createOscillator();
-
-        const gain =
-            audioContext.createGain();
-
-        oscillator.type = "sine";
-
-        oscillator.frequency.value =
-            notes[index];
-
-        gain.gain.setValueAtTime(
-            0.0001,
-            audioContext.currentTime
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.025,
-            audioContext.currentTime + 0.5
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.0001,
-            audioContext.currentTime + 2.6
-        );
-
-        oscillator.connect(gain);
-        gain.connect(musicGain);
-
-        oscillator.start();
-
-        oscillator.stop(
-            audioContext.currentTime + 2.7
-        );
-
-        index =
-            (index + 1) % notes.length;
-
-        setTimeout(
-            playNextNote,
-            2600
-        );
-    }
-
-    playNextNote();
-
-
-    /* soft lower pad */
-
-    function playPad() {
-
-        if (!audioContext) return;
-
-        const oscillator =
-            audioContext.createOscillator();
-
-        const gain =
-            audioContext.createGain();
-
-        oscillator.type = "triangle";
-
-        oscillator.frequency.value =
-            130.81;
-
-        gain.gain.setValueAtTime(
-            0.0001,
-            audioContext.currentTime
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.012,
-            audioContext.currentTime + 1
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.0001,
-            audioContext.currentTime + 7
-        );
-
-        oscillator.connect(gain);
-        gain.connect(musicGain);
-
-        oscillator.start();
-
-        oscillator.stop(
-            audioContext.currentTime + 7.2
-        );
-
-        setTimeout(
-            playPad,
-            7000
-        );
-    }
-
-    playPad();
-}
-
-
-/* =====================================================
-   UNLOCK AUDIO ON FIRST TOUCH
-   ===================================================== */
+   FIRST TAP UNLOCKS AUDIO
+===================================================== */
 
 document.addEventListener(
     "pointerdown",
     () => {
 
-        initializeAudio();
+        initAudio();
 
     },
     {
@@ -496,109 +431,105 @@ document.addEventListener(
 
 
 /* =====================================================
-   PARTICLES
-   ===================================================== */
+   STARS
+===================================================== */
 
-const particleContainer =
-    $("particles");
+const starContainer =
+    $("stars");
 
-for (let i = 0; i < 28; i++) {
+for (
+    let i = 0;
+    i < 35;
+    i++
+) {
 
-    const particle =
+    const star =
         document.createElement("span");
 
-    particle.className =
-        "particle";
+    star.className =
+        "star";
 
-    particle.style.left =
+    star.style.left =
         Math.random() * 100 + "%";
 
-    particle.style.animationDuration =
-        (8 + Math.random() * 12) + "s";
+    star.style.top =
+        Math.random() * 100 + "%";
 
-    particle.style.animationDelay =
-        Math.random() * 10 + "s";
+    star.style.animationDelay =
+        Math.random() * 5 + "s";
 
-    particleContainer.appendChild(
-        particle
+    starContainer.appendChild(
+        star
     );
 }
 
 
 /* =====================================================
    PARTY STORY
-   ===================================================== */
+===================================================== */
 
-const partyMessages = [
+const partyLines = [
 
-    "Okay guys... party's over! 😂",
+    "Come on guys... the party's over! 🎉",
 
-    "Come on everyone... time to go home!",
+    "Time to go home, everyone! 😂",
 
     "Everyone's finally gone...",
 
     "Which means...",
 
-    "I can finally have some me time with my babyyy. ❤️"
+    "I can finally have some me time with my babyyy... ♥"
 
 ];
 
 let partyIndex = 0;
 
-const partyText =
-    $("partyStoryText");
+$("partyText").textContent =
+    partyLines[0];
+
+partyIndex = 1;
 
 
-let partyLocked = false;
+function nextPartyLine() {
 
+    tapSound();
 
-function showPartyMessage() {
+    if (
+        partyIndex <
+        partyLines.length
+    ) {
 
-    if (partyLocked) return;
+        $("partyText").style.animation =
+            "none";
 
-    partyLocked = true;
+        void $("partyText").offsetWidth;
 
-    clickSound();
+        $("partyText").textContent =
+            partyLines[partyIndex];
 
-    partyText.style.opacity = "0";
-
-    setTimeout(() => {
-
-        partyText.textContent =
-            partyMessages[partyIndex];
-
-        partyText.style.opacity = "1";
+        $("partyText").style.animation =
+            "textAppear .8s ease";
 
         partyIndex++;
 
-        partyLocked = false;
+        return;
+    }
 
-        if (partyIndex >= partyMessages.length) {
+    transitionSound();
 
-            setTimeout(() => {
+    showScene(
+        "blackScene"
+    );
 
-                partyLocked = true;
-
-                whooshSound();
-
-                showScene("blackScene");
-
-                startBlackStory();
-
-            }, 700);
-
-        }
-
-    }, 350);
-
+    startBlackScene();
 }
 
 
 /* =====================================================
    BLACK STORY
-   ===================================================== */
+===================================================== */
 
-const blackMessages = [
+const blackLines = [
 
     "The party was finally over.",
 
@@ -606,192 +537,227 @@ const blackMessages = [
 
     "So Ritesh picked her up in his arms...",
 
-    "...and gently laid her down on his bedroom bed.",
+    "...and gently laid her down on his bed.",
 
-    "But the night wasn't over yet."
+    "The house was finally quiet.",
+
+    "And for the first time tonight...",
+
+    "it was just the two of them.",
+
+    "What happens next...?"
 
 ];
 
 let blackIndex = 0;
 
-const blackText =
-    $("blackStoryText");
+let blackFinished = false;
 
 
-let blackLocked = false;
+function startBlackScene() {
+
+    $("blackText").textContent =
+        blackLines[0];
+
+    blackIndex = 1;
+
+    blackFinished = false;
+}
 
 
-function showBlackMessage() {
+function nextBlackLine() {
 
-    if (blackLocked) return;
+    tapSound();
 
-    blackLocked = true;
+    if (
+        blackIndex <
+        blackLines.length
+    ) {
 
-    clickSound();
+        $("blackText").style.animation =
+            "none";
 
-    blackText.style.opacity = "0";
+        void $("blackText").offsetWidth;
 
-    setTimeout(() => {
+        $("blackText").textContent =
+            blackLines[blackIndex];
 
-        blackText.textContent =
-            blackMessages[blackIndex];
-
-        blackText.style.transition =
-            "opacity 1s ease";
-
-        blackText.style.opacity = "1";
+        $("blackText").style.animation =
+            "textAppear .8s ease";
 
         blackIndex++;
 
-        blackLocked = false;
+        return;
+    }
 
-        if (blackIndex >= blackMessages.length) {
+    /*
+       IMPORTANT:
 
-            setTimeout(() => {
+       Nothing automatically happens here.
 
-                blackText.textContent =
-                    "What happens next...?";
+       She must tap AGAIN.
+    */
 
-                blackText.style.fontSize =
-                    "clamp(25px,6vw,42px)";
+    if (!blackFinished) {
 
-                blackText.style.color =
-                    "#fff1f6";
+        blackFinished = true;
 
-                blackLocked = false;
+        return;
+    }
 
-            }, 900);
+    transitionSound();
 
-        }
-
-    }, 500);
+    showScene(
+        "bedroomScene"
+    );
 }
 
 
 /* =====================================================
-   BEDROOM
-   ===================================================== */
+   CHAT
+===================================================== */
 
-function openBedroom() {
-
-    clickSound();
-
-    whooshSound();
-
-    showScene("bedroomIntro");
-}
-
-
-/* =====================================================
-   CHAT DATA
-   ===================================================== */
-
-const chatData = [
+const chat = [
 
     {
         type: "system",
-        text: "Tisha is awake... 🌙"
+        text: "Tisha wakes up... 🌙"
     },
 
     {
         type: "system",
-        text: "She finds herself in Ritesh's bed..."
+        text: "She looks around and realizes she's in his bed."
     },
 
     {
         type: "system",
-        text: "But he's nowhere beside her. 😤"
+        text: "Then she notices something very important..."
     },
 
     {
         type: "tisha",
-        text: "Ritesshhhhhhhhhh 😩❤️"
+        text: "RITESSHHHHHHHHHH 😤♥"
     },
 
     {
         type: "ritesh",
-        text: "Yesssss love!!!! ❤️"
+        text: "Yessssss love!!!! 😭♥"
     },
 
     {
         type: "tisha",
-        text: "Where are you?"
+        text: "Where are youuuuu? 🥺"
     },
 
     {
         type: "ritesh",
-        text: "I'm changing love."
+        text: "I'm in the washroom... Changing clothessssss... 😭😂"
     },
 
     {
         type: "tisha",
-        text: "I don't care. 😤"
+        text: "I don't careeee. 😤"
     },
 
     {
         type: "tisha",
-        text: "Come here..."
+        text: "Come here right nowwwww. 🥺♥"
     },
 
     {
         type: "tisha",
-        text: "Kiss me... ❤️"
+        text: "Kiss me. 💋"
     },
 
     {
         type: "tisha",
-        text: "Love me..."
+        text: "Love me. ♥"
     },
 
     {
         type: "tisha",
-        text: "Cuddle me... 🤗"
+        text: "Cuddle me. 🤗"
     },
 
     {
         type: "tisha",
-        text: "Come fasttttttt!!!! 😭❤️"
+        text: "Come fasttttttttttt!!!! 😭♥"
     },
 
     {
         type: "ritesh",
-        text: "Okay okayyy 😂❤️"
+        text: "Okay okayyyyyy 😂"
     },
 
     {
         type: "ritesh",
-        text: "Cominggggg! 🏃‍♂️❤️"
+        text: "I'm cominggggggg! 🏃‍♂️💨♥"
     }
 
 ];
 
 
-const messages =
-    $("messages");
+let chatIndex = 0;
 
-const typing =
-    $("typing");
+let chatStarted = false;
 
 
-async function showTyping() {
+async function startChat() {
 
-    typing.classList.add("active");
+    if (chatStarted) return;
 
-    await wait(900);
+    chatStarted = true;
 
-    typing.classList.remove("active");
+    showScene(
+        "chatScene"
+    );
+
+    await wait(600);
+
+    showNextChat();
 }
 
 
-function addChatMessage(data) {
+async function showNextChat() {
+
+    if (
+        chatIndex >=
+        chat.length
+    ) {
+
+        await wait(500);
+
+        startKissScene();
+
+        return;
+    }
+
+    const data =
+        chat[chatIndex];
+
+    if (
+        data.type ===
+        "tisha" ||
+        data.type ===
+        "ritesh"
+    ) {
+
+        $("typing").classList.add(
+            "active"
+        );
+
+        await wait(650);
+
+        $("typing").classList.remove(
+            "active"
+        );
+    }
 
     const bubble =
         document.createElement("div");
 
-    bubble.classList.add(
-        "message",
-        data.type
-    );
+    bubble.className =
+        `message ${data.type}`;
 
     if (
         data.type === "tisha" ||
@@ -799,10 +765,12 @@ function addChatMessage(data) {
     ) {
 
         const name =
-            document.createElement("span");
+            document.createElement(
+                "span"
+            );
 
         name.className =
-            "message-name";
+            "name";
 
         name.textContent =
             data.type === "tisha"
@@ -820,354 +788,357 @@ function addChatMessage(data) {
 
     bubble.appendChild(text);
 
-    messages.appendChild(
+    $("messages").appendChild(
         bubble
     );
 
-    messages.scrollTop =
-        messages.scrollHeight;
+    messageSound();
 
-    if (
-        data.type === "tisha" ||
-        data.type === "ritesh"
-    ) {
+    $("messages").scrollTop =
+        $("messages").scrollHeight;
 
-        messageSound(
-            data.type === "tisha"
-        );
-
-    } else {
-
-        clickSound();
-
-    }
-}
-
-
-let chatStarted = false;
-
-
-async function startChat() {
-
-    if (chatStarted) return;
-
-    chatStarted = true;
-
-    showScene("chatScene");
-
-    await wait(800);
-
-    for (
-        let i = 0;
-        i < chatData.length;
-        i++
-    ) {
-
-        const data =
-            chatData[i];
-
-        if (
-            data.type === "tisha" ||
-            data.type === "ritesh"
-        ) {
-
-            await showTyping();
-
-        } else {
-
-            await wait(500);
-
-        }
-
-        addChatMessage(data);
-
-        await wait(
-            data.type === "system"
-                ? 800
-                : 650
-        );
-    }
-
-    await wait(900);
-
-    startKissScene();
+    chatIndex++;
 }
 
 
 /* =====================================================
-   KISS SCENE
-   ===================================================== */
+   KISS
+===================================================== */
+
+let kissStarted = false;
+
 
 async function startKissScene() {
 
-    whooshSound();
+    if (kissStarted) return;
 
-    showScene("kissScene");
+    kissStarted = true;
+
+    transitionSound();
+
+    showScene(
+        "kissScene"
+    );
 
     await wait(700);
 
-    const content =
-        document.querySelector(
-            ".kiss-content"
+    /*
+       Boy and girl visibly move
+       toward each other.
+    */
+
+    $("kissCouple")
+        .classList.add(
+            "kissApproach"
         );
 
-    content.classList.add(
-        "kiss-scene-active"
-    );
-
-    await wait(1200);
+    await wait(1300);
 
     kissSound();
 
-    await wait(1200);
+    createKissParticles();
 
-    const kissMark =
-        $("kissMark");
+    /*
+       Keep kiss effects for 3 seconds.
+    */
 
-    kissMark.style.left = "50%";
-    kissMark.style.top = "46%";
+    await wait(3000);
 
-    await wait(1200);
+    $("kissCouple")
+        .classList.remove(
+            "kissApproach"
+        );
 
-    playfulPatSound();
+    await wait(500);
 
-    content.classList.add(
-        "tease-visible"
-    );
+    playfulSound();
 
-    await wait(1200);
+    $("kissScene")
+        .classList.add(
+            "teaseVisible"
+        );
 
-    content.classList.add(
-        "reaction-visible"
-    );
+    await wait(1000);
 
-    await wait(1800);
+    $("kissScene")
+        .classList.add(
+            "reactionVisible"
+        );
+
+    await wait(1500);
 
     startCuddleScene();
 }
 
 
 /* =====================================================
-   CUDDLE SCENE
-   ===================================================== */
+   CSS KISS EMOJIS
+===================================================== */
 
-function startCuddleScene() {
+function createKissParticles() {
 
-    whooshSound();
+    const container =
+        $("kissParticles");
 
-    bedSound();
+    container.innerHTML = "";
 
-    showScene("cuddleScene");
+    const symbols = [
+        "💋",
+        "♥",
+        "♡",
+        "😘",
+        "💋",
+        "♥",
+        "♡",
+        "💋"
+    ];
 
-    setTimeout(() => {
+    symbols.forEach(
+        (symbol, index) => {
 
-        cuddleSound();
+            const kiss =
+                document.createElement(
+                    "span"
+                );
 
-    }, 800);
+            kiss.className =
+                "kissEmoji";
+
+            kiss.textContent =
+                symbol;
+
+            kiss.style.left =
+                (35 +
+                 Math.random() * 30)
+                + "%";
+
+            kiss.style.top =
+                (40 +
+                 Math.random() * 12)
+                + "%";
+
+            kiss.style.setProperty(
+                "--x",
+                (
+                    Math.random() * 160
+                    - 80
+                ).toFixed(0)
+            );
+
+            kiss.style.animationDelay =
+                (
+                    index * .12
+                ) + "s";
+
+            container.appendChild(
+                kiss
+            );
+
+        }
+    );
 }
 
 
 /* =====================================================
-   CUDDLE CHOICES
-   ===================================================== */
+   CUDDLE
+===================================================== */
 
-const cuddleButtons =
-    document.querySelectorAll(
-        "#cuddleChoices button"
+let cuddleStage = 0;
+
+
+function startCuddleScene() {
+
+    transitionSound();
+
+    bedSound();
+
+    showScene(
+        "cuddleScene"
     );
 
-const cuddleResponse =
-    $("cuddleResponse");
+    cuddleStage = 0;
 
-const continueLove =
-    $("continueLove");
+    $("cuddleScene")
+        .className =
+        "scene active";
+
+    updateCuddle();
+}
 
 
-cuddleButtons.forEach(button => {
+function updateCuddle() {
 
-    button.addEventListener(
-        "click",
-        () => {
+    $("cuddleScene")
+        .classList.remove(
+            "cuddleStage1",
+            "cuddleStage2",
+            "cuddleStage3",
+            "cuddleStage4"
+        );
 
-            clickSound();
+    if (cuddleStage > 0) {
 
-            const choice =
-                button.dataset.choice;
+        $("cuddleScene")
+            .classList.add(
+                `cuddleStage${cuddleStage}`
+            );
+    }
 
-            if (choice === "closer") {
+    const dots =
+        document.querySelectorAll(
+            "#cuddleProgress span"
+        );
 
-                cuddleResponse.textContent =
-                    "She snuggled even closer into his arms. 🤗❤️";
+    dots.forEach(
+        (dot, index) => {
 
-            }
+            dot.classList.toggle(
+                "active",
+                index <
+                cuddleStage
+            );
 
-            if (choice === "kiss") {
-
-                kissSound();
-
-                cuddleResponse.textContent =
-                    "One more little kiss... because apparently one wasn't enough. 💋❤️";
-
-            }
-
-            if (choice === "stay") {
-
-                cuddleResponse.textContent =
-                    "Neither of them said anything. They just stayed there together. 🌙❤️";
-
-            }
-
-            continueLove.style.display =
-                "block";
         }
     );
 
-});
+
+    if (cuddleStage === 0) {
+
+        $("cuddleMessage").textContent =
+            "Tap to move closer...";
+
+    }
+
+    if (cuddleStage === 1) {
+
+        $("cuddleMessage").textContent =
+            "A little closer... 🤍";
+
+    }
+
+    if (cuddleStage === 2) {
+
+        $("cuddleMessage").textContent =
+            "Closer... 🤗";
+
+    }
+
+    if (cuddleStage === 3) {
+
+        $("cuddleMessage").textContent =
+            "Almost there... ♥";
+
+    }
+
+    if (cuddleStage === 4) {
+
+        $("cuddleMessage").textContent =
+            "Exactly where they wanted to be. 🌙♥";
+
+    }
+}
 
 
 /* =====================================================
-   HIDDEN PHONE
-   ===================================================== */
-
-const hiddenPhone =
-    $("hiddenPhone");
-
-const phonePopup =
-    $("phonePopup");
-
-const closePhone =
-    $("closePhone");
-
-
-hiddenPhone.addEventListener(
-    "click",
-    event => {
-
-        event.stopPropagation();
-
-        clickSound();
-
-        phonePopup.classList.add(
-            "show"
-        );
-    }
-);
-
-
-closePhone.addEventListener(
-    "click",
-    () => {
-
-        phonePopup.classList.remove(
-            "show"
-        );
-
-    }
-);
-
-
-/* =====================================================
-   LOVE QUESTION
-   ===================================================== */
-
-continueLove.addEventListener(
-    "click",
-    () => {
-
-        clickSound();
-
-        whooshSound();
-
-        showScene(
-            "loveQuestionScene"
-        );
-
-    }
-);
-
-
-/* =====================================================
-   NEXT PAGE
-   ===================================================== */
-
-$("nextPage").addEventListener(
-    "click",
-    () => {
-
-        clickSound();
-
-        /*
-         * CHANGE THIS IF YOUR NEXT PAGE
-         * HAS A DIFFERENT FILE NAME.
-         */
-
-        window.location.href =
-            "page5.html";
-
-    }
-);
-
-
-/* =====================================================
-   GLOBAL TAP STORY CONTROL
-   ===================================================== */
+   GLOBAL TAP
+===================================================== */
 
 document.addEventListener(
-    "click",
+    "pointerup",
     event => {
 
         /*
-         * Ignore clicks on buttons and
-         * interactive elements.
-         */
+           Don't interfere with the final
+           button.
+        */
 
         if (
-            event.target.closest("button") ||
-            event.target.closest(".chat-box") ||
-            event.target.closest("#hiddenPhone")
+            event.target.closest("button")
         ) {
             return;
         }
 
 
+        /* PARTY */
+
         if (
-            currentScene === "partyScene"
+            currentScene ===
+            "partyScene"
         ) {
 
-            showPartyMessage();
+            nextPartyLine();
 
+            return;
         }
 
-        else if (
-            currentScene === "blackScene"
+
+        /* BLACK */
+
+        if (
+            currentScene ===
+            "blackScene"
         ) {
 
-            /*
-             * Once the final black-story
-             * message has been displayed,
-             * tapping opens bedroom.
-             */
+            nextBlackLine();
 
-            if (
-                blackIndex >= blackMessages.length
-            ) {
-
-                openBedroom();
-
-            } else {
-
-                showBlackMessage();
-
-            }
-
+            return;
         }
 
-        else if (
-            currentScene === "bedroomIntro"
+
+        /* BEDROOM */
+
+        if (
+            currentScene ===
+            "bedroomScene"
         ) {
 
             startChat();
 
+            return;
+        }
+
+
+        /* CHAT */
+
+        if (
+            currentScene ===
+            "chatScene"
+        ) {
+
+            showNextChat();
+
+            return;
+        }
+
+
+        /* CUDDLE */
+
+        if (
+            currentScene ===
+            "cuddleScene"
+        ) {
+
+            if (
+                cuddleStage <
+                4
+            ) {
+
+                cuddleStage++;
+
+                cuddleSound();
+
+                updateCuddle();
+
+            } else {
+
+                transitionSound();
+
+                showScene(
+                    "loveScene"
+                );
+            }
+
+            return;
         }
 
     }
@@ -1175,24 +1146,22 @@ document.addEventListener(
 
 
 /* =====================================================
-   INITIAL STATE
-   ===================================================== */
+   PAGE 5
+===================================================== */
 
-window.addEventListener(
-    "load",
-    () => {
+$("page5Button")
+    .addEventListener(
+        "click",
+        () => {
 
-        partyText.textContent =
-            partyMessages[0];
+            tapSound();
 
-        partyIndex = 1;
+            /*
+               Change filename if needed.
+            */
 
-        /*
-         * First tap starts audio and
-         * advances the story.
-         */
+            window.location.href =
+                "page5.html";
 
-        initializeAudio();
-
-    }
-);
+        }
+    );
