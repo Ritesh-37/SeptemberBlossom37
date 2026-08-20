@@ -2,83 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#09050b">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
 
-    <title>Midnight With You</title>
+    <title>Our Little Story</title>
 
     <link rel="stylesheet" href="page4.css">
 </head>
 
 <body>
 
+    <!-- =========================================================
+         AUDIO
+    ========================================================== -->
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="audio/page4-bgm.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="clickSound" preload="auto">
+        <source src="audio/click.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="whooshSound" preload="auto">
+        <source src="audio/whoosh.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="sparkleSound" preload="auto">
+        <source src="audio/sparkle.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- =========================================================
+         MUSIC BUTTON
+    ========================================================== -->
+
+    <button id="musicButton" class="music-button" aria-label="Toggle music">
+        ♪
+    </button>
+
+    <!-- =========================================================
+         GLOBAL PARTICLES
+    ========================================================== -->
+
+    <div id="particles"></div>
+
+    <!-- =========================================================
+         MAIN APP
+    ========================================================== -->
+
     <main id="app">
 
-        <!-- Background -->
-        <div class="stars" aria-hidden="true">
-            <span>✦</span>
-            <span>✧</span>
-            <span>✦</span>
-            <span>✧</span>
-            <span>·</span>
-            <span>✦</span>
-            <span>·</span>
-            <span>✧</span>
-            <span>✦</span>
-            <span>·</span>
-            <span>✧</span>
-            <span>✦</span>
-        </div>
+        <!-- =====================================================
+             INTRO / WAKE UP
+        ====================================================== -->
 
-        <!-- Music -->
-        <button id="musicBtn" class="music-btn" type="button">
-            ♫
-        </button>
+        <section id="introScene" class="scene active">
 
-        <!-- Invisible tap area -->
-        <button
-            id="tapLayer"
-            class="tap-layer"
-            type="button"
-            aria-label="Continue">
-        </button>
+            <div class="ambient-glow"></div>
 
-        <!-- Story popup -->
-        <section id="story" class="story-card hidden">
+            <div class="bedroom-content">
 
-            <div id="storyEmoji" class="story-emoji">
-                🌙
-            </div>
+                <div class="sleeping-symbol">z</div>
 
-            <p id="storyText"></p>
-
-        </section>
-
-
-        <!-- Black screen / disclaimer -->
-        <section id="disclaimer" class="full-screen hidden">
-
-            <div class="disclaimer-card">
-
-                <div class="tiny-label">
-                    MIDNIGHT • 12:00 AM
+                <div class="intro-title">
+                    <span>Good morning...</span>
+                    <strong>Tisha</strong>
                 </div>
 
-                <h2>
-                    What happened next?
-                </h2>
-
-                <p>
-                    Tisha was completely dizzy after the party.
-                    Ritesh carefully picked her up, carried her to
-                    his bedroom and laid her down comfortably on the bed. 🌙
+                <p class="intro-subtitle">
+                    Looks like someone finally woke up.
                 </p>
 
                 <button
-                    id="bedroomBtn"
-                    class="primary-btn"
-                    type="button">
-                    Continue
+                    id="wakeButton"
+                    class="premium-button"
+                >
+                    Wake up →
                 </button>
 
             </div>
@@ -86,322 +87,484 @@
         </section>
 
 
-        <!-- Bedroom -->
-        <section id="bedroom" class="scene hidden">
+        <!-- =====================================================
+             TEASING POPUPS
+        ====================================================== -->
 
-            <div class="moon"></div>
+        <section id="teaseScene" class="scene hidden">
 
-            <div class="window">
-                <div class="window-frame vertical"></div>
-                <div class="window-frame horizontal"></div>
-            </div>
+            <div class="tease-background"></div>
 
-            <div class="bedroom-caption">
-                A little later that night… 🌙
-            </div>
+            <div class="popup-container">
 
-            <div class="bed">
+                <div id="teasePopup" class="story-popup">
 
-                <div class="headboard"></div>
+                    <div class="popup-small">HEY YOU</div>
 
-                <div class="pillow pillow-one"></div>
-                <div class="pillow pillow-two"></div>
+                    <h2 id="teaseTitle">
+                        Welcome back...
+                    </h2>
 
-                <div class="blanket"></div>
+                    <p id="teaseText">
+                        I have something planned for you.
+                    </p>
 
-            </div>
+                    <button
+                        id="teaseNext"
+                        class="premium-button"
+                    >
+                        Continue →
+                    </button>
 
-
-            <div id="tisha" class="person person-girl">
-                <div class="head">
-                    👩🏻
                 </div>
 
-                <div class="body"></div>
-            </div>
-
-
-            <div id="ritesh" class="person person-boy">
-                <div class="head">
-                    👨🏻
-                </div>
-
-                <div class="body"></div>
             </div>
 
         </section>
 
 
-        <!-- Midnight chat -->
-        <section id="chatSection" class="chat-section hidden">
+        <!-- =====================================================
+             READY SCREEN
+        ====================================================== -->
 
-            <div class="chat-top">
+        <section id="readyScene" class="scene hidden">
 
-                <div class="profile-dot">
-                    🌙
-                </div>
+            <div class="ready-glow"></div>
 
-                <div>
-                    <strong>
-                        Midnight
-                    </strong>
+            <div class="ready-content">
 
-                    <span>
-                        just you two ✨
-                    </span>
-                </div>
+                <div class="tiny-star">✦</div>
+
+                <h1>Ready?</h1>
+
+                <p>
+                    Let's see how well<br>
+                    you remember us...
+                </p>
+
+                <button
+                    id="readyButton"
+                    class="premium-button"
+                >
+                    I'm ready →
+                </button>
 
             </div>
-
-
-            <div id="chatMessages" class="chat-messages"></div>
-
-            <button
-                id="chatNext"
-                class="chat-next hidden"
-                type="button">
-                Continue
-            </button>
 
         </section>
 
 
-        <!-- Kiss -->
-        <section id="kissScene" class="action-scene hidden">
+        <!-- =====================================================
+             BLACK TRANSITION
+        ====================================================== -->
 
-            <div class="scene-title">
-                He ran to her… 💗
-            </div>
+        <section id="wonderIntro" class="scene black-scene hidden">
 
+            <div class="wonder-intro-content">
 
-            <div class="action-stage">
+                <p class="fade-line line-one">
+                    Let's see how well you remember us...
+                </p>
 
-                <div class="character boy-character">
+                <div class="wonder-star">✦</div>
 
-                    <div class="char-head">
-                        👨🏻
-                    </div>
+                <h1 class="wonder-number">
+                    7
+                </h1>
 
-                    <div class="char-body boy-shirt"></div>
+                <p class="wonder-word">
+                    memories.
+                </p>
 
-                </div>
+                <h1 class="wonder-number second-number">
+                    7
+                </h1>
 
+                <p class="wonder-word">
+                    wonders.
+                </p>
 
-                <div class="character girl-character">
-
-                    <div class="char-head">
-                        👩🏻
-                    </div>
-
-                    <div class="char-body girl-dress"></div>
-
-                </div>
-
-
-                <div class="kiss-cloud"></div>
-
-                <div class="kiss-lips">
-                    💋
-                </div>
+                <p class="final-line">
+                    1 way to reach me.
+                </p>
 
             </div>
-
-
-            <p class="action-caption">
-                He ran to her and planted a sweet kiss. 💋
-            </p>
-
-
-            <button
-                id="kissNext"
-                class="primary-btn"
-                type="button">
-                Come closer…
-            </button>
 
         </section>
 
 
-        <!-- Playful scene -->
-        <section id="teaseScene" class="action-scene hidden">
+        <!-- =====================================================
+             SEVEN WONDERS QUIZ
+        ====================================================== -->
 
-            <div class="scene-title">
-                And then… 😏
-            </div>
+        <section id="quizScene" class="scene hidden">
 
+            <div class="quiz-background"></div>
 
-            <div class="tease-stage">
+            <div class="quiz-top">
 
-                <div class="character tease-boy">
+                <span id="questionCounter">
+                    01 / 07
+                </span>
 
-                    <div class="char-head">
-                        👨🏻
-                    </div>
-
-                    <div class="char-body boy-shirt"></div>
-
-                </div>
-
-
-                <div class="character tease-girl">
-
-                    <div class="char-head">
-                        👩🏻
-                    </div>
-
-                    <div class="char-body girl-dress"></div>
-
-                </div>
-
-
-                <div id="teaseHand" class="tease-hand">
-                    🤚
-                </div>
-
-
-                <div id="teaseSparkles" class="tease-sparkles">
-                    ✨ ✦ ✨
+                <div class="progress-track">
+                    <div id="progressBar"></div>
                 </div>
 
             </div>
 
+            <div class="wonder-card">
 
-            <p class="action-caption">
-                A playful little tap… and she couldn't stop laughing. 😂💗
-            </p>
+                <div class="wonder-icon" id="wonderIcon">
+                    ✦
+                </div>
 
+                <div class="wonder-label">
+                    WONDER <span id="wonderNumber">01</span>
+                </div>
 
-            <button
-                id="teaseNext"
-                class="primary-btn"
-                type="button">
-                Now cuddle… 🫶
-            </button>
+                <h2 id="questionText">
+                    Question goes here
+                </h2>
+
+                <div
+                    id="answers"
+                    class="answers"
+                ></div>
+
+                <p
+                    id="answerFeedback"
+                    class="answer-feedback"
+                ></p>
+
+                <button
+                    id="nextQuestion"
+                    class="premium-button hidden-button"
+                >
+                    Next wonder →
+                </button>
+
+            </div>
 
         </section>
 
 
-        <!-- Cuddling -->
-        <section id="cuddleScene" class="action-scene hidden">
+        <!-- =====================================================
+             TAJ MAHAL REVEAL
+        ====================================================== -->
 
-            <div class="scene-title">
-                Come here, love… 🫶
-            </div>
+        <section id="tajScene" class="scene hidden">
 
+            <div class="taj-sky"></div>
 
-            <div id="cuddleStage" class="cuddle-stage">
+            <div class="taj-glow"></div>
 
-                <div class="cuddle-person cuddle-boy">
+            <div class="taj-content">
 
-                    <div class="char-head">
-                        👨🏻
+                <div class="taj-silhouette">
+                    <div class="taj-dome"></div>
+
+                    <div class="taj-building">
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </div>
 
-                    <div class="char-body boy-shirt"></div>
-
+                    <div class="taj-minaret left"></div>
+                    <div class="taj-minaret right"></div>
                 </div>
 
+                <div class="taj-message">
 
-                <div class="cuddle-person cuddle-girl">
-
-                    <div class="char-head">
-                        👩🏻
+                    <div class="small-caption">
+                        THE LAST WONDER
                     </div>
 
-                    <div class="char-body girl-dress"></div>
+                    <h1>
+                        Taj Mahal
+                    </h1>
 
-                </div>
+                    <p>
+                        Some places become memories.
+                    </p>
 
+                    <p>
+                        And some memories become
+                        <strong>everything.</strong>
+                    </p>
 
-                <div class="cuddle-heart">
-                    ♡
+                    <button
+                        id="tajContinue"
+                        class="premium-button"
+                    >
+                        Continue →
+                    </button>
+
                 </div>
 
             </div>
-
-
-            <p id="cuddleText" class="action-caption">
-                She moves a little closer… 💗
-            </p>
-
-
-            <button
-                id="cuddleBtn"
-                class="primary-btn"
-                type="button">
-                Cuddle closer 🫶
-            </button>
 
         </section>
 
 
-        <!-- Final question -->
-        <section id="loveScene" class="love-scene hidden">
+        <!-- =====================================================
+             FIND RITESH
+        ====================================================== -->
 
-            <div class="love-glow">
+        <section id="findScene" class="scene hidden">
+
+            <div class="find-stars"></div>
+
+            <div class="find-content">
+
+                <div class="find-label">
+                    ONE LAST THING
+                </div>
+
+                <h1>
+                    Find me.
+                </h1>
+
+                <p>
+                    Somewhere in this little universe...
+                </p>
+
+                <div id="findUniverse" class="find-universe">
+
+                    <button
+                        class="hidden-star"
+                        data-correct="false"
+                        style="--x:18%; --y:27%;"
+                    >
+                        ✦
+                    </button>
+
+                    <button
+                        class="hidden-star"
+                        data-correct="false"
+                        style="--x:72%; --y:20%;"
+                    >
+                        ✦
+                    </button>
+
+                    <button
+                        class="hidden-star"
+                        data-correct="false"
+                        style="--x:38%; --y:68%;"
+                    >
+                        ✦
+                    </button>
+
+                    <button
+                        class="hidden-star"
+                        data-correct="false"
+                        style="--x:82%; --y:72%;"
+                    >
+                        ✦
+                    </button>
+
+                    <button
+                        class="hidden-star"
+                        data-correct="true"
+                        style="--x:58%; --y:43%;"
+                    >
+                        ✦
+                    </button>
+
+                    <div
+                        id="foundMessage"
+                        class="found-message"
+                    >
+                        You found me.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             DINNER INTRO
+        ====================================================== -->
+
+        <section id="dinnerIntro" class="scene hidden">
+
+            <div class="dinner-room">
+
+                <div class="dinner-lamp"></div>
+
+                <div class="dinner-content">
+
+                    <div class="dinner-caption">
+                        SOMEWHERE QUIET
+                    </div>
+
+                    <h1>
+                        Just you & me.
+                    </h1>
+
+                    <p>
+                        No party.<br>
+                        No crowd.<br>
+                        Just one little dinner.
+                    </p>
+
+                    <button
+                        id="dinnerStart"
+                        class="premium-button"
+                    >
+                        Sit with me →
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             INTERACTIVE DINNER
+        ====================================================== -->
+
+        <section id="dinnerScene" class="scene hidden">
+
+            <div class="dinner-background">
+
+                <div class="table">
+
+                    <div class="table-cloth"></div>
+
+                    <!-- Candle -->
+                    <div class="candle">
+
+                        <div class="flame"></div>
+
+                    </div>
+
+                    <!-- Plate -->
+                    <div class="plate">
+
+                        <button
+                            class="food-bite"
+                            data-food="starter"
+                        >
+                            ◉
+                        </button>
+
+                        <button
+                            class="food-bite"
+                            data-food="main"
+                        >
+                            ◉
+                        </button>
+
+                        <button
+                            class="food-bite"
+                            data-food="dessert"
+                        >
+                            ◉
+                        </button>
+
+                        <button
+                            class="food-bite"
+                            data-food="drink"
+                        >
+                            ◉
+                        </button>
+
+                        <button
+                            class="food-bite"
+                            data-food="secret"
+                        >
+                            ◉
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="foodPopup"
+                    class="food-popup"
+                >
+
+                    <div class="food-popup-small">
+                        A LITTLE SOMETHING
+                    </div>
+
+                    <h2 id="foodTitle">
+                        Tap something...
+                    </h2>
+
+                    <p id="foodText">
+                        There are five little things
+                        waiting for you.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CURTAIN TRANSITION
+        ====================================================== -->
+
+        <section id="curtainScene" class="scene hidden">
+
+            <div class="curtain left-curtain"></div>
+
+            <div class="curtain right-curtain"></div>
+
+            <div
+                id="curtainCenter"
+                class="curtain-center"
+            ></div>
+
+        </section>
+
+
+        <!-- =====================================================
+             FINAL "TIME TO LOOK AT US"
+        ====================================================== -->
+
+        <section id="memoryTransition" class="scene hidden">
+
+            <div class="memory-darkness"></div>
+
+            <div class="memory-heart">
                 ♥
             </div>
 
+            <div
+                id="memoryPopup"
+                class="memory-popup"
+            >
 
-            <div class="love-card">
-
-                <div class="tiny-label">
-                    JUST US
+                <div class="memory-popup-sparkle">
+                    ✦
                 </div>
-
 
                 <h1>
-                    Do you love me?
+                    Time to look at us...
+                    <span>♥</span>
                 </h1>
 
-
                 <p>
-                    Look me in the eyes and answer honestly. 🥺💗
+                    We've made a few memories worth keeping.
                 </p>
 
-
-                <div class="love-buttons">
-
-                    <button
-                        id="yesBtn"
-                        class="primary-btn"
-                        type="button">
-                        Yes, Ritesh. 💗
-                    </button>
-
-
-                    <button
-                        id="moreBtn"
-                        class="secondary-btn"
-                        type="button">
-                        Ask me how much… ✨
-                    </button>
-
-                </div>
-
-
-                <div
-                    id="loveAnswer"
-                    class="love-answer hidden">
-
-                    <strong>
-                        How much?
-                    </strong>
-
-                    <p>
-                        More than all the stars outside this window. 🌌
-                        More than I could ever put into words. ❤️
-                    </p>
-
-
-                    <button
-                        id="finishBtn"
-                        class="primary-btn"
-                        type="button">
-                        Keep this moment… 🌙
-                    </button>
-
-                </div>
+                <button
+                    id="memoryGo"
+                    class="premium-button"
+                >
+                    Let's go →
+                </button>
 
             </div>
 
