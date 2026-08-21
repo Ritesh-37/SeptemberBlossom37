@@ -3,2005 +3,2225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0,user-scalable=no">
 
 <title>How Sharp Is Your Memory?</title>
 
 <style>
 
 /* =========================================================
-   PAGE 4
-   PREMIUM MEMORY TEST
+   GLOBAL
 ========================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
-
-:root {
-    --wine: #5a0d20;
-    --wine-dark: #19050c;
-    --wine-deep: #0b0307;
-    --red: #8e1935;
-    --rose: #c84c6b;
-    --gold: #d9b56d;
-    --cream: #f8eee8;
-    --white: #fff9f7;
-    --glass: rgba(255,255,255,0.055);
-    --border: rgba(255,255,255,0.14);
-}
-
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 html,
-body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    overflow: hidden;
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
 }
 
-body {
-    font-family: "Inter", sans-serif;
-    background:
-        radial-gradient(
-            circle at 50% 35%,
-            rgba(128,20,48,0.38),
-            transparent 45%
-        ),
-        radial-gradient(
-            circle at 20% 80%,
-            rgba(93,12,31,0.28),
-            transparent 40%
-        ),
-        linear-gradient(
-            145deg,
-            #16050b,
-            #350814 45%,
-            #0a0206
-        );
-
-    color: var(--white);
-}
-
-/* =========================================================
-   GLOBAL ATMOSPHERE
-========================================================= */
-
-#app {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.ambient {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.ambient::before {
-    content: "";
-    position: absolute;
-    width: 65vw;
-    height: 65vw;
-    max-width: 650px;
-    max-height: 650px;
-    border-radius: 50%;
-
-    left: 50%;
-    top: 40%;
-
-    transform: translate(-50%, -50%);
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(165,36,66,0.20),
-            rgba(95,12,32,0.08) 45%,
-            transparent 70%
-        );
-
-    filter: blur(20px);
-
-    animation:
-        ambientPulse 7s ease-in-out infinite;
-}
-
-@keyframes ambientPulse {
-
-    0%,100% {
-        transform:
-            translate(-50%, -50%)
-            scale(0.95);
-        opacity: 0.65;
-    }
-
-    50% {
-        transform:
-            translate(-50%, -50%)
-            scale(1.08);
-        opacity: 1;
-    }
-}
-
-/* =========================================================
-   PARTICLES
-========================================================= */
-
-.particle {
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: rgba(255,220,220,0.65);
-    pointer-events: none;
-
-    animation:
-        particleFloat linear infinite;
-}
-
-@keyframes particleFloat {
-
-    0% {
-        transform:
-            translateY(30px)
-            scale(0.5);
-        opacity: 0;
-    }
-
-    20% {
-        opacity: 0.8;
-    }
-
-    80% {
-        opacity: 0.5;
-    }
-
-    100% {
-        transform:
-            translateY(-120px)
-            scale(1);
-        opacity: 0;
-    }
-}
-
-/* =========================================================
-   SCREEN SYSTEM
-========================================================= */
-
-.screen {
-    position: absolute;
-    inset: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    opacity: 0;
-    visibility: hidden;
-
-    pointer-events: none;
-
-    transition:
-        opacity 0.9s ease,
-        visibility 0.9s ease;
-}
-
-.screen.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-/* =========================================================
-   WAKE-UP SCREEN
-========================================================= */
-
-#wake-screen {
-    background:
-        radial-gradient(
-            ellipse at center,
-            rgba(116,23,46,0.18),
-            rgba(8,2,5,0.97) 75%
-        );
-}
-
-.wake-room {
-    position: absolute;
-    inset: 0;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,0.5),
-            transparent 25%,
-            transparent 75%,
-            rgba(0,0,0,0.5)
-        );
-
-    filter: blur(22px);
-
-    transform: scale(1.08);
-
-    transition:
-        filter 4.5s ease,
-        transform 4.5s ease,
-        opacity 4.5s ease;
-
-    opacity: 0.18;
-}
-
-#wake-screen.clear .wake-room {
-    filter: blur(0);
-    transform: scale(1);
-    opacity: 1;
-}
-
-.room-lamp {
-    position: absolute;
-
-    width: 150px;
-    height: 150px;
-
-    right: 9%;
-    top: 17%;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,205,125,0.35),
-            rgba(185,83,58,0.12) 45%,
-            transparent 72%
-        );
-
-    filter: blur(12px);
-}
-
-.room-bed {
-    position: absolute;
-
-    width: min(620px, 72vw);
-    height: 160px;
-
-    left: 50%;
-    bottom: 12%;
-
-    transform: translateX(-50%);
-
-    border-radius: 25px 25px 8px 8px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(110,33,49,0.5),
-            rgba(35,8,16,0.75)
-        );
-
-    box-shadow:
-        0 -15px 50px rgba(145,32,60,0.12);
-}
-
-.wake-content {
-    position: relative;
-    z-index: 5;
-
-    width: min(650px, 88vw);
-
-    text-align: center;
-
-    transform:
-        translateY(20px)
-        scale(1.02);
-
-    opacity: 0;
-
-    transition:
-        opacity 2s ease,
-        transform 2s ease;
-}
-
-#wake-screen.started .wake-content {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-
-.wake-line {
+body{
     font-family:
-        "Cormorant Garamond",
-        serif;
-
-    font-size:
-        clamp(28px, 6vw, 52px);
-
-    line-height: 1.15;
-
-    letter-spacing: 0.02em;
-
-    color: rgba(255,246,243,0.96);
-
-    text-shadow:
-        0 0 30px rgba(255,105,145,0.18);
-
-    opacity: 0;
-
-    transform: translateY(18px);
-
-    transition:
-        opacity 1s ease,
-        transform 1s ease;
-}
-
-.wake-line.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.wake-sub {
-    margin-top: 18px;
-
-    font-size:
-        clamp(13px, 3vw, 16px);
-
-    letter-spacing: 0.18em;
-
-    text-transform: uppercase;
-
-    color:
-        rgba(255,220,220,0.55);
-}
-
-/* =========================================================
-   PHONE SCREEN
-========================================================= */
-
-#phone-screen {
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(116,17,44,0.20),
-            transparent 48%
-        );
-}
-
-.phone-stage {
-    position: relative;
-
-    width: min(360px, 82vw);
-    height: min(720px, 78vh);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.phone {
-    position: relative;
-
-    width: min(310px, 72vw);
-    aspect-ratio: 0.49;
-
-    border-radius: 42px;
-
-    padding: 8px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #272027,
-            #070508
-        );
-
-    box-shadow:
-        0 30px 80px rgba(0,0,0,0.65),
-        0 0 55px rgba(139,29,57,0.20);
-
-    transform:
-        translateY(70px)
-        scale(0.88);
-
-    opacity: 0;
-
-    transition:
-        transform 1s cubic-bezier(.2,.8,.2,1),
-        opacity 1s ease;
-}
-
-#phone-screen.active .phone {
-    transform:
-        translateY(0)
-        scale(1);
-
-    opacity: 1;
-}
-
-.phone::before {
-    content: "";
-
-    position: absolute;
-
-    inset: 3px;
-
-    border-radius: 39px;
-
-    border:
-        1px solid
-        rgba(255,255,255,0.16);
-
-    pointer-events: none;
-}
-
-.phone-screen {
-    position: relative;
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-
-    border-radius: 35px;
-
-    background:
-        linear-gradient(
-            160deg,
-            #6d172e,
-            #230712 60%,
-            #0c0307
-        );
-}
-
-.dynamic-island {
-    position: absolute;
-
-    top: 13px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: 82px;
-    height: 24px;
-
-    border-radius: 20px;
-
-    background: #030204;
-
-    z-index: 10;
-}
-
-.phone-time {
-    position: absolute;
-
-    top: 48px;
-    left: 0;
-    right: 0;
-
-    text-align: center;
-
-    font-size: 12px;
-
-    letter-spacing: 0.15em;
-
-    color: rgba(255,255,255,0.65);
-}
-
-.call-area {
-    position: absolute;
-
-    left: 20px;
-    right: 20px;
-    top: 25%;
-
-    text-align: center;
-}
-
-.call-icon {
-    width: 75px;
-    height: 75px;
-
-    margin: 0 auto 22px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255,255,255,0.10);
-
-    border:
-        1px solid
-        rgba(255,255,255,0.15);
-
-    font-size: 30px;
-
-    animation:
-        phonePulse 1.3s ease-in-out infinite;
-}
-
-@keyframes phonePulse {
-
-    0%,100% {
-        box-shadow:
-            0 0 0 0
-            rgba(255,90,130,0.25);
-    }
-
-    50% {
-        box-shadow:
-            0 0 0 18px
-            rgba(255,90,130,0);
-    }
-}
-
-.call-from {
-    font-family:
-        "Cormorant Garamond",
-        serif;
-
-    font-size: 30px;
-}
-
-.call-label {
-    margin-top: 7px;
-
-    font-size: 11px;
-
-    letter-spacing: 0.18em;
-
-    text-transform: uppercase;
-
-    color: rgba(255,255,255,0.55);
-}
-
-.answer-phone {
-    position: absolute;
-
-    bottom: 42px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    width: 145px;
-
-    padding: 13px 0;
-
-    border-radius: 30px;
-
-    border:
-        1px solid
-        rgba(255,255,255,0.2);
-
-    background:
-        rgba(255,255,255,0.08);
-
-    color: white;
-
-    font-size: 12px;
-
-    letter-spacing: 0.12em;
-
-    cursor: pointer;
-
-    transition: 0.3s ease;
-}
-
-.answer-phone:hover {
-    background:
-        rgba(255,255,255,0.16);
-
-    transform:
-        translateX(-50%)
-        translateY(-3px);
-}
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
-.message-box {
-    width: min(600px, 88vw);
-
-    text-align: center;
-
-    padding: 35px 25px;
-
-    border-radius: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,0.07),
-            rgba(255,255,255,0.025)
-        );
-
-    border:
-        1px solid
-        rgba(255,255,255,0.12);
-
-    box-shadow:
-        0 25px 70px rgba(0,0,0,0.45),
-        inset 0 1px 0 rgba(255,255,255,0.08);
-
-    backdrop-filter: blur(20px);
-}
-
-.message-name {
-    font-size: 12px;
-
-    letter-spacing: 0.18em;
-
-    text-transform: uppercase;
-
-    color:
-        var(--gold);
-}
-
-.message-title {
-    margin-top: 15px;
-
-    font-family:
-        "Cormorant Garamond",
-        serif;
-
-    font-size:
-        clamp(30px, 7vw, 52px);
-}
-
-.message-text {
-    margin-top: 20px;
-
-    font-family:
-        "Cormorant Garamond",
-        serif;
-
-    font-size:
-        clamp(18px, 4vw, 25px);
-
-    line-height: 1.6;
-
-    color:
-        rgba(255,245,243,0.82);
-}
-
-.message-button {
-    margin-top: 28px;
-
-    padding: 13px 28px;
-
-    border-radius: 30px;
-
-    border:
-        1px solid
-        rgba(217,181,109,0.38);
-
-    background:
-        rgba(217,181,109,0.08);
-
-    color:
-        var(--gold);
-
-    font-size: 11px;
-
-    letter-spacing: 0.18em;
-
-    text-transform: uppercase;
-
-    cursor: pointer;
-
-    transition:
-        0.3s ease;
-}
-
-.message-button:hover {
-    background:
-        rgba(217,181,109,0.16);
-
-    box-shadow:
-        0 0 25px
-        rgba(217,181,109,0.13);
-
-    transform:
-        translateY(-2px);
-}
-
-/* =========================================================
-   MEMORY TEST
-========================================================= */
-
-#quiz-screen {
-    padding: 25px 18px;
-
-    align-items: flex-start;
-
-    overflow-y: auto;
-}
-
-.quiz-container {
-    width: min(680px, 100%);
-
-    margin:
-        auto;
-
-    padding:
-        30px 0 50px;
-}
-
-.quiz-heading {
-    text-align: center;
-
-    margin-bottom: 30px;
-}
-
-.quiz-eyebrow {
-    font-size: 10px;
-
-    letter-spacing: 0.28em;
-
-    color:
-        rgba(217,181,109,0.72);
-
-    text-transform: uppercase;
-}
-
-.quiz-heading h1 {
-    margin:
-        12px 0 6px;
-
-    font-family:
-        "Cormorant Garamond",
-        serif;
-
-    font-size:
-        clamp(36px, 9vw, 62px);
-
-    font-weight: 500;
-}
-
-.quiz-heading p {
-    margin: 0;
-
-    font-size: 12px;
-
-    letter-spacing: 0.08em;
-
-    color:
-        rgba(255,255,255,0.48);
-}
-
-.progress-wrap {
-    margin:
-        25px auto 35px;
-
-    width: min(500px, 88%);
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 14px;
-}
-
-.progress-number {
-    font-size: 11px;
-
-    color:
-        rgba(255,255,255,0.58);
-
-    white-space: nowrap;
-}
-
-.progress-line {
-    flex: 1;
-
-    height: 2px;
-
-    background:
-        rgba(255,255,255,0.10);
-
-    overflow: hidden;
-}
-
-.progress-fill {
-    width: 0%;
-
-    height: 100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--red),
-            var(--gold)
-        );
-
-    transition:
-        width 0.6s ease;
-}
-
-.question-card {
-    position: relative;
-
-    padding:
-        34px 24px 26px;
-
-    border-radius: 26px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,0.065),
-            rgba(255,255,255,0.022)
-        );
-
-    border:
-        1px solid
-        rgba(255,255,255,0.12);
-
-    box-shadow:
-        0 25px 80px
-        rgba(0,0,0,0.40);
-
-    backdrop-filter: blur(20px);
-}
-
-.question-number {
-    font-size: 10px;
-
-    letter-spacing: 0.25em;
-
-    text-transform: uppercase;
-
-    color:
-        var(--gold);
-}
-
-.question-text {
-    margin:
-        14px 0 28px;
-
-    font-family:
-        "Cormorant Garamond",
-        serif;
-
-    font-size:
-        clamp(25px, 6vw, 38px);
-
-    line-height: 1.25;
-
-    font-weight: 500;
-}
-
-.options {
-    display: grid;
-
-    gap: 12px;
-}
-
-.option {
-    position: relative;
-
-    width: 100%;
-
-    min-height: 58px;
-
-    padding:
-        14px 18px;
-
-    border-radius: 16px;
-
-    border:
-        1px solid
-        rgba(255,255,255,0.11);
-
-    background:
-        rgba(255,255,255,0.035);
-
-    color:
-        rgba(255,255,255,0.84);
-
-    text-align: left;
-
-    font-family:
-        "Inter",
+        "Segoe UI",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
         sans-serif;
 
-    font-size: 13px;
+    color:#3a1720;
 
-    cursor: pointer;
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            #fffafa 0%,
+            #fff0f2 25%,
+            #fbdde2 55%,
+            #efbfc8 100%
+        );
 
     transition:
-        transform 0.25s ease,
-        background 0.25s ease,
-        border 0.25s ease,
-        box-shadow 0.25s ease;
-
-    overflow: hidden;
+        background 1s ease,
+        filter .8s ease;
 }
 
-.option::before {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    top: 0;
-    bottom: 0;
-
-    width: 2px;
-
-    background:
-        var(--gold);
-
-    transform:
-        scaleY(0);
-
-    transition:
-        transform 0.25s ease;
+button{
+    font-family:inherit;
 }
 
-.option:hover {
-    transform:
-        translateX(5px);
-
-    background:
-        rgba(255,255,255,0.075);
-
-    border-color:
-        rgba(217,181,109,0.28);
-}
-
-.option:hover::before {
-    transform:
-        scaleY(1);
-}
-
-.option.correct {
-    background:
-        rgba(67,170,115,0.18);
-
-    border-color:
-        rgba(120,235,168,0.6);
-
-    box-shadow:
-        0 0 30px
-        rgba(72,205,133,0.14);
-}
-
-.option.wrong {
-    background:
-        rgba(181,34,67,0.22);
-
-    border-color:
-        rgba(245,87,120,0.65);
-
-    animation:
-        wrongShake 0.42s ease;
-}
-
-@keyframes wrongShake {
-
-    0%,100% {
-        transform: translateX(0);
-    }
-
-    20% {
-        transform: translateX(-8px);
-    }
-
-    40% {
-        transform: translateX(8px);
-    }
-
-    60% {
-        transform: translateX(-5px);
-    }
-
-    80% {
-        transform: translateX(5px);
-    }
-}
-
-.feedback {
-    min-height: 28px;
-
-    margin-top: 19px;
-
-    text-align: center;
-
-    font-family:
-        "Cormorant Garamond",
-        serif;
-
-    font-size: 20px;
-
-    color:
-        var(--gold);
-
-    opacity: 0;
-
-    transform: translateY(8px);
-
-    transition:
-        0.35s ease;
-}
-
-.feedback.show {
-    opacity: 1;
-
-    transform:
-        translateY(0);
-}
 
 /* =========================================================
-   PARTICLE BURST
+   AMBIENT BACKGROUND
 ========================================================= */
 
-.burst {
-    position: fixed;
-
-    pointer-events: none;
-
-    z-index: 9999;
-
-    font-size: 16px;
+.ambient{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:1;
 }
 
-/* =========================================================
-   RESULT
-========================================================= */
-
-#result-screen {
-    text-align: center;
-}
-
-.result-content {
-    width: min(650px, 88vw);
-}
-
-.result-ring {
-    width: 145px;
-    height: 145px;
-
-    margin:
-        0 auto 30px;
-
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border:
-        1px solid
-        rgba(217,181,109,0.42);
-
-    box-shadow:
-        0 0 0 12px rgba(217,181,109,0.025),
-        0 0 70px rgba(217,181,109,0.13);
-
-    animation:
-        resultRing 3s ease-in-out infinite;
-}
-
-@keyframes resultRing {
-
-    0%,100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-.result-ring span {
-    font-size: 45px;
-}
-
-.result-eyebrow {
-    font-size: 11px;
-
-    letter-spacing: 0.3em;
-
-    color:
-        var(--gold);
-}
-
-.result-title {
-    margin:
-        14px 0;
-
-    font-family:
-        "Cormorant Garamond",
-        serif;
-
-    font-size:
-        clamp(38px, 9vw, 65px);
-
-    font-weight: 500;
-}
-
-.result-message {
-    min-height: 80px;
-
-    font-family:
-        "Cormorant Garamond",
-        serif;
-
-    font-size:
-        clamp(20px, 4vw, 28px);
-
-    line-height: 1.45;
-
-    color:
-        rgba(255,245,243,0.82);
-}
-
-.result-score {
-    margin-top: 18px;
-
-    font-size: 11px;
-
-    letter-spacing: 0.2em;
-
-    color:
-        rgba(255,255,255,0.45);
-}
-
-/* =========================================================
-   GIFT SCREEN
-========================================================= */
-
-#gift-screen {
-    text-align: center;
-}
-
-.gift-intro {
-    margin-bottom: 30px;
-}
-
-.gift-intro-small {
-    font-size: 11px;
-
-    letter-spacing: 0.25em;
-
-    text-transform: uppercase;
-
-    color:
-        rgba(217,181,109,0.75);
-}
-
-.gift-intro-title {
-    margin-top: 12px;
-
-    font-family:
-        "Cormorant Garamond",
-        serif;
-
-    font-size:
-        clamp(30px, 7vw, 48px);
-}
-
-/* =========================================================
-   PREMIUM GIFT BOX
-========================================================= */
-
-.gift-wrap {
-    position: relative;
-
-    width: 220px;
-    height: 210px;
-
-    margin:
-        10px auto 0;
-
-    cursor: pointer;
-
-    filter:
-        drop-shadow(
-            0 25px 35px
-            rgba(0,0,0,0.5)
-        );
-
-    transition:
-        transform 0.35s ease;
-}
-
-.gift-wrap:hover {
-    transform:
-        translateY(-7px);
-}
-
-.gift-box {
-    position: absolute;
-
-    left: 20px;
-    right: 20px;
-
-    bottom: 15px;
-
-    height: 125px;
-
-    border-radius:
-        6px 6px 12px 12px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #68142b,
-            #3a0716
-        );
-
-    border:
-        1px solid
-        rgba(255,255,255,0.10);
-}
-
-.gift-box::after {
-    content: "";
-
-    position: absolute;
-
-    left: 50%;
-
-    top: 0;
-    bottom: 0;
-
-    width: 22px;
-
-    transform:
-        translateX(-50%);
-
-    background:
-        linear-gradient(
-            90deg,
-            #9c7434,
-            #e0c177,
-            #8e642b
-        );
-
-    opacity: 0.9;
-}
-
-.gift-lid {
-    position: absolute;
-
-    z-index: 5;
-
-    left: 10px;
-    right: 10px;
-
-    top: 58px;
-
-    height: 38px;
-
-    border-radius: 7px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #7e1c37,
-            #4b0a1d
-        );
-
-    border:
-        1px solid
-        rgba(255,255,255,0.12);
-
-    transition:
-        transform 0.8s cubic-bezier(.2,.8,.2,1);
-}
-
-.gift-lid::after {
-    content: "";
-
-    position: absolute;
-
-    left: 50%;
-
-    top: 0;
-    bottom: 0;
-
-    width: 22px;
-
-    transform:
-        translateX(-50%);
-
-    background:
-        linear-gradient(
-            90deg,
-            #9c7434,
-            #e0c177,
-            #8e642b
-        );
-}
-
-.gift-ribbon {
-    position: absolute;
-
-    z-index: 7;
-
-    left: 50%;
-    top: 32px;
-
-    width: 50px;
-    height: 50px;
-
-    transform:
-        translateX(-50%);
-
-    border-radius: 50%;
-
-    border:
-        10px solid
-        #d7b66f;
-
-    box-shadow:
-        0 0 20px
-        rgba(217,181,109,0.2);
-}
-
-.gift-glow {
-    position: absolute;
-
-    inset: 25px;
-
-    border-radius: 50%;
+.ambient::before{
+    content:"";
+    position:absolute;
+    width:70vw;
+    height:70vw;
+    max-width:650px;
+    max-height:650px;
+    left:50%;
+    top:38%;
+    transform:translate(-50%,-50%);
 
     background:
         radial-gradient(
             circle,
-            rgba(255,210,130,0.0),
-            transparent 65%
+            rgba(255,255,255,.72),
+            rgba(255,255,255,0) 70%
         );
 
-    transition:
-        0.8s ease;
+    filter:blur(10px);
 }
 
-.gift-label {
-    position: absolute;
-
-    left: 50%;
-    bottom: -25px;
-
-    transform:
-        translateX(-50%);
-
-    font-size: 11px;
-
-    letter-spacing: 0.2em;
-
-    color:
-        rgba(255,255,255,0.48);
-
-    white-space: nowrap;
+.orb{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(30px);
+    opacity:.25;
+    animation:orbFloat 10s ease-in-out infinite;
 }
 
-.gift-wrap.opening {
-    animation:
-        giftShake 0.65s ease;
+.orb.one{
+    width:230px;
+    height:230px;
+    background:#e9899d;
+    left:-70px;
+    top:15%;
 }
 
-.gift-wrap.opening .gift-lid {
-    transform:
-        translateY(-70px)
-        rotate(-8deg);
+.orb.two{
+    width:280px;
+    height:280px;
+    background:#fff;
+    right:-100px;
+    bottom:8%;
+    animation-delay:-3s;
 }
 
-.gift-wrap.opening .gift-glow {
-    inset: -60px;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,226,166,0.65),
-            rgba(255,140,175,0.15) 35%,
-            transparent 70%
-        );
+.orb.three{
+    width:160px;
+    height:160px;
+    background:#c95c74;
+    right:20%;
+    top:-70px;
+    animation-delay:-6s;
 }
 
-@keyframes giftShake {
-
-    0%,100% {
-        transform: translateX(0);
+@keyframes orbFloat{
+    0%,100%{
+        transform:translate(0,0);
     }
-
-    20% {
-        transform: translateX(-7px) rotate(-2deg);
-    }
-
-    40% {
-        transform: translateX(7px) rotate(2deg);
-    }
-
-    60% {
-        transform: translateX(-4px);
-    }
-
-    80% {
-        transform: translateX(4px);
+    50%{
+        transform:translate(20px,-25px);
     }
 }
 
-/* =========================================================
-   TRANSITION
-========================================================= */
-
-#transition {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 10000;
-
-    background:
-        #050103;
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    transition:
-        opacity 1s ease;
-}
-
-#transition.active {
-    opacity: 1;
-}
 
 /* =========================================================
    MUSIC BUTTON
 ========================================================= */
 
-#music-button {
-    position: fixed;
+#music-button{
+    position:fixed;
+    top:18px;
+    right:18px;
+    z-index:1000;
 
-    z-index: 9000;
+    width:46px;
+    height:46px;
 
-    right: 18px;
-    top: 18px;
-
-    width: 42px;
-    height: 42px;
-
-    border-radius: 50%;
-
-    border:
-        1px solid
-        rgba(255,255,255,0.13);
+    border-radius:50%;
+    border:1px solid rgba(126,34,57,.25);
 
     background:
-        rgba(20,4,10,0.58);
+        rgba(255,255,255,.68);
 
-    backdrop-filter:
-        blur(12px);
+    backdrop-filter:blur(14px);
 
-    color:
-        rgba(255,255,255,0.75);
+    color:#81283f;
 
-    cursor: pointer;
-
-    font-size: 17px;
+    font-size:21px;
 
     box-shadow:
-        0 8px 25px
-        rgba(0,0,0,0.25);
+        0 8px 30px rgba(110,30,50,.15),
+        inset 0 1px 0 rgba(255,255,255,.9);
+
+    cursor:pointer;
 
     transition:
-        0.3s ease;
+        transform .25s ease,
+        box-shadow .25s ease;
 }
 
-#music-button:hover {
-    transform:
-        scale(1.08);
-
-    border-color:
-        rgba(217,181,109,0.35);
+#music-button:hover{
+    transform:scale(1.08);
 }
+
+#music-button:active{
+    transform:scale(.94);
+}
+
+
+/* =========================================================
+   DIZZY INTRO
+========================================================= */
+
+#dizzy-intro{
+    position:fixed;
+    inset:0;
+    z-index:500;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.15),
+            rgba(76,12,25,.72)
+        );
+
+    backdrop-filter:blur(15px);
+
+    opacity:1;
+
+    transition:
+        opacity 2s ease,
+        backdrop-filter 2.5s ease;
+}
+
+#dizzy-intro.fade-out{
+    opacity:0;
+    pointer-events:none;
+    backdrop-filter:blur(0);
+}
+
+.dizzy-ring{
+    position:absolute;
+
+    width:110px;
+    height:110px;
+
+    border-radius:50%;
+
+    border:
+        2px solid rgba(255,255,255,.45);
+
+    box-shadow:
+        0 0 30px rgba(255,170,185,.35);
+
+    animation:
+        dizzySpin 2.3s linear infinite;
+}
+
+.dizzy-ring:nth-child(2){
+    width:220px;
+    height:220px;
+    animation-duration:3.5s;
+    animation-direction:reverse;
+    opacity:.65;
+}
+
+.dizzy-ring:nth-child(3){
+    width:350px;
+    height:350px;
+    animation-duration:5s;
+    opacity:.35;
+}
+
+.dizzy-ring:nth-child(4){
+    width:500px;
+    height:500px;
+    animation-duration:7s;
+    animation-direction:reverse;
+    opacity:.18;
+}
+
+@keyframes dizzySpin{
+    from{
+        transform:rotate(0deg) scale(.85);
+    }
+    to{
+        transform:rotate(360deg) scale(1.15);
+    }
+}
+
+.dizzy-message{
+    position:relative;
+    z-index:5;
+
+    width:min(88%,460px);
+
+    text-align:center;
+
+    color:white;
+
+    text-shadow:
+        0 3px 20px rgba(0,0,0,.4);
+
+    animation:
+        dizzyText 1.8s ease-in-out infinite;
+}
+
+.dizzy-message .small{
+    font-size:13px;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    opacity:.65;
+    margin-bottom:18px;
+}
+
+.dizzy-message .main{
+    font-family:Georgia,serif;
+    font-size:
+        clamp(25px,6vw,38px);
+
+    line-height:1.25;
+}
+
+.dizzy-message .second{
+    margin-top:15px;
+
+    font-size:
+        clamp(15px,4vw,18px);
+
+    letter-spacing:.5px;
+
+    opacity:.8;
+}
+
+@keyframes dizzyText{
+    0%,100%{
+        transform:rotate(-1deg) scale(1);
+    }
+    50%{
+        transform:rotate(1deg) scale(1.03);
+    }
+}
+
+
+/* =========================================================
+   MAIN APP
+========================================================= */
+
+#app{
+    position:relative;
+    z-index:10;
+
+    width:100%;
+    height:100%;
+
+    opacity:0;
+
+    transition:opacity 1.8s ease;
+
+    overflow:hidden;
+}
+
+#app.visible{
+    opacity:1;
+}
+
+
+/* =========================================================
+   ROOM
+========================================================= */
+
+#room-section{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:
+        opacity 1.5s ease;
+}
+
+#room-section.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.room{
+    position:relative;
+
+    width:min(900px,100%);
+    height:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+
+/* bed */
+
+.bed{
+    position:absolute;
+
+    width:min(520px,68vw);
+    height:170px;
+
+    bottom:13%;
+
+    border-radius:20px 20px 10px 10px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #fff8f8,
+            #ead5d8
+        );
+
+    box-shadow:
+        0 30px 70px rgba(80,25,35,.18);
+
+    transform:perspective(700px)
+              rotateX(4deg);
+}
+
+.bed::before{
+    content:"";
+
+    position:absolute;
+
+    width:90%;
+    height:95px;
+
+    left:5%;
+    top:-60px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff,
+            #f1e1e3
+        );
+
+    box-shadow:
+        0 15px 35px rgba(70,25,35,.13);
+}
+
+.bed::after{
+    content:"";
+
+    position:absolute;
+
+    width:120px;
+    height:80px;
+
+    left:9%;
+    top:-42px;
+
+    border-radius:15px;
+
+    background:#fffafa;
+
+    box-shadow:
+        0 8px 25px rgba(70,25,35,.12);
+}
+
+
+/* lamp */
+
+.lamp{
+    position:absolute;
+
+    right:9%;
+    bottom:14%;
+
+    width:80px;
+    height:150px;
+}
+
+.lamp::before{
+    content:"";
+
+    position:absolute;
+
+    width:75px;
+    height:55px;
+
+    left:2px;
+    top:0;
+
+    border-radius:50% 50% 18% 18%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #fff7d9,
+            #e9c98d
+        );
+
+    box-shadow:
+        0 0 60px rgba(255,214,120,.65);
+}
+
+.lamp::after{
+    content:"";
+
+    position:absolute;
+
+    width:8px;
+    height:90px;
+
+    background:#a77755;
+
+    left:35px;
+    top:50px;
+}
+
+
+/* curtains */
+
+.curtain{
+    position:absolute;
+    top:0;
+
+    width:24%;
+    height:48%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d99aa7,
+            #f2cdd3,
+            #cf8c9a
+        );
+
+    opacity:.62;
+
+    box-shadow:
+        inset -15px 0 25px rgba(90,20,35,.12);
+}
+
+.curtain.left{
+    left:0;
+    border-radius:0 0 70% 0;
+}
+
+.curtain.right{
+    right:0;
+    border-radius:0 0 0 70%;
+}
+
+
+/* room particles */
+
+.room-particle{
+    position:absolute;
+
+    width:3px;
+    height:3px;
+
+    border-radius:50%;
+
+    background:white;
+
+    opacity:.55;
+
+    animation:
+        roomFloat 6s ease-in-out infinite;
+}
+
+@keyframes roomFloat{
+    0%,100%{
+        transform:translateY(15px);
+        opacity:.15;
+    }
+
+    50%{
+        transform:translateY(-30px);
+        opacity:.75;
+    }
+}
+
+
+/* =========================================================
+   TISHA TEXT
+========================================================= */
+
+#room-dialogue{
+    position:absolute;
+
+    left:50%;
+    top:17%;
+
+    transform:translateX(-50%);
+
+    width:min(88%,550px);
+
+    text-align:center;
+
+    z-index:20;
+
+    min-height:120px;
+}
+
+.dialogue-line{
+    position:absolute;
+
+    width:100%;
+
+    opacity:0;
+    transform:translateY(12px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+
+    font-family:Georgia,serif;
+
+    color:#641f30;
+
+    font-size:
+        clamp(23px,5vw,36px);
+
+    line-height:1.3;
+}
+
+.dialogue-line.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+
+/* =========================================================
+   PHONE RING
+========================================================= */
+
+#phone-stage{
+    position:absolute;
+    inset:0;
+
+    z-index:100;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:
+        opacity 1s ease;
+}
+
+#phone-stage.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.ring-text{
+    position:absolute;
+
+    top:12%;
+
+    text-align:center;
+
+    font-size:12px;
+
+    letter-spacing:4px;
+
+    text-transform:uppercase;
+
+    color:#7c3044;
+
+    opacity:.65;
+}
+
+
+/* iphone */
+
+.phone{
+    position:relative;
+
+    width:min(285px,72vw);
+    aspect-ratio:9/18.7;
+
+    border-radius:42px;
+
+    padding:9px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #29242a,
+            #09080a
+        );
+
+    box-shadow:
+        0 35px 80px rgba(55,10,22,.35),
+        0 0 0 2px rgba(255,255,255,.18);
+
+    animation:
+        phoneRing .9s ease-in-out infinite;
+}
+
+.phone::before{
+    content:"";
+
+    position:absolute;
+
+    width:38%;
+    height:25px;
+
+    top:10px;
+    left:31%;
+
+    border-radius:20px;
+
+    background:#070707;
+
+    z-index:20;
+}
+
+.phone-screen{
+    width:100%;
+    height:100%;
+
+    border-radius:35px;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            160deg,
+            #ffedf1,
+            #c75c75
+        );
+
+    position:relative;
+}
+
+.phone-screen::after{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            125deg,
+            rgba(255,255,255,.25),
+            transparent 35%,
+            transparent 65%,
+            rgba(255,255,255,.08)
+        );
+
+    pointer-events:none;
+}
+
+.phone-time{
+    text-align:center;
+
+    color:white;
+
+    margin-top:45px;
+
+    font-size:15px;
+
+    opacity:.8;
+}
+
+.phone-contact{
+    margin-top:55px;
+
+    text-align:center;
+
+    color:white;
+}
+
+.phone-avatar{
+    width:72px;
+    height:72px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        rgba(255,255,255,.28);
+
+    backdrop-filter:blur(10px);
+
+    font-size:32px;
+
+    box-shadow:
+        0 10px 30px rgba(80,15,30,.2);
+}
+
+.phone-contact h2{
+    margin-top:15px;
+
+    font-size:20px;
+
+    font-weight:500;
+}
+
+.phone-contact p{
+    margin-top:5px;
+
+    font-size:12px;
+
+    opacity:.75;
+}
+
+.swipe-button{
+    position:absolute;
+
+    bottom:35px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    border:0;
+
+    background:rgba(255,255,255,.25);
+
+    color:white;
+
+    padding:11px 25px;
+
+    border-radius:30px;
+
+    backdrop-filter:blur(10px);
+
+    font-size:12px;
+
+    letter-spacing:1px;
+
+    cursor:pointer;
+}
+
+@keyframes phoneRing{
+    0%,100%{
+        transform:rotate(0deg);
+    }
+
+    10%{
+        transform:rotate(-3deg);
+    }
+
+    20%{
+        transform:rotate(3deg);
+    }
+
+    30%{
+        transform:rotate(-3deg);
+    }
+
+    40%{
+        transform:rotate(3deg);
+    }
+
+    50%{
+        transform:rotate(0deg);
+    }
+}
+
+
+/* =========================================================
+   PHONE MESSAGE
+========================================================= */
+
+#message-screen{
+    position:absolute;
+    inset:0;
+
+    z-index:150;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255,255,255,.85),
+            rgba(250,216,222,.97)
+        );
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:opacity 1s ease;
+}
+
+#message-screen.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.message-card{
+    width:min(90%,500px);
+
+    padding:35px 27px;
+
+    border-radius:28px;
+
+    background:
+        rgba(255,255,255,.62);
+
+    backdrop-filter:blur(25px);
+
+    border:
+        1px solid rgba(255,255,255,.8);
+
+    box-shadow:
+        0 30px 80px rgba(100,30,50,.18);
+
+    text-align:center;
+}
+
+.message-top{
+    font-size:12px;
+
+    letter-spacing:3px;
+
+    color:#a24860;
+
+    text-transform:uppercase;
+
+    margin-bottom:22px;
+}
+
+.message-card h2{
+    font-family:Georgia,serif;
+
+    font-size:
+        clamp(27px,6vw,40px);
+
+    color:#601d2e;
+
+    margin-bottom:18px;
+}
+
+.message-card p{
+    font-size:
+        clamp(15px,4vw,18px);
+
+    line-height:1.8;
+
+    color:#6c3343;
+}
+
+.message-button{
+    margin-top:27px;
+
+    border:0;
+
+    padding:13px 27px;
+
+    border-radius:30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #8c3048,
+            #b84d68
+        );
+
+    color:white;
+
+    font-size:14px;
+
+    letter-spacing:1px;
+
+    box-shadow:
+        0 10px 25px rgba(130,30,55,.22);
+
+    cursor:pointer;
+
+    transition:
+        transform .2s ease;
+}
+
+.message-button:active{
+    transform:scale(.95);
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+#quiz-section{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:30px 18px;
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:
+        opacity .8s ease;
+}
+
+#quiz-section.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.quiz-container{
+    width:min(650px,100%);
+
+    text-align:center;
+}
+
+.quiz-label{
+    font-size:11px;
+
+    letter-spacing:5px;
+
+    text-transform:uppercase;
+
+    color:#8e4054;
+
+    margin-bottom:12px;
+}
+
+.quiz-title{
+    font-family:Georgia,serif;
+
+    font-size:
+        clamp(30px,7vw,48px);
+
+    color:#5c1d2d;
+
+    line-height:1.1;
+
+    margin-bottom:25px;
+}
+
+.progress-wrap{
+    width:100%;
+    height:4px;
+
+    border-radius:10px;
+
+    background:
+        rgba(115,35,55,.12);
+
+    overflow:hidden;
+
+    margin-bottom:28px;
+}
+
+.progress-bar{
+    height:100%;
+
+    width:0%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #8e304a,
+            #d16a83
+        );
+
+    border-radius:10px;
+
+    transition:
+        width .6s ease;
+}
+
+.question-number{
+    font-size:12px;
+
+    letter-spacing:3px;
+
+    color:#914158;
+
+    margin-bottom:12px;
+}
+
+.question{
+    font-family:Georgia,serif;
+
+    font-size:
+        clamp(22px,5vw,31px);
+
+    line-height:1.35;
+
+    color:#461824;
+
+    margin-bottom:27px;
+}
+
+.options{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+}
+
+.option{
+    width:100%;
+
+    padding:17px 18px;
+
+    border-radius:18px;
+
+    border:
+        1px solid rgba(115,35,55,.14);
+
+    background:
+        rgba(255,255,255,.60);
+
+    color:#5d2433;
+
+    font-size:
+        clamp(14px,3.8vw,17px);
+
+    text-align:left;
+
+    cursor:pointer;
+
+    backdrop-filter:blur(15px);
+
+    box-shadow:
+        0 8px 25px rgba(100,25,45,.07);
+
+    transition:
+        transform .25s ease,
+        background .25s ease,
+        box-shadow .25s ease,
+        border .25s ease;
+}
+
+.option:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 13px 30px rgba(100,25,45,.12);
+}
+
+.option:active{
+    transform:scale(.985);
+}
+
+.option.correct{
+    background:
+        rgba(255,255,255,.9);
+
+    border-color:#b67c32;
+
+    box-shadow:
+        0 0 30px rgba(198,151,64,.28);
+}
+
+.option.wrong{
+    background:
+        rgba(193,63,82,.18);
+
+    border-color:#a72d48;
+
+    animation:
+        wrongShake .42s ease;
+}
+
+.option.disabled{
+    pointer-events:none;
+}
+
+@keyframes wrongShake{
+    0%,100%{
+        transform:translateX(0);
+    }
+
+    20%{
+        transform:translateX(-8px);
+    }
+
+    40%{
+        transform:translateX(8px);
+    }
+
+    60%{
+        transform:translateX(-6px);
+    }
+
+    80%{
+        transform:translateX(5px);
+    }
+}
+
+.answer-message{
+    height:30px;
+
+    margin-top:15px;
+
+    font-family:Georgia,serif;
+
+    font-size:16px;
+
+    color:#75283c;
+
+    opacity:0;
+
+    transition:opacity .3s ease;
+}
+
+.answer-message.show{
+    opacity:1;
+}
+
+
+/* =========================================================
+   PARTICLES
+========================================================= */
+
+.particle{
+    position:fixed;
+
+    pointer-events:none;
+
+    z-index:800;
+
+    font-size:18px;
+}
+
+@keyframes particleBurst{
+    from{
+        transform:
+            translate(0,0)
+            scale(.3);
+        opacity:1;
+    }
+
+    to{
+        transform:
+            translate(var(--x),var(--y))
+            scale(.8);
+        opacity:0;
+    }
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+#result-section{
+    position:absolute;
+    inset:0;
+
+    z-index:250;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.94),
+            rgba(249,214,221,.98)
+        );
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:opacity 1.2s ease;
+}
+
+#result-section.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.result-card{
+    width:min(90%,520px);
+
+    text-align:center;
+
+    padding:40px 25px;
+}
+
+.result-symbol{
+    font-size:35px;
+
+    color:#a94761;
+
+    margin-bottom:18px;
+
+    animation:
+        resultGlow 2s ease-in-out infinite;
+}
+
+@keyframes resultGlow{
+    0%,100%{
+        transform:scale(1);
+        opacity:.75;
+    }
+
+    50%{
+        transform:scale(1.12);
+        opacity:1;
+    }
+}
+
+.result-card h2{
+    font-family:Georgia,serif;
+
+    font-size:
+        clamp(32px,8vw,54px);
+
+    color:#5b1b2b;
+
+    margin-bottom:22px;
+}
+
+.result-lines{
+    min-height:150px;
+}
+
+.result-line{
+    font-family:Georgia,serif;
+
+    font-size:
+        clamp(17px,4.5vw,23px);
+
+    line-height:1.7;
+
+    color:#713144;
+
+    opacity:0;
+
+    transform:translateY(15px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+
+    margin:8px 0;
+}
+
+.result-line.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+
+/* =========================================================
+   GIFT SECTION
+========================================================= */
+
+#gift-section{
+    position:absolute;
+    inset:0;
+
+    z-index:300;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-direction:column;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #fffafa,
+            #f6d3d9 70%,
+            #e9b2bd
+        );
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:
+        opacity 1.2s ease;
+}
+
+#gift-section.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.gift-intro{
+    text-align:center;
+
+    margin-bottom:45px;
+}
+
+.gift-intro .small{
+    font-size:11px;
+
+    letter-spacing:4px;
+
+    text-transform:uppercase;
+
+    color:#914157;
+
+    margin-bottom:13px;
+}
+
+.gift-intro h2{
+    font-family:Georgia,serif;
+
+    font-size:
+        clamp(27px,7vw,42px);
+
+    color:#5a1b2b;
+}
+
+.gift-intro p{
+    margin-top:10px;
+
+    font-size:14px;
+
+    color:#7d4050;
+}
+
+
+/* =========================================================
+   GIFT BOX
+========================================================= */
+
+.gift{
+    position:relative;
+
+    width:170px;
+    height:135px;
+
+    cursor:pointer;
+
+    animation:
+        giftFloat 3s ease-in-out infinite;
+}
+
+@keyframes giftFloat{
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-8px);
+    }
+}
+
+.gift-box{
+    position:absolute;
+
+    width:170px;
+    height:100px;
+
+    bottom:0;
+
+    border-radius:4px 4px 12px 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #591525,
+            #8e2942,
+            #65182b
+        );
+
+    box-shadow:
+        0 25px 45px rgba(75,15,30,.28);
+}
+
+.gift-box::after{
+    content:"";
+
+    position:absolute;
+
+    width:25px;
+    height:100%;
+
+    left:72px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d6aa5c,
+            #f1d48a,
+            #b88735
+        );
+}
+
+.gift-lid{
+    position:absolute;
+
+    width:190px;
+    height:28px;
+
+    left:-10px;
+    top:20px;
+
+    border-radius:5px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #741d34,
+            #a73551,
+            #6c192e
+        );
+
+    box-shadow:
+        0 8px 15px rgba(60,10,25,.25);
+
+    z-index:5;
+}
+
+.gift-lid::after{
+    content:"";
+
+    position:absolute;
+
+    width:27px;
+    height:28px;
+
+    left:81px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d6aa5c,
+            #f1d48a,
+            #b88735
+        );
+}
+
+.gift-bow{
+    position:absolute;
+
+    top:-3px;
+    left:50%;
+
+    width:45px;
+    height:45px;
+
+    transform:translateX(-50%);
+
+    z-index:10;
+}
+
+.gift-bow::before,
+.gift-bow::after{
+    content:"";
+
+    position:absolute;
+
+    width:28px;
+    height:22px;
+
+    top:0;
+
+    border-radius:50% 50% 50% 10%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e6bf6c,
+            #a87528
+        );
+}
+
+.gift-bow::before{
+    left:-5px;
+    transform:rotate(28deg);
+}
+
+.gift-bow::after{
+    right:-5px;
+    transform:scaleX(-1) rotate(28deg);
+}
+
+.gift-ribbon-center{
+    position:absolute;
+
+    width:14px;
+    height:20px;
+
+    left:15px;
+    top:8px;
+
+    border-radius:4px;
+
+    background:#f0d083;
+
+    z-index:20;
+}
+
+
+/* gift opening */
+
+.gift.open{
+    animation:
+        giftOpenShake .6s ease;
+}
+
+.gift.open .gift-lid{
+    animation:
+        lidOpen 1.2s ease forwards;
+}
+
+@keyframes giftOpenShake{
+    0%,100%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-5px) rotate(-2deg);
+    }
+
+    50%{
+        transform:translateX(5px) rotate(2deg);
+    }
+
+    75%{
+        transform:translateX(-3px);
+    }
+}
+
+@keyframes lidOpen{
+    to{
+        transform:
+            translateY(-100px)
+            rotate(-5deg);
+        opacity:0;
+    }
+}
+
+.gift-light{
+    position:absolute;
+
+    width:90px;
+    height:90px;
+
+    left:40px;
+    top:30px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            white,
+            rgba(255,235,170,.7),
+            transparent 70%
+        );
+
+    opacity:0;
+
+    transform:scale(.2);
+
+    z-index:2;
+}
+
+.gift.open .gift-light{
+    animation:
+        giftLight 1.2s ease forwards;
+}
+
+@keyframes giftLight{
+    0%{
+        opacity:0;
+        transform:scale(.2);
+    }
+
+    40%{
+        opacity:1;
+        transform:scale(1.7);
+    }
+
+    100%{
+        opacity:0;
+        transform:scale(3.2);
+    }
+}
+
+.gift-hint{
+    margin-top:25px;
+
+    font-size:12px;
+
+    letter-spacing:3px;
+
+    text-transform:uppercase;
+
+    color:#8a4052;
+
+    animation:
+        hintPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes hintPulse{
+    0%,100%{
+        opacity:.5;
+    }
+
+    50%{
+        opacity:1;
+    }
+}
+
+
+/* =========================================================
+   SCREEN TRANSITION
+========================================================= */
+
+#transition{
+    position:fixed;
+    inset:0;
+
+    z-index:1000;
+
+    background:#390d1a;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:opacity 1.2s ease;
+}
+
+#transition.active{
+    opacity:1;
+}
+
 
 /* =========================================================
    MOBILE
 ========================================================= */
 
-@media (max-width: 600px) {
+@media(max-width:600px){
 
-    .room-bed {
-        bottom: 7%;
-        height: 110px;
+    .curtain{
+        height:35%;
+        width:27%;
     }
 
-    .room-lamp {
-        right: 2%;
-        top: 12%;
-        transform: scale(0.7);
+    .lamp{
+        right:3%;
+        transform:scale(.7);
+        transform-origin:bottom right;
     }
 
-    .question-card {
-        padding:
-            27px 17px 21px;
+    .bed{
+        bottom:17%;
+        width:82vw;
+        height:130px;
     }
 
-    .option {
-        min-height: 55px;
+    .phone{
+        width:245px;
     }
 
-    .phone {
-        width: min(285px, 74vw);
+    .phone-contact{
+        margin-top:45px;
     }
 
-    .gift-wrap {
-        transform:
-            scale(0.92);
+    .quiz-container{
+        padding-top:20px;
     }
 
-    .gift-wrap:hover {
-        transform:
-            scale(0.92)
-            translateY(-5px);
+    .quiz-title{
+        margin-bottom:18px;
     }
 
-}
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: 0.01ms !important;
+    .question{
+        margin-bottom:20px;
     }
 
+    .option{
+        padding:15px;
+    }
+
+    .gift{
+        transform:scale(.9);
+    }
 }
 
 </style>
 </head>
 
+
 <body>
+
+<!-- ========================================================
+     AMBIENT
+========================================================= -->
+
+<div class="ambient">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+</div>
+
+
+<!-- ========================================================
+     MUSIC
+========================================================= -->
+
+<button id="music-button" aria-label="Music">
+    ♫
+</button>
+
+
+<!-- ========================================================
+     PAGE 3 → PAGE 4 DIZZY TRANSITION
+========================================================= -->
+
+<div id="dizzy-intro">
+
+    <div class="dizzy-ring"></div>
+    <div class="dizzy-ring"></div>
+    <div class="dizzy-ring"></div>
+    <div class="dizzy-ring"></div>
+
+    <div class="dizzy-message">
+
+        <div class="small">
+            recovering...
+        </div>
+
+        <div class="main">
+            Oh God... I'm still dizzy...
+        </div>
+
+        <div class="second">
+            Riteshhh.... where are you?
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================
+     MAIN APP
+========================================================= -->
 
 <div id="app">
 
-    <div class="ambient" id="ambient"></div>
 
-    <!-- =====================================================
-         MUSIC
-    ====================================================== -->
+<!-- ========================================================
+     ROOM
+========================================================= -->
 
-    <button id="music-button" aria-label="Music">
-        ♫
-    </button>
+<section id="room-section"
+         class="page-section active">
+
+    <div class="room">
+
+        <div class="curtain left"></div>
+        <div class="curtain right"></div>
+
+        <div class="bed"></div>
+
+        <div class="lamp"></div>
+
+        <div class="room-particle"
+             style="left:20%;top:35%;animation-delay:0s"></div>
+
+        <div class="room-particle"
+             style="left:35%;top:25%;animation-delay:-2s"></div>
+
+        <div class="room-particle"
+             style="left:65%;top:30%;animation-delay:-4s"></div>
+
+        <div class="room-particle"
+             style="left:75%;top:45%;animation-delay:-1s"></div>
+
+        <div class="room-particle"
+             style="left:50%;top:20%;animation-delay:-3s"></div>
 
 
-    <!-- =====================================================
-         WAKE-UP SCREEN
-    ====================================================== -->
+        <div id="room-dialogue">
 
-    <section
-        id="wake-screen"
-        class="screen active"
-    >
+            <div class="dialogue-line"
+                 id="dialogue-1">
 
-        <div class="wake-room">
-
-            <div class="room-lamp"></div>
-
-            <div class="room-bed"></div>
-
-        </div>
-
-
-        <div class="wake-content">
-
-            <div
-                id="wake-line-1"
-                class="wake-line"
-            >
                 Oh God... I'm still dizzy...
+
             </div>
 
-            <div
-                id="wake-line-2"
-                class="wake-line"
-            >
+            <div class="dialogue-line"
+                 id="dialogue-2">
+
                 Riteshhh.... where are you?
-            </div>
 
-            <div class="wake-sub">
-                slowly coming back to reality
             </div>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- =====================================================
-         PHONE SCREEN
-    ====================================================== -->
+<!-- ========================================================
+     PHONE
+========================================================= -->
 
-    <section
-        id="phone-screen"
-        class="screen"
-    >
+<section id="phone-stage">
 
-        <div class="phone-stage">
+    <div class="ring-text">
+        Incoming call
+    </div>
 
-            <div class="phone">
+    <div class="phone">
 
-                <div class="phone-screen">
+        <div class="phone-screen">
 
-                    <div class="dynamic-island"></div>
+            <div class="phone-time">
+                12:01 AM
+            </div>
 
-                    <div class="phone-time">
-                        12:07
-                    </div>
+            <div class="phone-contact">
 
-                    <div class="call-area">
-
-                        <div class="call-icon">
-                            ☎
-                        </div>
-
-                        <div class="call-from">
-                            Ritesh ❤️
-                        </div>
-
-                        <div class="call-label">
-                            incoming call
-                        </div>
-
-                    </div>
-
-                    <button
-                        id="answer-phone"
-                        class="answer-phone"
-                    >
-                        Answer
-                    </button>
-
+                <div class="phone-avatar">
+                    ❤️
                 </div>
 
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         MESSAGE SCREEN
-    ====================================================== -->
-
-    <section
-        id="message-screen"
-        class="screen"
-    >
-
-        <div class="message-box">
-
-            <div class="message-name">
-                Ritesh ❤️
-            </div>
-
-            <div class="message-title">
-                Finally...
-            </div>
-
-            <div class="message-text">
-                So love... finally you woke up.<br><br>
-
-                Since I remember everything about us...
-                <br>
-
-                is your memory sharp enough?
-                <br><br>
-
-                <strong>
-                    Let's see... 😉
-                </strong>
-            </div>
-
-            <button
-                id="start-memory"
-                class="message-button"
-            >
-                I'm ready
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         QUIZ
-    ====================================================== -->
-
-    <section
-        id="quiz-screen"
-        class="screen"
-    >
-
-        <div class="quiz-container">
-
-            <div class="quiz-heading">
-
-                <div class="quiz-eyebrow">
-                    A little test
-                </div>
-
-                <h1>
-                    How Sharp Is Your Memory?
-                </h1>
+                <h2>
+                    Ritesh ❤️
+                </h2>
 
                 <p>
-                    Let's see how well you remember us.
+                    calling...
                 </p>
 
             </div>
 
+            <button
+                class="swipe-button"
+                id="answer-phone">
 
-            <div class="progress-wrap">
+                Answer
 
-                <div
-                    id="progress-number"
-                    class="progress-number"
-                >
-                    01 / 07
-                </div>
-
-                <div class="progress-line">
-
-                    <div
-                        id="progress-fill"
-                        class="progress-fill"
-                    ></div>
-
-                </div>
-
-            </div>
-
-
-            <div class="question-card">
-
-                <div
-                    id="question-number"
-                    class="question-number"
-                >
-                    QUESTION 01
-                </div>
-
-                <div
-                    id="question-text"
-                    class="question-text"
-                >
-                    Question goes here...
-                </div>
-
-                <div
-                    id="options"
-                    class="options"
-                ></div>
-
-                <div
-                    id="feedback"
-                    class="feedback"
-                ></div>
-
-            </div>
+            </button>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- =====================================================
-         RESULT
-    ====================================================== -->
+<!-- ========================================================
+     MESSAGE
+========================================================= -->
 
-    <section
-        id="result-screen"
-        class="screen"
-    >
+<section id="message-screen">
 
-        <div class="result-content">
+    <div class="message-card">
 
-            <div class="result-ring">
+        <div class="message-top">
+            Ritesh ❤️
+        </div>
 
-                <span>
-                    ✦
-                </span>
+        <h2>
+            Finally awake...
+        </h2>
 
+        <p>
+            So love... finally you woke up.
+            <br><br>
+
+            Since I remember everything about us...
+            <br>
+
+            is your memory sharp enough?
+            <br><br>
+
+            Let's see. 😉
+        </p>
+
+        <button
+            class="message-button"
+            id="start-memory">
+
+            I’m ready
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================
+     QUIZ
+========================================================= -->
+
+<section id="quiz-section">
+
+    <div class="quiz-container">
+
+        <div class="quiz-label">
+            MEMORY TEST
+        </div>
+
+        <h1 class="quiz-title">
+            How Sharp Is<br>
+            Your Memory?
+        </h1>
+
+        <div class="progress-wrap">
+            <div
+                class="progress-bar"
+                id="progress-bar">
             </div>
+        </div>
 
-            <div class="result-eyebrow">
-                MEMORY COMPLETE
-            </div>
+        <div
+            class="question-number"
+            id="question-number">
+        </div>
 
-            <div class="result-title">
+        <div
+            class="question"
+            id="question">
+        </div>
+
+        <div
+            class="options"
+            id="options">
+        </div>
+
+        <div
+            class="answer-message"
+            id="answer-message">
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ========================================================
+     RESULT
+========================================================= -->
+
+<section id="result-section">
+
+    <div class="result-card">
+
+        <div class="result-symbol">
+            ✦
+        </div>
+
+        <h2>
+            Memory Complete
+        </h2>
+
+        <div class="result-lines">
+
+            <div
+                class="result-line"
+                id="result-line-1">
                 Okay...
             </div>
 
             <div
-                id="result-message"
-                class="result-message"
-            >
+                class="result-line"
+                id="result-line-2">
+                You actually know us pretty well.
             </div>
 
             <div
-                id="result-score"
-                class="result-score"
-            >
+                class="result-line"
+                id="result-line-3">
+                Maybe I underestimated you. ❤️
+            </div>
+
+            <div
+                class="result-line"
+                id="result-line-4">
+                Looks like your memory is sharp enough after all.
             </div>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- =====================================================
-         GIFT
-    ====================================================== -->
+<!-- ========================================================
+     GIFT
+========================================================= -->
 
-    <section
-        id="gift-screen"
-        class="screen"
-    >
+<section id="gift-section">
 
-        <div>
+    <div class="gift-intro">
 
-            <div class="gift-intro">
+        <div class="small">
+            One last thing...
+        </div>
 
-                <div class="gift-intro-small">
-                    One last thing...
-                </div>
+        <h2>
+            I left something for you.
+        </h2>
 
-                <div class="gift-intro-title">
-                    I left something for you.
-                </div>
+        <p>
+            It's waiting right here.
+        </p>
 
-            </div>
+    </div>
 
 
-            <div
-                id="gift-wrap"
-                class="gift-wrap"
-            >
+    <div
+        class="gift"
+        id="gift">
 
-                <div class="gift-glow"></div>
+        <div class="gift-light"></div>
 
-                <div class="gift-box"></div>
+        <div class="gift-box"></div>
 
-                <div class="gift-lid"></div>
+        <div class="gift-lid">
 
-                <div class="gift-ribbon"></div>
+            <div class="gift-bow"></div>
 
-                <div class="gift-label">
-                    OPEN ME
-                </div>
-
-            </div>
+            <div class="gift-ribbon-center"></div>
 
         </div>
 
-    </section>
+    </div>
 
 
-    <!-- =====================================================
-         TRANSITION
-    ====================================================== -->
+    <div class="gift-hint">
+        Tap to open
+    </div>
 
-    <div id="transition"></div>
+</section>
+
 
 </div>
+
+
+<!-- ========================================================
+     TRANSITION
+========================================================= -->
+
+<div id="transition"></div>
 
 
 <script>
 
 /* =========================================================
-   PAGE 4 JAVASCRIPT
+   PAGE 4 — COMPLETE JAVASCRIPT
 ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
-    function () {
+    function(){
 
         /* =====================================================
            HELPERS
-        ====================================================== */
+        ===================================================== */
 
-        function get(id) {
+        function get(id){
             return document.getElementById(id);
         }
 
 
-        function showScreen(id) {
-
-            document
-                .querySelectorAll(".screen")
-                .forEach(function (screen) {
-
-                    screen.classList.remove("active");
-
-                });
-
-
-            setTimeout(function () {
-
-                const target = get(id);
-
-                if (target) {
-                    target.classList.add("active");
+        function wait(ms){
+            return new Promise(
+                function(resolve){
+                    setTimeout(resolve,ms);
                 }
-
-            }, 80);
-
+            );
         }
 
 
         /* =====================================================
-           AMBIENT PARTICLES
-        ====================================================== */
+           ELEMENTS
+        ===================================================== */
 
-        const ambient =
-            get("ambient");
+        const dizzyIntro =
+            get("dizzy-intro");
 
+        const app =
+            get("app");
 
-        for (
-            let i = 0;
-            i < 32;
-            i++
-        ) {
+        const roomSection =
+            get("room-section");
 
-            const particle =
-                document.createElement("span");
+        const dialogue1 =
+            get("dialogue-1");
 
-            particle.className =
-                "particle";
+        const dialogue2 =
+            get("dialogue-2");
 
-            particle.style.left =
-                Math.random() * 100 + "%";
+        const phoneStage =
+            get("phone-stage");
 
-            particle.style.top =
-                55 +
-                Math.random() * 45 +
-                "%";
+        const answerPhone =
+            get("answer-phone");
 
-            particle.style.animationDuration =
-                5 +
-                Math.random() * 7 +
-                "s";
+        const messageScreen =
+            get("message-screen");
 
-            particle.style.animationDelay =
-                Math.random() * 5 +
-                "s";
+        const startMemory =
+            get("start-memory");
 
-            particle.style.opacity =
-                0.2 +
-                Math.random() * 0.5;
+        const quizSection =
+            get("quiz-section");
 
-            ambient.appendChild(
-                particle
-            );
+        const resultSection =
+            get("result-section");
 
-        }
+        const giftSection =
+            get("gift-section");
+
+        const gift =
+            get("gift");
+
+        const transition =
+            get("transition");
+
+        const musicButton =
+            get("music-button");
 
 
         /* =====================================================
            AUDIO ENGINE
-           Procedural — no external audio files
-        ====================================================== */
+           Cute romantic piano rhythm
+           Louder than Page 3
+        ===================================================== */
 
         let audioContext = null;
 
@@ -2009,24 +2229,19 @@ document.addEventListener(
         let musicGain = null;
         let effectGain = null;
 
-        let audioReady = false;
+        let musicTimer = null;
 
         let musicPlaying = false;
         let musicMuted = false;
 
-        let musicTimer = null;
         let musicStep = 0;
 
 
-        const musicButton =
-            get("music-button");
+        function initAudio(){
 
+            if(!audioContext){
 
-        function initAudio() {
-
-            if (!audioContext) {
-
-                try {
+                try{
 
                     audioContext =
                         new (
@@ -2034,7 +2249,7 @@ document.addEventListener(
                             window.webkitAudioContext
                         )();
 
-                } catch (error) {
+                }catch(error){
 
                     return false;
 
@@ -2043,18 +2258,18 @@ document.addEventListener(
             }
 
 
-            if (
+            if(
                 audioContext.state ===
                 "suspended"
-            ) {
+            ){
 
                 audioContext.resume()
-                    .catch(function () {});
+                    .catch(function(){});
 
             }
 
 
-            if (!masterGain) {
+            if(!masterGain){
 
                 masterGain =
                     audioContext.createGain();
@@ -2066,14 +2281,19 @@ document.addEventListener(
                     audioContext.createGain();
 
 
+                /*
+                   IMPORTANT:
+                   Louder than Page 3.
+                */
+
                 masterGain.gain.value =
-                    0.75;
+                    0.92;
 
                 musicGain.gain.value =
-                    0.095;
+                    0.34;
 
                 effectGain.gain.value =
-                    0.35;
+                    0.50;
 
 
                 musicGain.connect(
@@ -2090,17 +2310,14 @@ document.addEventListener(
 
             }
 
-
-            audioReady = true;
-
             return true;
 
         }
 
 
         /* =====================================================
-           BASIC TONE
-        ====================================================== */
+           GENERIC TONE
+        ===================================================== */
 
         function tone(
             frequency,
@@ -2109,9 +2326,9 @@ document.addEventListener(
             type,
             destination,
             delay
-        ) {
+        ){
 
-            if (!initAudio()) {
+            if(!initAudio()){
                 return;
             }
 
@@ -2146,7 +2363,7 @@ document.addEventListener(
 
             gain.gain.exponentialRampToValueAtTime(
                 volume,
-                start + 0.025
+                start + .025
             );
 
 
@@ -2166,29 +2383,27 @@ document.addEventListener(
             oscillator.start(start);
 
             oscillator.stop(
-                start + duration + 0.05
+                start + duration + .05
             );
 
         }
 
 
         /* =====================================================
-           PAGE 4 BGM
-           Different from Page 3:
-           deeper, slower, more mysterious.
-        ====================================================== */
+           CUTE PIANO BGM
+        ===================================================== */
 
-        function startBGM() {
+        function startBGM(){
 
-            if (
+            if(
                 musicPlaying ||
                 musicMuted
-            ) {
+            ){
                 return;
             }
 
 
-            if (!initAudio()) {
+            if(!initAudio()){
                 return;
             }
 
@@ -2198,42 +2413,54 @@ document.addEventListener(
             musicStep = 0;
 
 
-            if (musicButton) {
-                musicButton.textContent = "♫";
-            }
+            musicButton.textContent =
+                "♫";
 
 
-            playBGM();
+            playPianoBar();
+
         }
 
 
-        function playBGM() {
+        function playPianoBar(){
 
-            if (
+            if(
                 !musicPlaying ||
                 musicMuted
-            ) {
+            ){
                 return;
             }
 
 
+            /*
+               Cute romantic piano progression.
+
+               C major
+               A minor
+               F major
+               G major
+
+               More rhythmic than Page 3,
+               but still romantic.
+            */
+
             const chords = [
 
-                [146.83, 174.61, 220.00],
+                [261.63,329.63,392.00],
 
-                [130.81, 164.81, 196.00],
+                [220.00,261.63,329.63],
 
-                [146.83, 185.00, 220.00],
+                [174.61,220.00,261.63],
 
-                [123.47, 155.56, 185.00],
+                [196.00,246.94,293.66],
 
-                [146.83, 174.61, 220.00],
+                [261.63,329.63,392.00],
 
-                [138.59, 174.61, 207.65],
+                [220.00,261.63,329.63],
 
-                [130.81, 164.81, 196.00],
+                [174.61,220.00,261.63],
 
-                [123.47, 155.56, 185.00]
+                [196.00,246.94,293.66]
 
             ];
 
@@ -2242,23 +2469,27 @@ document.addEventListener(
                 chords[musicStep];
 
 
-            /* deep atmosphere */
+            /*
+               Bass
+            */
 
             tone(
                 chord[0] / 2,
-                2.15,
-                0.010,
+                1.25,
+                .018,
                 "sine",
                 musicGain
             );
 
 
-            /* warm low chord */
+            /*
+               Piano chord
+            */
 
             tone(
                 chord[0],
-                1.75,
-                0.012,
+                .90,
+                .027,
                 "triangle",
                 musicGain
             );
@@ -2266,70 +2497,85 @@ document.addEventListener(
 
             tone(
                 chord[1],
-                1.65,
-                0.009,
+                .85,
+                .023,
                 "triangle",
                 musicGain,
-                0.12
+                .07
             );
 
 
             tone(
                 chord[2],
-                1.55,
-                0.007,
-                "sine",
+                .80,
+                .019,
+                "triangle",
                 musicGain,
-                0.24
+                .14
             );
 
 
-            /* occasional high shimmer */
+            /*
+               Cute little upper piano note
+            */
 
-            if (
-                musicStep === 2 ||
-                musicStep === 5
-            ) {
+            const melody = [
 
-                tone(
-                    chord[2] * 2,
-                    0.75,
-                    0.003,
-                    "sine",
-                    musicGain,
-                    0.45
-                );
+                chord[2] * 2,
 
-            }
+                chord[1] * 2,
+
+                chord[2] * 2,
+
+                chord[1] * 2
+
+            ];
+
+
+            tone(
+                melody[musicStep % 4],
+                .38,
+                .013,
+                "sine",
+                musicGain,
+                .42
+            );
+
+
+            tone(
+                melody[
+                    (musicStep + 1) % 4
+                ],
+                .30,
+                .009,
+                "sine",
+                musicGain,
+                .76
+            );
 
 
             musicStep++;
 
-            if (
-                musicStep >=
-                chords.length
-            ) {
-
+            if(musicStep >= chords.length){
                 musicStep = 0;
-
             }
 
 
             musicTimer =
                 setTimeout(
-                    playBGM,
-                    2150
+                    playPianoBar,
+                    1200
                 );
 
         }
 
 
-        function stopBGM() {
+        function stopBGM(){
 
             musicPlaying = false;
 
 
-            if (musicTimer) {
+            if(musicTimer){
 
                 clearTimeout(
                     musicTimer
@@ -2340,26 +2586,54 @@ document.addEventListener(
             }
 
 
-            if (musicButton) {
-                musicButton.textContent = "🔇";
-            }
+            musicButton.textContent =
+                "🔇";
 
         }
 
 
+        musicButton.addEventListener(
+            "click",
+            function(event){
+
+                event.stopPropagation();
+
+                initAudio();
+
+
+                if(musicMuted){
+
+                    musicMuted = false;
+
+                    startBGM();
+
+                }else{
+
+                    musicMuted = true;
+
+                    stopBGM();
+
+                }
+
+            }
+        );
+
+
         /* =====================================================
            AUDIO UNLOCK
-        ====================================================== */
+        ===================================================== */
 
-        function unlockAudio() {
+        function unlockAudio(){
 
-            if (!initAudio()) {
-                return;
-            }
+            initAudio();
 
+            if(
+                !musicMuted &&
+                !musicPlaying
+            ){
 
-            if (!musicMuted) {
                 startBGM();
+
             }
 
         }
@@ -2369,7 +2643,7 @@ document.addEventListener(
             "click",
             unlockAudio,
             {
-                once: true
+                once:true
             }
         );
 
@@ -2378,599 +2652,557 @@ document.addEventListener(
             "touchstart",
             unlockAudio,
             {
-                once: true,
-                passive: true
+                once:true,
+                passive:true
             }
         );
 
 
         /* =====================================================
-           MUSIC BUTTON
-        ====================================================== */
-
-        if (musicButton) {
-
-            musicButton.addEventListener(
-                "click",
-                function (event) {
-
-                    event.stopPropagation();
-
-                    initAudio();
-
-
-                    if (musicMuted) {
-
-                        musicMuted = false;
-
-                        startBGM();
-
-                    } else {
-
-                        musicMuted = true;
-
-                        stopBGM();
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
            SOUND EFFECTS
-        ====================================================== */
+        ===================================================== */
 
-        function softClick() {
+        function softClick(){
 
             tone(
-                560,
-                0.07,
-                0.028,
+                660,
+                .06,
+                .045,
                 "sine"
             );
 
             tone(
-                790,
-                0.09,
-                0.018,
+                990,
+                .09,
+                .025,
                 "sine",
                 effectGain,
-                0.035
+                .045
             );
 
         }
 
 
-        function wakeChime() {
+        function ringSound(){
 
             tone(
-                392,
-                0.28,
-                0.035,
+                880,
+                .28,
+                .08,
                 "sine"
             );
+
+            tone(
+                1108.73,
+                .30,
+                .065,
+                "sine",
+                effectGain,
+                .32
+            );
+
+        }
+
+
+        function messageChime(){
 
             tone(
                 523.25,
-                0.34,
-                0.032,
+                .25,
+                .06,
+                "sine"
+            );
+
+            tone(
+                659.25,
+                .30,
+                .055,
                 "sine",
                 effectGain,
-                0.10
-            );
-
-            tone(
-                659.25,
-                0.50,
-                0.028,
-                "triangle",
-                effectGain,
-                0.20
-            );
-
-        }
-
-
-        function ringtone() {
-
-            const notes = [
-                880,
-                1046.50,
-                880,
-                1174.66
-            ];
-
-
-            notes.forEach(
-                function (note, index) {
-
-                    tone(
-                        note,
-                        0.18,
-                        0.055,
-                        "sine",
-                        effectGain,
-                        index * 0.19
-                    );
-
-                }
-            );
-
-
-            setTimeout(
-                function () {
-
-                    if (
-                        get("phone-screen")
-                            .classList
-                            .contains("active")
-                    ) {
-
-                        ringtone();
-
-                    }
-
-                },
-                1400
-            );
-
-        }
-
-
-        function messageChime() {
-
-            tone(
-                659.25,
-                0.20,
-                0.04,
-                "sine"
+                .08
             );
 
             tone(
                 783.99,
-                0.28,
-                0.035,
-                "sine",
-                effectGain,
-                0.08
-            );
-
-            tone(
-                1046.50,
-                0.42,
-                0.025,
+                .45,
+                .045,
                 "triangle",
                 effectGain,
-                0.17
+                .16
             );
 
         }
 
 
-        function correctSound() {
+        function correctSound(){
 
             tone(
                 523.25,
-                0.15,
-                0.045,
+                .18,
+                .06,
                 "sine"
             );
 
             tone(
                 659.25,
-                0.18,
-                0.045,
+                .20,
+                .06,
                 "sine",
                 effectGain,
-                0.08
+                .07
             );
 
             tone(
                 783.99,
-                0.24,
-                0.04,
+                .35,
+                .055,
                 "triangle",
                 effectGain,
-                0.16
+                .14
             );
 
             tone(
                 1046.50,
-                0.45,
-                0.028,
+                .42,
+                .035,
                 "sine",
                 effectGain,
-                0.25
+                .23
             );
 
         }
 
 
-        function wrongSound() {
+        function wrongSound(){
 
             tone(
-                180,
-                0.20,
-                0.055,
+                220,
+                .16,
+                .06,
                 "sawtooth"
             );
 
             tone(
-                145,
-                0.28,
-                0.045,
+                174.61,
+                .25,
+                .045,
                 "triangle",
                 effectGain,
-                0.07
+                .08
             );
 
         }
 
 
-        function resultSound() {
-
-            const notes = [
-                392,
-                493.88,
-                587.33,
-                783.99,
-                987.77
-            ];
-
-
-            notes.forEach(
-                function (note, index) {
-
-                    tone(
-                        note,
-                        0.55,
-                        0.035,
-                        "sine",
-                        effectGain,
-                        index * 0.13
-                    );
-
-                }
-            );
-
-        }
-
-
-        function giftSound() {
+        function resultSound(){
 
             tone(
-                261.63,
-                0.25,
-                0.035,
+                392,
+                .25,
+                .05,
                 "sine"
             );
 
             tone(
-                329.63,
-                0.30,
-                0.035,
-                "sine",
-                effectGain,
-                0.08
-            );
-
-            tone(
-                392,
-                0.38,
-                0.035,
-                "triangle",
-                effectGain,
-                0.16
-            );
-
-            tone(
                 523.25,
-                0.65,
-                0.028,
+                .35,
+                .055,
                 "sine",
                 effectGain,
-                0.28
+                .10
+            );
+
+            tone(
+                659.25,
+                .42,
+                .05,
+                "sine",
+                effectGain,
+                .20
             );
 
             tone(
                 783.99,
-                0.85,
-                0.018,
+                .55,
+                .04,
+                "triangle",
+                effectGain,
+                .32
+            );
+
+            tone(
+                1046.50,
+                .70,
+                .025,
                 "sine",
                 effectGain,
-                0.42
+                .45
+            );
+
+        }
+
+
+        function giftSound(){
+
+            tone(
+                523.25,
+                .25,
+                .06,
+                "sine"
+            );
+
+            tone(
+                659.25,
+                .30,
+                .055,
+                "sine",
+                effectGain,
+                .08
+            );
+
+            tone(
+                783.99,
+                .38,
+                .05,
+                "triangle",
+                effectGain,
+                .16
+            );
+
+            tone(
+                1046.50,
+                .55,
+                .045,
+                "sine",
+                effectGain,
+                .27
+            );
+
+            tone(
+                1318.51,
+                .70,
+                .03,
+                "sine",
+                effectGain,
+                .40
             );
 
         }
 
 
         /* =====================================================
-           WAKE-UP SEQUENCE
-        ====================================================== */
+           PAGE 4 OPENING
+        ===================================================== */
 
-        const wakeScreen =
-            get("wake-screen");
+        async function beginPage(){
 
-        const wakeLine1 =
-            get("wake-line-1");
-
-        const wakeLine2 =
-            get("wake-line-2");
+            await wait(900);
 
 
-        setTimeout(
-            function () {
+            /*
+               Slight dizzy movement.
+            */
 
-                wakeScreen.classList.add(
-                    "started"
-                );
+            app.style.filter =
+                "blur(8px)";
 
-                wakeLine1.classList.add(
-                    "show"
-                );
-
-                wakeChime();
-
-            },
-            900
-        );
+            app.style.transform =
+                "scale(1.04) rotate(-1deg)";
 
 
-        setTimeout(
-            function () {
-
-                wakeLine1.classList.remove(
-                    "show"
-                );
-
-            },
-            3600
-        );
-
-
-        setTimeout(
-            function () {
-
-                wakeLine2.classList.add(
-                    "show"
-                );
-
-            },
-            3900
-        );
-
-
-        setTimeout(
-            function () {
-
-                wakeScreen.classList.add(
-                    "clear"
-                );
-
-            },
-            4700
-        );
-
-
-        /* =====================================================
-           PHONE ARRIVAL
-        ====================================================== */
-
-        setTimeout(
-            function () {
-
-                wakeLine2.classList.remove(
-                    "show"
-                );
-
-            },
-            6500
-        );
-
-
-        setTimeout(
-            function () {
-
-                showScreen(
-                    "phone-screen"
-                );
-
-                ringtone();
-
-            },
-            7200
-        );
-
-
-        /* =====================================================
-           ANSWER PHONE
-        ====================================================== */
-
-        const answerPhone =
-            get("answer-phone");
-
-
-        if (answerPhone) {
-
-            answerPhone.addEventListener(
-                "click",
-                function () {
-
-                    unlockAudio();
-
-                    softClick();
-
-                    showScreen(
-                        "message-screen"
-                    );
-
-                    messageChime();
-
-                }
+            app.classList.add(
+                "visible"
             );
 
+
+            await wait(900);
+
+
+            app.style.transition =
+                "filter 2.5s ease, transform 2.5s ease";
+
+            app.style.filter =
+                "blur(0px)";
+
+            app.style.transform =
+                "scale(1) rotate(0deg)";
+
+
+            await wait(700);
+
+
+            dizzyIntro.classList.add(
+                "fade-out"
+            );
+
+
+            await wait(1200);
+
+
+            showDialogue();
+
         }
+
+
+        async function showDialogue(){
+
+            dialogue1.classList.add(
+                "show"
+            );
+
+
+            await wait(2200);
+
+
+            dialogue1.classList.remove(
+                "show"
+            );
+
+
+            await wait(500);
+
+
+            dialogue2.classList.add(
+                "show"
+            );
+
+
+            await wait(2200);
+
+
+            dialogue2.classList.remove(
+                "show"
+            );
+
+
+            await wait(1200);
+
+
+            showPhone();
+
+        }
+
+
+        /* =====================================================
+           PHONE
+        ===================================================== */
+
+        function showPhone(){
+
+            phoneStage.classList.add(
+                "show"
+            );
+
+
+            ringSound();
+
+
+            const ringInterval =
+                setInterval(
+                    function(){
+
+                        if(
+                            !phoneStage.classList.contains(
+                                "show"
+                            )
+                        ){
+
+                            clearInterval(
+                                ringInterval
+                            );
+
+                            return;
+
+                        }
+
+                        ringSound();
+
+                    },
+                    1400
+                );
+
+        }
+
+
+        answerPhone.addEventListener(
+            "click",
+            function(){
+
+                unlockAudio();
+
+                softClick();
+
+
+                phoneStage.classList.remove(
+                    "show"
+                );
+
+
+                setTimeout(
+                    function(){
+
+                        messageScreen.classList.add(
+                            "show"
+                        );
+
+                        messageChime();
+
+                    },
+                    700
+                );
+
+            }
+        );
 
 
         /* =====================================================
            MESSAGE → QUIZ
-        ====================================================== */
+        ===================================================== */
 
-        const startMemory =
-            get("start-memory");
+        startMemory.addEventListener(
+            "click",
+            function(){
+
+                unlockAudio();
+
+                softClick();
 
 
-        if (startMemory) {
+                messageScreen.classList.remove(
+                    "show"
+                );
 
-            startMemory.addEventListener(
-                "click",
-                function () {
 
-                    unlockAudio();
+                setTimeout(
+                    function(){
 
-                    softClick();
+                        quizSection.classList.add(
+                            "active"
+                        );
 
-                    showScreen(
-                        "quiz-screen"
-                    );
+                        loadQuestion();
 
-                    setTimeout(
-                        function () {
+                    },
+                    900
+                );
 
-                            renderQuestion();
-
-                        },
-                        450
-                    );
-
-                }
-            );
-
-        }
+            }
+        );
 
 
         /* =====================================================
-           QUIZ DATA
-           
-           REPLACE ONLY THESE 7 QUESTIONS
-           WHEN YOU GIVE ME THE FINAL QUESTIONS.
-        ====================================================== */
+           QUESTIONS
+        ===================================================== */
 
         const questions = [
 
             {
                 question:
-                    "QUESTION 1 — Replace this with your final question.",
+                    "Ritesh's birth year?",
 
-                options: [
-                    "Option A",
-                    "Option B",
-                    "Option C",
-                    "Option D"
+                options:[
+                    "1999",
+                    "2000",
+                    "2001",
+                    "2002"
                 ],
 
-                correct: 0
-            },
+                answer:2
 
+            },
 
             {
                 question:
-                    "QUESTION 2 — Replace this with your final question.",
+                    "Where did you guys first meet?",
 
-                options: [
-                    "Option A",
-                    "Option B",
-                    "Option C",
-                    "Option D"
+                options:[
+                    "Patna Junction",
+                    "Patna Railway Station",
+                    "IIT ISM Dhanbad",
+                    "A coffee shop"
                 ],
 
-                correct: 1
-            },
+                answer:1
 
+            },
 
             {
                 question:
-                    "QUESTION 3 — Replace this with your final question.",
+                    "Name of Ritesh's boy hostel in IIT ISM?",
 
-                options: [
-                    "Option A",
-                    "Option B",
-                    "Option C",
-                    "Option D"
+                options:[
+                    "Jasper Hostel",
+                    "Amber Hostel",
+                    "Sapphire Hostel",
+                    "Ruby Hostel"
                 ],
 
-                correct: 2
-            },
+                answer:2
 
+            },
 
             {
                 question:
-                    "QUESTION 4 — Replace this with your final question.",
+                    "What was Tisha wearing when she first met Ritesh?",
 
-                options: [
-                    "Option A",
-                    "Option B",
-                    "Option C",
-                    "Option D"
+                options:[
+                    "Black dress and red heels",
+                    "Brown top, blue jeans, white heels",
+                    "White top, black jeans, sneakers",
+                    "Pink top, blue jeans, sandals"
                 ],
 
-                correct: 0
-            },
+                answer:1
 
+            },
 
             {
                 question:
-                    "QUESTION 5 — Replace this with your final question.",
+                    "What was the first flower bouquet that Ritesh bought you?",
 
-                options: [
-                    "Option A",
-                    "Option B",
-                    "Option C",
-                    "Option D"
+                options:[
+                    "Red roses",
+                    "White lilies",
+                    "White and pink roses",
+                    "Sunflowers"
                 ],
 
-                correct: 3
-            },
+                answer:2
 
+            },
 
             {
                 question:
-                    "QUESTION 6 — Replace this with your final question.",
+                    "Which place did you NOT visit in Patna?",
 
-                options: [
-                    "Option A",
-                    "Option B",
-                    "Option C",
-                    "Option D"
+                options:[
+                    "Science City",
+                    "Sabhyata Dwar",
+                    "Hanuman Mandir",
+                    "Patna Museum"
                 ],
 
-                correct: 1
-            },
+                answer:3
 
+            },
 
             {
                 question:
-                    "QUESTION 7 — Replace this with your final question.",
+                    "When did you two kiss for the first time?",
 
-                options: [
-                    "Option A",
-                    "Option B",
-                    "Option C",
-                    "Option D"
+                options:[
+                    "12 March",
+                    "14 February",
+                    "23 July",
+                    "15 August"
                 ],
 
-                correct: 2
+                answer:2
+
             }
 
         ];
 
-
-        /* =====================================================
-           QUIZ STATE
-        ====================================================== */
 
         let currentQuestion = 0;
 
@@ -2979,30 +3211,23 @@ document.addEventListener(
         let answerLocked = false;
 
 
-        const questionText =
-            get("question-text");
-
         const questionNumber =
             get("question-number");
+
+        const questionText =
+            get("question");
 
         const optionsContainer =
             get("options");
 
-        const feedback =
-            get("feedback");
+        const progressBar =
+            get("progress-bar");
 
-        const progressNumber =
-            get("progress-number");
-
-        const progressFill =
-            get("progress-fill");
+        const answerMessage =
+            get("answer-message");
 
 
-        /* =====================================================
-           RENDER QUESTION
-        ====================================================== */
-
-        function renderQuestion() {
+        function loadQuestion(){
 
             answerLocked = false;
 
@@ -3013,28 +3238,263 @@ document.addEventListener(
 
             questionNumber.textContent =
                 "QUESTION " +
-                String(
-                    currentQuestion + 1
-                ).padStart(2, "0");
-
-
-            progressNumber.textContent =
-                String(
-                    currentQuestion + 1
-                ).padStart(2, "0") +
+                (currentQuestion + 1) +
                 " / " +
-                String(
-                    questions.length
-                ).padStart(2, "0");
+                questions.length;
 
 
-            progressFill.style.width =
+            questionText.textContent =
+                data.question;
+
+
+            progressBar.style.width =
                 (
                     currentQuestion /
                     questions.length *
                     100
                 ) +
                 "%";
+
+
+            answerMessage.classList.remove(
+                "show"
+            );
+
+
+            answerMessage.textContent =
+                "";
+
+
+            optionsContainer.innerHTML =
+                "";
+
+
+            data.options.forEach(
+                function(option,index){
+
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    button.className =
+                        "option";
+
+
+                    button.textContent =
+                        option;
+
+
+                    button.addEventListener(
+                        "click",
+                        function(){
+
+                            selectAnswer(
+                                button,
+                                index
+                            );
+
+                        }
+                    );
+
+
+                    optionsContainer.appendChild(
+                        button
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ANSWER
+        ===================================================== */
+
+        function selectAnswer(
+            button,
+            selectedIndex
+        ){
+
+            if(answerLocked){
+                return;
+            }
+
+
+            answerLocked = true;
+
+
+            const correctIndex =
+                questions[
+                    currentQuestion
+                ].answer;
+
+
+            const allOptions =
+                document.querySelectorAll(
+                    ".option"
+                );
+
+
+            allOptions.forEach(
+                function(option){
+
+                    option.classList.add(
+                        "disabled"
+                    );
+
+                }
+            );
+
+
+            if(
+                selectedIndex ===
+                correctIndex
+            ){
+
+                score++;
+
+
+                button.classList.add(
+                    "correct"
+                );
+
+
+                answerMessage.textContent =
+                    getCorrectMessage();
+
+
+                answerMessage.classList.add(
+                    "show"
+                );
+
+
+                correctSound();
+
+
+                createParticles(
+                    "✦",
+                    18
+                );
+
+            }else{
+
+                button.classList.add(
+                    "wrong"
+                );
+
+
+                allOptions[
+                    correctIndex
+                ].classList.add(
+                    "correct"
+                );
+
+
+                answerMessage.textContent =
+                    getWrongMessage();
+
+
+                answerMessage.classList.add(
+                    "show"
+                );
+
+
+                wrongSound();
+
+            }
+
+
+            setTimeout(
+                nextQuestion,
+                1500
+            );
+
+        }
+
+
+        function getCorrectMessage(){
+
+            const messages = [
+
+                "That's my girl. ❤️",
+
+                "You remembered that one. ✦",
+
+                "Okay... impressive. ❤️",
+
+                "Someone was paying attention. 😉",
+
+                "I like where this is going. ❤️",
+
+                "Still sharp, huh? ✦"
+
+            ];
+
+
+            return messages[
+                Math.floor(
+                    Math.random() *
+                    messages.length
+                )
+            ];
+
+        }
+
+
+        function getWrongMessage(){
+
+            const messages = [
+
+                "Hmm... someone's memory needs work. 😏",
+
+                "Ohhh... that's not what I remember. 😂",
+
+                "Caught you. 😌",
+
+                "I definitely remember it differently. ❤️",
+
+                "Looks like the dizziness is still there. 😂"
+
+            ];
+
+
+            return messages[
+                Math.floor(
+                    Math.random() *
+                    messages.length
+                )
+            ];
+
+        }
+
+
+        /* =====================================================
+           NEXT QUESTION
+        ===================================================== */
+
+        function nextQuestion(){
+
+            currentQuestion++;
+
+
+            if(
+                currentQuestion >=
+                questions.length
+            ){
+
+                progressBar.style.width =
+                    "100%";
+
+
+                finishQuiz();
+
+
+                return;
+
+            }
 
 
             questionText.style.opacity =
@@ -3045,59 +3505,9 @@ document.addEventListener(
 
 
             setTimeout(
-                function () {
+                function(){
 
-                    questionText.textContent =
-                        data.question;
-
-
-                    optionsContainer.innerHTML =
-                        "";
-
-
-                    data.options.forEach(
-                        function (
-                            optionText,
-                            index
-                        ) {
-
-                            const button =
-                                document.createElement(
-                                    "button"
-                                );
-
-
-                            button.className =
-                                "option";
-
-
-                            button.textContent =
-                                optionText;
-
-
-                            button.dataset.index =
-                                index;
-
-
-                            button.addEventListener(
-                                "click",
-                                function () {
-
-                                    answerQuestion(
-                                        index,
-                                        button
-                                    );
-
-                                }
-                            );
-
-
-                            optionsContainer.appendChild(
-                                button
-                            );
-
-                        }
-                    );
+                    loadQuestion();
 
 
                     questionText.style.opacity =
@@ -3107,243 +3517,90 @@ document.addEventListener(
                         "1";
 
                 },
-                260
+                350
             );
 
         }
 
 
         /* =====================================================
-           ANSWER QUESTION
-        ====================================================== */
+           QUIZ FINISH
+        ===================================================== */
 
-        function answerQuestion(
-            selectedIndex,
-            selectedButton
-        ) {
+        async function finishQuiz(){
 
-            if (answerLocked) {
-                return;
-            }
+            quizSection.classList.remove(
+                "active"
+            );
 
 
-            answerLocked = true;
+            await wait(700);
 
 
-            const data =
-                questions[currentQuestion];
+            resultSection.classList.add(
+                "show"
+            );
 
 
-            const allOptions =
-                document.querySelectorAll(
-                    ".option"
-                );
+            resultSound();
 
 
-            if (
-                selectedIndex ===
-                data.correct
-            ) {
+            await wait(1000);
 
-                score++;
+            get("result-line-1")
+                .classList.add("show");
 
 
-                selectedButton.classList.add(
-                    "correct"
-                );
+            await wait(1100);
+
+            get("result-line-2")
+                .classList.add("show");
 
 
-                feedback.textContent =
-                    getCorrectMessage();
+            await wait(1300);
+
+            get("result-line-3")
+                .classList.add("show");
 
 
-                feedback.classList.add(
-                    "show"
-                );
+            await wait(1400);
+
+            get("result-line-4")
+                .classList.add("show");
 
 
-                correctSound();
+            await wait(2800);
 
 
-                createBurst(
-                    selectedButton,
-                    true
-                );
+            resultSection.classList.remove(
+                "show"
+            );
 
 
-            } else {
-
-                selectedButton.classList.add(
-                    "wrong"
-                );
+            await wait(1000);
 
 
-                feedback.textContent =
-                    getWrongMessage();
-
-
-                feedback.classList.add(
-                    "show"
-                );
-
-
-                wrongSound();
-
-
-                if (
-                    navigator.vibrate
-                ) {
-
-                    navigator.vibrate(
-                        [45, 35, 45]
-                    );
-
-                }
-
-
-                setTimeout(
-                    function () {
-
-                        allOptions.forEach(
-                            function (
-                                button
-                            ) {
-
-                                if (
-                                    Number(
-                                        button.dataset.index
-                                    ) ===
-                                    data.correct
-                                ) {
-
-                                    button.classList.add(
-                                        "correct"
-                                    );
-
-                                }
-
-                            }
-                        );
-
-                    },
-                    380
-                );
-
-            }
-
-
-            setTimeout(
-                function () {
-
-                    feedback.classList.remove(
-                        "show"
-                    );
-
-
-                    if (
-                        currentQuestion <
-                        questions.length - 1
-                    ) {
-
-                        currentQuestion++;
-
-                        renderQuestion();
-
-                    } else {
-
-                        finishQuiz();
-
-                    }
-
-                },
-                1550
+            giftSection.classList.add(
+                "show"
             );
 
         }
 
 
         /* =====================================================
-           PERSONALIZED FEEDBACK
-        ====================================================== */
+           PARTICLES
+        ===================================================== */
 
-        function getCorrectMessage() {
+        function createParticles(
+            symbol,
+            amount
+        ){
 
-            const messages = [
-
-                "That's my girl. ❤️",
-
-                "I knew you'd remember that. ✦",
-
-                "Okay... impressive. ❤️",
-
-                "Someone's memory is sharp. 😏",
-
-                "You remembered. Of course you did. ❤️"
-
-            ];
-
-
-            return messages[
-                Math.floor(
-                    Math.random() *
-                    messages.length
-                )
-            ];
-
-        }
-
-
-        function getWrongMessage() {
-
-            const messages = [
-
-                "Hmm... someone's memory needs work. 😏",
-
-                "Oh no... you really forgot that? 😂",
-
-                "I'll pretend I didn't see that. ❤️",
-
-                "Careful, sweetheart... that's wrong. 😌",
-
-                "We may need to revise our memories. 😂"
-
-            ];
-
-
-            return messages[
-                Math.floor(
-                    Math.random() *
-                    messages.length
-                )
-            ];
-
-        }
-
-
-        /* =====================================================
-           PARTICLE BURST
-        ====================================================== */
-
-        function createBurst(
-            element,
-            positive
-        ) {
-
-            const rect =
-                element.getBoundingClientRect();
-
-
-            const symbols =
-                positive
-                    ? ["✦", "✧", "♥", "·"]
-                    : ["×", "•", "✦"];
-
-
-            for (
-                let i = 0;
-                i < 15;
+            for(
+                let i=0;
+                i<amount;
                 i++
-            ) {
+            ){
 
                 const particle =
                     document.createElement(
@@ -3352,40 +3609,66 @@ document.addEventListener(
 
 
                 particle.className =
-                    "burst";
+                    "particle";
 
 
                 particle.textContent =
-                    symbols[
-                        Math.floor(
-                            Math.random() *
-                            symbols.length
-                        )
-                    ];
+                    symbol;
 
 
                 particle.style.left =
-                    (
-                        rect.left +
-                        rect.width / 2
-                    ) +
-                    "px";
+                    "50%";
 
 
                 particle.style.top =
+                    "50%";
+
+
+                particle.style.setProperty(
+                    "--x",
                     (
-                        rect.top +
-                        rect.height / 2
+                        Math.random() *
+                        320 -
+                        160
                     ) +
-                    "px";
+                    "px"
+                );
+
+
+                particle.style.setProperty(
+                    "--y",
+                    (
+                        Math.random() *
+                        300 -
+                        150
+                    ) +
+                    "px"
+                );
+
+
+                particle.style.animation =
+                    "particleBurst " +
+                    (
+                        700 +
+                        Math.random() *
+                        800
+                    ) +
+                    "ms ease-out forwards";
 
 
                 particle.style.fontSize =
                     (
-                        10 +
-                        Math.random() * 13
+                        12 +
+                        Math.random() *
+                        12
                     ) +
                     "px";
+
+
+                particle.style.color =
+                    Math.random() > .5
+                        ? "#9f3e57"
+                        : "#b88735";
 
 
                 document.body.appendChild(
@@ -3393,64 +3676,13 @@ document.addEventListener(
                 );
 
 
-                const x =
-                    (
-                        Math.random() -
-                        0.5
-                    ) *
-                    230;
-
-
-                const y =
-                    (
-                        Math.random() -
-                        0.5
-                    ) *
-                    180;
-
-
-                particle.animate(
-                    [
-                        {
-                            transform:
-                                "translate(-50%,-50%) scale(.3)",
-                            opacity: 0
-                        },
-
-                        {
-                            transform:
-                                "translate(-50%,-50%) scale(1)",
-                            opacity: 1
-                        },
-
-                        {
-                            transform:
-                                "translate(" +
-                                x +
-                                "px," +
-                                y +
-                                "px) scale(.2)",
-                            opacity: 0
-                        }
-                    ],
-                    {
-                        duration:
-                            700 +
-                            Math.random() * 500,
-
-                        easing:
-                            "cubic-bezier(.2,.8,.2,1)"
-                    }
-                );
-
-
                 setTimeout(
-                    function () {
+                    function(){
 
                         particle.remove();
 
                     },
-                    1400
+                    1700
                 );
 
             }
@@ -3459,299 +3691,76 @@ document.addEventListener(
 
 
         /* =====================================================
-           QUIZ COMPLETE
-        ====================================================== */
-
-        function finishQuiz() {
-
-            progressFill.style.width =
-                "100%";
-
-
-            setTimeout(
-                function () {
-
-                    showScreen(
-                        "result-screen"
-                    );
-
-
-                    resultSound();
-
-
-                    showResultText();
-
-                },
-                500
-            );
-
-        }
-
-
-        /* =====================================================
-           RESULT CINEMATIC
-        ====================================================== */
-
-        function showResultText() {
-
-            const message =
-                get("result-message");
-
-            const scoreElement =
-                get("result-score");
-
-
-            message.innerHTML =
-                "You actually know us<br>" +
-                "pretty well.";
-
-
-            scoreElement.textContent =
-                "YOU SCORED " +
-                score +
-                " / " +
-                questions.length;
-
-
-            setTimeout(
-                function () {
-
-                    message.innerHTML =
-                        "Maybe I underestimated you. ❤️";
-
-                },
-                2300
-            );
-
-
-            setTimeout(
-                function () {
-
-                    message.innerHTML =
-                        "Looks like your memory<br>" +
-                        "is sharp enough after all.";
-
-                },
-                4700
-            );
-
-
-            setTimeout(
-                function () {
-
-                    showScreen(
-                        "gift-screen"
-                    );
-
-                },
-                6900
-            );
-
-        }
-
-
-        /* =====================================================
-           GIFT BOX
-        ====================================================== */
-
-        const gift =
-            get("gift-wrap");
-
+           GIFT OPEN
+        ===================================================== */
 
         let giftOpened = false;
 
 
-        if (gift) {
+        gift.addEventListener(
+            "click",
+            async function(){
 
-            gift.addEventListener(
-                "click",
-                function () {
-
-                    if (giftOpened) {
-                        return;
-                    }
-
-
-                    giftOpened = true;
-
-
-                    unlockAudio();
-
-                    giftSound();
-
-
-                    gift.classList.add(
-                        "opening"
-                    );
-
-
-                    createGiftBurst();
-
-
-                    setTimeout(
-                        function () {
-
-                            const transition =
-                                get("transition");
-
-
-                            transition.classList.add(
-                                "active"
-                            );
-
-
-                            setTimeout(
-                                function () {
-
-                                    window.location.href =
-                                        "page5.html";
-
-                                },
-                                1100
-                            );
-
-                        },
-                        1200
-                    );
-
+                if(giftOpened){
+                    return;
                 }
-            );
 
-        }
+
+                giftOpened = true;
+
+
+                unlockAudio();
+
+                giftSound();
+
+
+                gift.classList.add(
+                    "open"
+                );
+
+
+                createParticles(
+                    "✦",
+                    30
+                );
+
+
+                createParticles(
+                    "♥",
+                    12
+                );
+
+
+                await wait(1300);
+
+
+                transition.classList.add(
+                    "active"
+                );
+
+
+                await wait(1500);
+
+
+                /*
+                   PAGE 5
+                */
+
+                window.location.href =
+                    "page5.html";
+
+            }
+        );
 
 
         /* =====================================================
-           GIFT PARTICLES
-        ====================================================== */
+           INITIALIZE
+        ===================================================== */
 
-        function createGiftBurst() {
-
-            const symbols = [
-                "✦",
-                "✧",
-                "✨",
-                "♥",
-                "·"
-            ];
-
-
-            for (
-                let i = 0;
-                i < 42;
-                i++
-            ) {
-
-                const particle =
-                    document.createElement(
-                        "span"
-                    );
-
-
-                particle.className =
-                    "burst";
-
-
-                particle.textContent =
-                    symbols[
-                        Math.floor(
-                            Math.random() *
-                            symbols.length
-                        )
-                    ];
-
-
-                particle.style.left =
-                    "50%";
-
-
-                particle.style.top =
-                    "50%";
-
-
-                particle.style.fontSize =
-                    (
-                        11 +
-                        Math.random() * 18
-                    ) +
-                    "px";
-
-
-                document.body.appendChild(
-                    particle
-                );
-
-
-                const angle =
-                    Math.random() *
-                    Math.PI *
-                    2;
-
-
-                const distance =
-                    80 +
-                    Math.random() *
-                    250;
-
-
-                const x =
-                    Math.cos(angle) *
-                    distance;
-
-
-                const y =
-                    Math.sin(angle) *
-                    distance;
-
-
-                particle.animate(
-                    [
-                        {
-                            transform:
-                                "translate(-50%,-50%) scale(.2)",
-                            opacity: 0
-                        },
-
-                        {
-                            transform:
-                                "translate(-50%,-50%) scale(1)",
-                            opacity: 1
-                        },
-
-                        {
-                            transform:
-                                "translate(" +
-                                x +
-                                "px," +
-                                y +
-                                "px) scale(.1)",
-                            opacity: 0
-                        }
-                    ],
-                    {
-                        duration:
-                            900 +
-                            Math.random() * 800,
-
-                        easing:
-                            "ease-out"
-                    }
-                );
-
-
-                setTimeout(
-                    function () {
-
-                        particle.remove();
-
-                    },
-                    1800
-                );
-
-            }
-
-        }
+        beginPage();
 
     }
+
 );
 
 </script>
