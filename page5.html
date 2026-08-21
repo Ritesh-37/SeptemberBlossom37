@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Box For My Tishuuu 🎁</title>
+
+<style>
+:root {
+    --bg:#090407;
+    --burgundy:#250914;
+    --wine:#651b36;
+    --pink:#ff719e;
+    --soft:#ffd6e5;
+    --gold:#d9b56d;
+    --glass:rgba(255,255,255,.07);
+}
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body {
+    min-height:100vh;
+    color:#fff5f8;
+    font-family:Georgia,"Times New Roman",serif;
+    background:
+        radial-gradient(circle at 50% 20%,rgba(137,23,61,.3),transparent 35%),
+        linear-gradient(145deg,#070305,#240812 55%,#070305);
+    overflow-x:hidden;
+}
+
+body::before {
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.15;
+    background-image:
+        radial-gradient(circle,#fff 1px,transparent 1px);
+    background-size:90px 90px;
+}
+
+.page {
+    width:min(1000px,94vw);
+    margin:auto;
+    padding:35px 0 80px;
+}
+
+header {
+    text-align:center;
+    margin-bottom:30px;
+}
+
+header h1 {
+    font-size:clamp(30px,7vw,55px);
+}
+
+header p {
+    margin-top:10px;
+    color:#d49aad;
+    font-size:14px;
+}
+
+.gift-box {
+    position:relative;
+    max-width:900px;
+    min-height:600px;
+    margin:auto;
+    padding:45px 30px;
+    border-radius:35px;
+    border:1px solid rgba(255,180,210,.2);
+    background:
+        linear-gradient(145deg,
+            rgba(103,25,52,.55),
+            rgba(24,5,13,.85));
+    box-shadow:
+        0 40px 100px rgba(0,0,0,.6),
+        inset 0 0 60px rgba(255,80,130,.06);
+}
+
+.box-ribbon {
+    position:absolute;
+    left:50%;
+    top:0;
+    transform:translateX(-50%);
+    width:42px;
+    height:100%;
+    background:rgba(255,190,215,.08);
+    pointer-events:none;
+}
+
+.gifts {
+    position:relative;
+    z-index:2;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+}
+
+.gift {
+    min-height:155px;
+    border-radius:24px;
+    border:1px solid rgba(255,190,215,.16);
+    background:rgba(255,255,255,.045);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    cursor:pointer;
+    transition:.35s;
+    position:relative;
+    overflow:hidden;
+}
+
+.gift:hover {
+    transform:translateY(-8px);
+    border-color:rgba(255,120,170,.4);
+    box-shadow:0 15px 35px rgba(255,50,120,.12);
+}
+
+.gift-icon {
+    font-size:58px;
+    margin-bottom:12px;
+    filter:drop-shadow(0 8px 15px rgba(0,0,0,.4));
+}
+
+.gift-name {
+    font-size:14px;
+    color:#e6b7c8;
+}
+
+.gift-message {
+    position:fixed;
+    z-index:50;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%) scale(.8);
+    width:min(400px,90vw);
+    padding:30px;
+    border-radius:28px;
+    background:rgba(27,5,13,.97);
+    border:1px solid rgba(255,170,200,.25);
+    box-shadow:0 30px 100px #000;
+    text-align:center;
+    opacity:0;
+    pointer-events:none;
+    transition:.4s;
+}
+
+.gift-message.show {
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+    pointer-events:auto;
+}
+
+.gift-message .big {
+    font-size:55px;
+    margin-bottom:15px;
+}
+
+.gift-message p {
+    color:#e6b2c5;
+    line-height:1.6;
+}
+
+.close-message {
+    margin-top:20px;
+    padding:10px 20px;
+    border-radius:30px;
+    border:1px solid rgba(255,180,210,.2);
+    background:rgba(255,255,255,.06);
+    cursor:pointer;
+}
+
+/* candle */
+
+.candle {
+    width:25px;
+    height:60px;
+    background:linear-gradient(90deg,#f4d3df,#fff,#e5a8bc);
+    border-radius:5px;
+    position:relative;
+}
+
+.flame {
+    position:absolute;
+    width:18px;
+    height:28px;
+    border-radius:50% 50% 50% 10%;
+    background:#ffc85c;
+    transform:rotate(45deg);
+    top:-23px;
+    left:4px;
+    box-shadow:0 0 20px #ff8a30;
+    animation:flicker .4s infinite alternate;
+}
+
+@keyframes flicker {
+    from{transform:rotate(42deg) scale(.9);}
+    to{transform:rotate(48deg) scale(1.08);}
+}
+
+/* perfume */
+
+.perfume {
+    width:45px;
+    height:65px;
+    border-radius:10px 10px 15px 15px;
+    border:2px solid #d5a9bb;
+    position:relative;
+    background:linear-gradient(90deg,#743049,#e9a8c0,#713049);
+}
+
+.perfume::before {
+    content:"";
+    position:absolute;
+    width:20px;
+    height:15px;
+    top:-16px;
+    left:10px;
+    background:#c9a06c;
+    border-radius:4px 4px 0 0;
+}
+
+/* chocolate */
+
+.chocolate {
+    width:75px;
+    height:55px;
+    background:linear-gradient(145deg,#381509,#7b3c20);
+    border-radius:7px;
+    box-shadow:inset 0 0 0 4px rgba(255,255,255,.08);
+}
+
+/* bracelet */
+
+.bracelet {
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    border:12px dotted #e987ac;
+    box-shadow:0 0 20px rgba(255,100,160,.2);
+}
+
+/* payal */
+
+.payal {
+    width:75px;
+    height:30px;
+    border-radius:50%;
+    border:4px solid #d6c08c;
+    position:relative;
+}
+
+.payal::after {
+    content:"• • • • •";
+    position:absolute;
+    width:100%;
+    left:0;
+    top:5px;
+    color:#ead58e;
+    letter-spacing:4px;
+}
+
+/* album */
+
+.album {
+    width:75px;
+    height:85px;
+    border-radius:5px;
+    background:linear-gradient(135deg,#4a1327,#8d3150);
+    border:3px solid #d8b36e;
+    box-shadow:0 12px 20px rgba(0,0,0,.4);
+}
+
+.album::after {
+    content:"♥";
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:100%;
+    color:#f7d1dc;
+    font-size:30px;
+}
+
+.album-gift {
+    grid-column:span 2;
+    min-height:180px;
+}
+
+.album-gift .gift-name {
+    color:#f1c2d1;
+}
+
+@media(max-width:700px) {
+    .gifts {
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .album-gift {
+        grid-column:span 2;
+    }
+}
+
+@media(max-width:400px) {
+    .gift {
+        min-height:140px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+<header>
+    <h1>A Little Box For You 🎁</h1>
+    <p>Because one reward was obviously not enough...</p>
+</header>
+
+<div class="gift-box">
+
+    <div class="box-ribbon"></div>
+
+    <div class="gifts">
+
+        <div class="gift" data-icon="🕯️"
+             data-message="A little light for my cutuuu. ❤️">
+            <div class="gift-icon">
+                <div class="candle">
+                    <div class="flame"></div>
+                </div>
+            </div>
+            <div class="gift-name">A tiny candle</div>
+        </div>
+
+        <div class="gift" data-icon="✨"
+             data-message="Because even your footsteps deserve their own music.">
+            <div class="gift-icon payal"></div>
+            <div class="gift-name">A little payal</div>
+        </div>
+
+        <div class="gift" data-icon="🧻"
+             data-message="For my Tishuuu 🤣 Because apparently even tissues need to be romantic now.">
+            <div class="gift-icon">🧻</div>
+            <div class="gift-name">Emergency tissue</div>
+        </div>
+
+        <div class="gift" data-icon="🌸"
+             data-message="For the girl who already smells prettier than this.">
+            <div class="gift-icon">
+                <div class="perfume"></div>
+            </div>
+            <div class="gift-name">Premium perfume</div>
+        </div>
+
+        <div class="gift" data-icon="🍫"
+             data-message="Emergency chocolate supply for my beautuu. 🍫❤️">
+            <div class="gift-icon">
+                <div class="chocolate"></div>
+            </div>
+            <div class="gift-name">Chocolate</div>
+        </div>
+
+        <div class="gift" data-icon="🥤"
+             data-message="For when my Tishuuu needs some extra fizz. 😂">
+            <div class="gift-icon">🥤</div>
+            <div class="gift-name">A little Sprite</div>
+        </div>
+
+        <div class="gift" data-icon="📿"
+             data-message="Something colourful for the most colourful person I know. 🌈">
+            <div class="gift-icon bracelet"></div>
+            <div class="gift-name">Colourful bracelet</div>
+        </div>
+
+        <div class="gift" data-icon="🎀"
+             data-message="Untie this one slowly... some things are better when they're opened with curiosity.">
+            <div class="gift-icon">🎀</div>
+            <div class="gift-name">A mystery ribbon</div>
+        </div>
+
+        <div class="gift album-gift" id="albumGift">
+            <div class="gift-icon">
+                <div class="album"></div>
+            </div>
+            <div class="gift-name">
+                One last gift...
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+<div class="gift-message" id="giftMessage">
+    <div class="big" id="messageIcon">❤️</div>
+    <p id="messageText"></p>
+    <button class="close-message" id="closeMessage">
+        Put it back in the box
+    </button>
+</div>
+
+<script>
+
+const gifts = document.querySelectorAll(".gift:not(#albumGift)");
+const modal = document.getElementById("giftMessage");
+const messageText = document.getElementById("messageText");
+const messageIcon = document.getElementById("messageIcon");
+
+function sound(freq=450) {
+
+    try {
+
+        const ctx =
+            new (window.AudioContext ||
+            window.webkitAudioContext)();
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.frequency.value = freq;
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        gain.gain.value=.05;
+
+        osc.start();
+
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            ctx.currentTime+.2
+        );
+
+        osc.stop(ctx.currentTime+.2);
+
+    } catch(e){}
+}
+
+gifts.forEach(gift => {
+
+    gift.addEventListener("click", () => {
+
+        sound();
+
+        messageIcon.textContent =
+            gift.dataset.icon;
+
+        messageText.textContent =
+            gift.dataset.message;
+
+        modal.classList.add("show");
+    });
+
+});
+
+document.getElementById("closeMessage")
+.addEventListener("click", () => {
+    modal.classList.remove("show");
+    sound(300);
+});
+
+document.getElementById("albumGift")
+.addEventListener("click", () => {
+
+    sound(700);
+
+    document.body.style.transition = "1.2s";
+    document.body.style.opacity = "0";
+
+    setTimeout(() => {
+        window.location.href = "page6.html";
+    },1200);
+
+});
+
+</script>
+
+</body>
+</html>
