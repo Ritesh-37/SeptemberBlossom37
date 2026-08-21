@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Our Little Album ❤️</title>
+
+<style>
+:root {
+    --bg:#080405;
+    --wine:#431124;
+    --burgundy:#220811;
+    --rose:#ff86ac;
+    --cream:#ffeef4;
+    --gold:#d7b56c;
+}
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body {
+    min-height:100vh;
+    color:var(--cream);
+    font-family:Georgia,"Times New Roman",serif;
+    background:
+        radial-gradient(circle at 50% 15%,rgba(129,29,62,.25),transparent 35%),
+        linear-gradient(145deg,#070304,#210811,#070304);
+    overflow-x:hidden;
+}
+
+.page {
+    width:min(1050px,94vw);
+    margin:auto;
+    padding:30px 0 80px;
+}
+
+.title {
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.title h1 {
+    font-size:clamp(32px,8vw,58px);
+}
+
+.title p {
+    margin-top:8px;
+    color:#c58b9e;
+    font-size:14px;
+}
+
+.album {
+    position:relative;
+    background:
+        linear-gradient(145deg,#461124,#260813);
+    border:1px solid rgba(255,190,210,.2);
+    border-radius:28px;
+    padding:25px;
+    box-shadow:
+        0 35px 100px rgba(0,0,0,.65),
+        inset 0 0 50px rgba(0,0,0,.2);
+}
+
+.page-counter {
+    text-align:center;
+    color:#bd8095;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+.spread {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+    min-height:570px;
+}
+
+.page-left,
+.page-right {
+    background:#f5e7dc;
+    color:#3d1823;
+    border-radius:8px;
+    padding:22px;
+    box-shadow:0 15px 30px rgba(0,0,0,.35);
+}
+
+.page-left {
+    transform:rotate(-1deg);
+}
+
+.page-right {
+    transform:rotate(1deg);
+}
+
+.photo-placeholder {
+    width:100%;
+    height:360px;
+    border-radius:6px;
+    background:
+        linear-gradient(145deg,#32111e,#75314d);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#e9bdcc;
+    padding:20px;
+    font-size:15px;
+    border:4px solid #fff;
+    box-shadow:0 5px 12px rgba(0,0,0,.18);
+}
+
+.caption {
+    margin-top:20px;
+    font-size:21px;
+    line-height:1.4;
+}
+
+.date {
+    margin-top:9px;
+    color:#9d6277;
+    font-size:13px;
+}
+
+.navigation {
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:25px;
+}
+
+.nav-btn {
+    padding:12px 25px;
+    border-radius:30px;
+    border:1px solid rgba(255,190,215,.25);
+    background:rgba(255,255,255,.06);
+    color:white;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.nav-btn:hover {
+    transform:translateY(-3px);
+    background:rgba(255,90,140,.15);
+}
+
+.future {
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 30px,
+            rgba(120,50,65,.08) 31px
+        ),
+        #f5e7dc;
+}
+
+.future-photo {
+    position:relative;
+    overflow:hidden;
+}
+
+.future-photo::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(circle at 50% 50%,
+        rgba(255,255,255,.12),
+        transparent 50%);
+}
+
+.coming {
+    position:relative;
+    z-index:2;
+    text-align:center;
+}
+
+.coming strong {
+    display:block;
+    font-size:26px;
+    letter-spacing:3px;
+    margin-bottom:10px;
+}
+
+.coming span {
+    font-size:13px;
+    color:#d9aebd;
+}
+
+.final-screen {
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 50% 50%,
+        rgba(120,20,60,.35),
+        transparent 45%),
+        #080305;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:25px;
+    opacity:0;
+    pointer-events:none;
+    transition:1s;
+    z-index:50;
+}
+
+.final-screen.show {
+    opacity:1;
+    pointer-events:auto;
+}
+
+.final-box {
+    max-width:600px;
+}
+
+.final-box h2 {
+    font-size:clamp(30px,7vw,55px);
+    margin-bottom:20px;
+}
+
+.final-box p {
+    color:#d4a0b3;
+    line-height:1.8;
+    font-size:17px;
+}
+
+.continue-btn {
+    margin-top:30px;
+    padding:15px 30px;
+    border-radius:35px;
+    border:1px solid rgba(255,180,210,.25);
+    background:linear-gradient(135deg,#6b1c3a,#351020);
+    color:white;
+    cursor:pointer;
+}
+
+@media(max-width:700px) {
+
+    .spread {
+        grid-template-columns:1fr;
+    }
+
+    .page-left,
+    .page-right {
+        transform:none;
+    }
+
+    .photo-placeholder {
+        height:300px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="title">
+        <h1>Our Little Album ❤️</h1>
+        <p>Some memories already happened... and some are waiting for us.</p>
+    </div>
+
+    <div class="album">
+
+        <div class="page-counter" id="counter">
+            Memory 1 of 6
+        </div>
+
+        <div class="spread">
+
+            <div class="page-left">
+
+                <div class="photo-placeholder" id="photo1">
+                    YOUR PHOTO HERE
+                </div>
+
+                <div class="caption" id="caption1">
+                    The day everything quietly started.
+                </div>
+
+                <div class="date" id="date1">
+                    12.03.26
+                </div>
+
+            </div>
+
+            <div class="page-right">
+
+                <div class="photo-placeholder" id="photo2">
+                    YOUR PHOTO HERE
+                </div>
+
+                <div class="caption" id="caption2">
+                    And somehow you fell asleep on my lap on the very first day...
+                </div>
+
+                <div class="date" id="date2">
+                    One of my favourite memories.
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="navigation">
+
+            <button class="nav-btn" id="prevBtn">
+                ← Previous
+            </button>
+
+            <button class="nav-btn" id="nextBtn">
+                Next →
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="final-screen" id="finalScreen">
+
+    <div class="final-box">
+
+        <h2>There are still so many pages left...</h2>
+
+        <p>
+            Some memories belong to the past.
+            <br><br>
+            Some are waiting somewhere in the future.
+            <br><br>
+            Come sweetheart...
+            there's something else I want to show you. ❤️
+        </p>
+
+        <button class="continue-btn" id="continueBtn">
+            Show me...
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* ==========================================================
+   PAGE 6 — PHOTO ALBUM
+========================================================== */
+
+const memories = [
+
+    {
+        p1:"YOUR PHOTO HERE",
+        p2:"YOUR PHOTO HERE",
+        c1:"The day everything quietly started.",
+        c2:"And somehow you fell asleep on my lap on the very first day...",
+        d1:"12.03.26",
+        d2:"One of my favourite memories."
+    },
+
+    {
+        p1:"YOUR PHOTO HERE",
+        p2:"YOUR PHOTO HERE",
+        c1:"Some moments don't need a caption.",
+        c2:"They just need us.",
+        d1:"A little memory",
+        d2:"A little happiness"
+    },
+
+    {
+        p1:"YOUR PHOTO HERE",
+        p2:"YOUR PHOTO HERE",
+        c1:"You being your charismatic, interactive, completely-you self.",
+        c2:"And me quietly feeling lucky.",
+        d1:"Us ❤️",
+        d2:"Still us."
+    },
+
+    {
+        p1:"YOUR PHOTO HERE",
+        p2:"YOUR PHOTO HERE",
+        c1:"The kind of day I wish I could replay.",
+        c2:"Because ordinary moments become special with you.",
+        d1:"One beautiful day",
+        d2:"One beautiful girl."
+    },
+
+    {
+        p1:"VARANASI",
+        p2:"RISHIKESH",
+        c1:"One day, this page won't be empty anymore.",
+        c2:"Another place we'll eventually have a story to tell.",
+        d1:"COMING SOON",
+        d2:"COMING SOON"
+    },
+
+    {
+        p1:"MEGHALAYA",
+        p2:"SOMEWHERE WE HAVEN'T BEEN YET",
+        c1:"Some memories haven't happened yet.",
+        c2:"And that's the beautiful part.",
+        d1:"COMING SOON",
+        d2:"OUR NEXT CHAPTER"
+    }
+
+];
+
+let current = 0;
+
+const photo1 = document.getElementById("photo1");
+const photo2 = document.getElementById("photo2");
+const caption1 = document.getElementById("caption1");
+const caption2 = document.getElementById("caption2");
+const date1 = document.getElementById("date1");
+const date2 = document.getElementById("date2");
+const counter = document.getElementById("counter");
+
+function renderMemory() {
+
+    const memory = memories[current];
+
+    photo1.textContent = memory.p1;
+    photo2.textContent = memory.p2;
+
+    caption1.textContent = memory.c1;
+    caption2.textContent = memory.c2;
+
+    date1.textContent = memory.d1;
+    date2.textContent = memory.d2;
+
+    counter.textContent =
+        `Memory ${current + 1} of ${memories.length}`;
+
+    document.getElementById("prevBtn").disabled =
+        current === 0;
+
+    document.getElementById("nextBtn").textContent =
+        current === memories.length - 1
+        ? "Close album ❤️"
+        : "Next →";
+}
+
+function sound(freq=450) {
+
+    try {
+
+        const ctx =
+            new (window.AudioContext ||
+            window.webkitAudioContext)();
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.frequency.value=freq;
+
+        gain.gain.value=.045;
+
+        osc.start();
+
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            ctx.currentTime+.18
+        );
+
+        osc.stop(ctx.currentTime+.18);
+
+    } catch(e){}
+}
+
+document.getElementById("nextBtn")
+.addEventListener("click", () => {
+
+    sound();
+
+    if(current < memories.length - 1) {
+
+        current++;
+
+        renderMemory();
+
+    } else {
+
+        document.getElementById("finalScreen")
+            .classList.add("show");
+    }
+
+});
+
+document.getElementById("prevBtn")
+.addEventListener("click", () => {
+
+    if(current > 0) {
+
+        current--;
+
+        renderMemory();
+
+        sound(300);
+    }
+
+});
+
+document.getElementById("continueBtn")
+.addEventListener("click", () => {
+
+    sound(700);
+
+    /*
+       PAGE 7 FILE NAME
+    */
+
+    window.location.href = "page7.html";
+
+});
+
+renderMemory();
+
+</script>
+
+</body>
+</html>
