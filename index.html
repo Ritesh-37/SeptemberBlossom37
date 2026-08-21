@@ -1,1 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Tishuuu ❤️</title>
 
+<style>
+:root {
+    --burgundy: #240812;
+    --deep: #0b0508;
+    --wine: #5e1730;
+    --rose: #ff6f9d;
+    --soft: #ffd7e5;
+    --gold: #e7bd73;
+    --white: #fff7fa;
+    --glass: rgba(255,255,255,.07);
+    --border: rgba(255,190,215,.18);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--white);
+    background:
+        radial-gradient(circle at 50% 20%, rgba(130,20,55,.25), transparent 35%),
+        radial-gradient(circle at 20% 80%, rgba(255,70,130,.08), transparent 30%),
+        linear-gradient(145deg, #090407, #200711 50%, #090407);
+}
+
+button {
+    font: inherit;
+    color: inherit;
+}
+
+.screen {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow: hidden;
+}
+
+.screen.active {
+    display: flex;
+    animation: screenIn .8s ease forwards;
+}
+
+@keyframes screenIn {
+    from { opacity: 0; transform: scale(1.03); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ---------- BACKGROUND ---------- */
+
+.ambient {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+.ambient::before,
+.ambient::after {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: .25;
+}
+
+.ambient::before {
+    background: #a81d50;
+    top: -80px;
+    left: -80px;
+}
+
+.ambient::after {
+    background: #601338;
+    right: -100px;
+    bottom: -100px;
+}
+
+.stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle, rgba(255,255,255,.65) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255,180,210,.45) 1px, transparent 1px);
+    background-size: 75px 75px, 110px 110px;
+    opacity: .16;
+}
+
+/* ---------- WAKE UP ---------- */
+
+#wakeScreen {
+    flex-direction: column;
+    text-align: center;
+}
+
+.wake-content {
+    position: relative;
+    z-index: 2;
+}
+
+.blur-layer {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(24px);
+    background: rgba(8,3,6,.82);
+    transition: all 1s ease;
+    z-index: 1;
+}
+
+.wake-content h1 {
+    font-size: clamp(30px, 8vw, 58px);
+    margin-bottom: 14px;
+}
+
+.wake-content p {
+    color: #eab4c7;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.wake-button {
+    margin-top: 35px;
+    border: 1px solid rgba(255,190,215,.3);
+    background: rgba(255,255,255,.06);
+    padding: 15px 28px;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(255,70,130,.1);
+    transition: .3s;
+}
+
+.wake-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 35px rgba(255,70,130,.3);
+}
+
+.wake-count {
+    margin-top: 18px;
+    color: #b97991;
+    font-size: 13px;
+}
+
+/* ---------- POPUPS ---------- */
+
+.popup {
+    position: fixed;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%) translateY(30px);
+    background: rgba(35,8,18,.94);
+    border: 1px solid var(--border);
+    padding: 14px 20px;
+    border-radius: 18px;
+    max-width: min(90%, 450px);
+    text-align: center;
+    box-shadow: 0 15px 45px rgba(0,0,0,.45);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+    transition: .4s;
+}
+
+.popup.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- IPHONE ---------- */
+
+.phone {
+    width: min(310px, 85vw);
+    height: min(610px, 78vh);
+    border-radius: 42px;
+    background: #090909;
+    border: 7px solid #191919;
+    box-shadow:
+        0 0 0 2px #444,
+        0 30px 80px rgba(0,0,0,.7),
+        0 0 50px rgba(255,50,120,.16);
+    position: relative;
+    overflow: hidden;
+}
+
+.phone::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95px;
+    height: 25px;
+    border-radius: 20px;
+    background: #000;
+    z-index: 3;
+}
+
+.phone-screen {
+    height: 100%;
+    padding: 65px 18px 20px;
+    background:
+        radial-gradient(circle at 50% 20%, rgba(145,28,68,.45), transparent 35%),
+        linear-gradient(160deg, #220711, #080407);
+}
+
+.phone-time {
+    text-align: center;
+    font-size: 12px;
+    opacity: .6;
+}
+
+.notification {
+    margin-top: 60px;
+    padding: 17px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.1);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,.13);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.notification:hover {
+    transform: scale(1.03);
+    background: rgba(255,255,255,.14);
+}
+
+.not-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.message-name {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.message-preview {
+    margin-top: 7px;
+    color: #ddd;
+    font-size: 14px;
+}
+
+/* ---------- CHAT ---------- */
+
+.chat-box {
+    width: min(600px, 94vw);
+    height: min(720px, 88vh);
+    background: rgba(18,5,10,.78);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 30px 90px rgba(0,0,0,.6);
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    padding: 22px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    text-align: center;
+}
+
+.chat-header strong {
+    display: block;
+    font-size: 18px;
+}
+
+.chat-header span {
+    font-size: 11px;
+    color: #a96b7e;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 22px;
+    overflow-y: auto;
+}
+
+.bubble {
+    max-width: 80%;
+    margin-bottom: 14px;
+    padding: 13px 16px;
+    border-radius: 19px;
+    line-height: 1.5;
+    font-size: 14px;
+    animation: bubbleIn .5s ease;
+}
+
+@keyframes bubbleIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.rites {
+    background: #59172f;
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+}
+
+.tisha {
+    background: rgba(255,255,255,.08);
+    border-bottom-left-radius: 5px;
+}
+
+.chat-actions {
+    padding: 15px;
+    border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.next-btn,
+.answer {
+    border: 1px solid rgba(255,180,210,.2);
+    background: rgba(255,255,255,.06);
+    border-radius: 14px;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.next-btn {
+    width: 100%;
+}
+
+.next-btn:hover,
+.answer:hover {
+    background: rgba(255,80,140,.15);
+    transform: translateY(-2px);
+}
+
+/* ---------- QUIZ ---------- */
+
+.quiz-card {
+    width: min(650px, 94vw);
+    padding: 30px;
+    border-radius: 28px;
+    background: rgba(24,6,13,.82);
+    border: 1px solid var(--border);
+    box-shadow: 0 30px 80px rgba(0,0,0,.55);
+}
+
+.quiz-top {
+    display: flex;
+    justify-content: space-between;
+    color: #c8839d;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.progress {
+    height: 4px;
+    background: rgba(255,255,255,.08);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.progress span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #9f3158, #ff83ad);
+    transition: .4s;
+}
+
+.question {
+    font-size: clamp(22px, 5vw, 34px);
+    line-height: 1.25;
+    margin-bottom: 25px;
+}
+
+.answers {
+    display: grid;
+    gap: 12px;
+}
+
+.answer {
+    text-align: left;
+}
+
+.answer.correct {
+    background: rgba(54,180,112,.2);
+    border-color: rgba(100,255,160,.5);
+}
+
+.answer.wrong {
+    background: rgba(255,40,70,.2);
+    border-color: rgba(255,60,90,.7);
+    animation: shake .4s;
+}
+
+@keyframes shake {
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+}
+
+.quiz-result {
+    text-align: center;
+}
+
+.score {
+    font-size: 70px;
+    margin: 20px;
+    color: #ff9dbc;
+}
+
+.reward-btn {
+    margin-top: 20px;
+    padding: 14px 25px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,190,215,.3);
+    background: linear-gradient(135deg,#6c1b39,#3a0b20);
+    cursor: pointer;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media(max-width:500px) {
+    .quiz-card {
+        padding: 22px;
+    }
+
+    .phone {
+        height: 570px;
+    }
+
+    .chat-box {
+        height: 82vh;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="ambient">
+    <div class="stars"></div>
+</div>
+
+<!-- WAKE -->
+<section class="screen active" id="wakeScreen">
+
+    <div class="blur-layer" id="blurLayer"></div>
+
+    <div class="wake-content">
+        <h1>Oh God... 😵‍💫</h1>
+        <p>Someone seems to have had a little too much fun...</p>
+
+        <button class="wake-button" id="wakeBtn">
+            Tap to wake up
+        </button>
+
+        <div class="wake-count" id="wakeCount">
+            5 taps remaining
+        </div>
+    </div>
+
+</section>
+
+<!-- PHONE -->
+<section class="screen" id="phoneScreen">
+
+    <div class="phone">
+
+        <div class="phone-screen">
+
+            <div class="phone-time">12:47 AM</div>
+
+            <div class="notification" id="notification">
+
+                <div class="not-head">
+                    <span>Messages</span>
+                    <span>now</span>
+                </div>
+
+                <div class="message-name">
+                    Ritesh ❤️
+                </div>
+
+                <div class="message-preview">
+                    Hey sleepyhead... I know you're awake.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CHAT -->
+<section class="screen" id="chatScreen">
+
+    <div class="chat-box">
+
+        <div class="chat-header">
+            <strong>Ritesh ❤️</strong>
+            <span>somewhere between midnight & forever</span>
+        </div>
+
+        <div class="chat-messages" id="chatMessages"></div>
+
+        <div class="chat-actions">
+            <button class="next-btn" id="chatNext">
+                Continue ❤️
+            </button>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- QUIZ -->
+<section class="screen" id="quizScreen">
+
+    <div class="quiz-card" id="quizCard">
+
+        <div class="quiz-top">
+            <span>MEMORY TEST</span>
+            <span id="questionNumber">1 / 7</span>
+        </div>
+
+        <div class="progress">
+            <span id="progressBar"></span>
+        </div>
+
+        <div class="question" id="question"></div>
+
+        <div class="answers" id="answers"></div>
+
+    </div>
+
+</section>
+
+<!-- RESULT -->
+<section class="screen" id="resultScreen">
+
+    <div class="quiz-card quiz-result">
+
+        <div style="font-size:14px;color:#c8839d;">
+            MEMORY VERIFIED
+        </div>
+
+        <h1 style="margin-top:10px;">
+            Well well well... 😌
+        </h1>
+
+        <div class="score" id="score"></div>
+
+        <p id="resultText"></p>
+
+        <button class="reward-btn" id="rewardBtn">
+            Claim your reward 🎁
+        </button>
+
+    </div>
+
+</section>
+
+<div class="popup" id="popup"></div>
+
+<script>
+/* ==========================================================
+   PAGE 4 JAVASCRIPT
+========================================================== */
+
+const wakeBtn = document.getElementById("wakeBtn");
+const blurLayer = document.getElementById("blurLayer");
+const wakeCount = document.getElementById("wakeCount");
+
+let wakeTaps = 0;
+
+function showScreen(id) {
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+}
+
+function popup(message, duration = 2600) {
+    const p = document.getElementById("popup");
+    p.textContent = message;
+    p.classList.add("show");
+
+    setTimeout(() => {
+        p.classList.remove("show");
+    }, duration);
+}
+
+/* Simple generated sound */
+function sound(type = "click") {
+
+    try {
+        const AudioContext =
+            window.AudioContext || window.webkitAudioContext;
+
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if(type === "correct") {
+            osc.frequency.value = 720;
+            gain.gain.value = .07;
+        }
+        else if(type === "wrong") {
+            osc.frequency.value = 150;
+            gain.gain.value = .08;
+        }
+        else {
+            osc.frequency.value = 420;
+            gain.gain.value = .045;
+        }
+
+        osc.start();
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            ctx.currentTime + .18
+        );
+        osc.stop(ctx.currentTime + .18);
+
+    } catch(e) {}
+}
+
+/* ---------- WAKE ---------- */
+
+wakeBtn.addEventListener("click", () => {
+
+    wakeTaps++;
+
+    sound();
+
+    const remaining = 5 - wakeTaps;
+
+    if(remaining > 0) {
+
+        wakeCount.textContent =
+            remaining + (remaining === 1 ? " tap" : " taps") +
+            " remaining";
+
+        blurLayer.style.backdropFilter =
+            `blur(${24 - wakeTaps * 4}px)`;
+
+        blurLayer.style.background =
+            `rgba(8,3,6,${.82 - wakeTaps * .14})`;
+
+        const messages = [
+            "Ugh... my head...",
+            "Okay... I can see a little...",
+            "Riteshhh... where are you?",
+            "Almost awake..."
+        ];
+
+        popup(messages[wakeTaps - 1]);
+
+    } else {
+
+        blurLayer.style.opacity = "0";
+        wakeBtn.textContent = "I'm awake... ❤️";
+        wakeCount.textContent = "";
+
+        popup("There you are, Tishuuu... ❤️", 3000);
+
+        setTimeout(() => {
+            showScreen("phoneScreen");
+            popup("📱 Incoming message from Ritesh...");
+        }, 3000);
+    }
+});
+
+/* ---------- PHONE ---------- */
+
+document.getElementById("notification").addEventListener("click", () => {
+
+    sound();
+    showScreen("chatScreen");
+
+    startChat();
+});
+
+/* ---------- CHAT ---------- */
+
+const chatLines = [
+    ["rites", "Hey sleepyhead... I know you're awake. ❤️"],
+    ["tisha", "Riteshhh.... where are you?"],
+    ["rites", "Right here. And before you ask... yes, I was watching you sleep. 😂"],
+    ["tisha", "You are so annoying."],
+    ["rites", "And yet... here you are. 😌"],
+    ["rites", "But I have one tiny challenge for you."],
+    ["tisha", "What challenge?"],
+    ["rites", "Let's see how well my Tishuuu actually remembers us."]
+];
+
+let chatIndex = 0;
+
+function startChat() {
+
+    const container =
+        document.getElementById("chatMessages");
+
+    container.innerHTML = "";
+    chatIndex = 0;
+
+    addChatLine();
+}
+
+function addChatLine() {
+
+    if(chatIndex >= chatLines.length) {
+        document.getElementById("chatNext").textContent =
+            "Okay... test me 😌";
+        return;
+    }
+
+    const [who, text] = chatLines[chatIndex];
+
+    const bubble = document.createElement("div");
+
+    bubble.className =
+        "bubble " + (who === "rites" ? "rites" : "tisha");
+
+    bubble.textContent = text;
+
+    document.getElementById("chatMessages")
+        .appendChild(bubble);
+
+    chatIndex++;
+
+    document.getElementById("chatMessages")
+        .scrollTop =
+        document.getElementById("chatMessages").scrollHeight;
+}
+
+document.getElementById("chatNext").addEventListener("click", () => {
+
+    sound();
+
+    if(chatIndex < chatLines.length) {
+        addChatLine();
+    } else {
+        showScreen("quizScreen");
+        loadQuestion();
+    }
+});
+
+/* ---------- QUIZ ---------- */
+
+const questions = [
+    {
+        q: "Who started falling asleep on whose lap on the very first day?",
+        options: ["Ritesh", "Tisha"],
+        answer: 1
+    },
+    {
+        q: "Who sounded surprisingly young when they first heard the other's voice?",
+        options: ["Ritesh", "Tisha"],
+        answer: 0
+    },
+    {
+        q: "Who is more likely to turn a normal conversation into chaos?",
+        options: ["Ritesh", "Tisha"],
+        answer: 1
+    },
+    {
+        q: "Who is more likely to say 'I'm fine' while clearly not being fine?",
+        options: ["Ritesh", "Tisha"],
+        answer: 1
+    },
+    {
+        q: "Who is the bigger foodie?",
+        options: ["Ritesh", "Tisha"],
+        answer: 1
+    },
+    {
+        q: "Who gets more dramatic when they're sleepy?",
+        options: ["Ritesh", "Tisha"],
+        answer: 1
+    },
+    {
+        q: "Who is secretly the bigger softie?",
+        options: ["Ritesh", "Tisha"],
+        answer: 1
+    }
+];
+
+let currentQuestion = 0;
+let scoreValue = 0;
+let answered = false;
+
+function loadQuestion() {
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        `${currentQuestion + 1} / ${questions.length}`;
+
+    document.getElementById("progressBar").style.width =
+        `${((currentQuestion) / questions.length) * 100}%`;
+
+    document.getElementById("question").textContent = q.q;
+
+    const answers = document.getElementById("answers");
+    answers.innerHTML = "";
+
+    q.options.forEach((option, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "answer";
+        button.textContent = option;
+
+        button.addEventListener("click", () => {
+            chooseAnswer(button, index);
+        });
+
+        answers.appendChild(button);
+    });
+}
+
+function chooseAnswer(button, index) {
+
+    if(answered) return;
+
+    answered = true;
+
+    const correct =
+        index === questions[currentQuestion].answer;
+
+    if(correct) {
+        scoreValue++;
+        button.classList.add("correct");
+        sound("correct");
+        popup("Awww... you actually remember. 🥹❤️");
+    } else {
+        button.classList.add("wrong");
+        sound("wrong");
+        popup("Hmmmm... suspicious answer, madam. 😂");
+    }
+
+    setTimeout(() => {
+
+        currentQuestion++;
+
+        if(currentQuestion < questions.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+
+    }, 1200);
+}
+
+function showResult() {
+
+    showScreen("resultScreen");
+
+    document.getElementById("score").textContent =
+        `${scoreValue} / ${questions.length}`;
+
+    let text;
+
+    if(scoreValue === 7) {
+        text =
+            "Perfect score. Obviously my Tishuuu knows everything. ❤️";
+    } else if(scoreValue >= 5) {
+        text =
+            "Okay okay... you know us pretty damn well. 😌";
+    } else {
+        text =
+            "I think somebody needs to revise our memories. 😂❤️";
+    }
+
+    document.getElementById("resultText").textContent = text;
+}
+
+document.getElementById("rewardBtn").addEventListener("click", () => {
+
+    sound("correct");
+
+    popup(
+        "Memory verified. Your reward is waiting downstairs... 🎁",
+        3000
+    );
+
+    setTimeout(() => {
+        window.location.href = "page5.html";
+    }, 3300);
+});
+</script>
+
+</body>
+</html>
